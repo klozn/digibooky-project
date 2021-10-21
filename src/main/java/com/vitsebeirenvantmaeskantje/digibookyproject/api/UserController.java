@@ -3,6 +3,8 @@ package com.vitsebeirenvantmaeskantje.digibookyproject.api;
 import com.vitsebeirenvantmaeskantje.digibookyproject.api.dto.users.CreateMemberDto;
 import com.vitsebeirenvantmaeskantje.digibookyproject.api.dto.users.UserDto;
 import com.vitsebeirenvantmaeskantje.digibookyproject.services.UserService;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
@@ -12,6 +14,7 @@ import org.springframework.web.bind.annotation.*;
 public class UserController {
 
     private final UserService userService;
+    private final Logger logger = LoggerFactory.getLogger(UserController.class);
 
     @Autowired
     public UserController(UserService userService) {

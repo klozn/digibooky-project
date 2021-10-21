@@ -12,12 +12,13 @@ import org.springframework.stereotype.Service;
 public class UserService {
 
     private final UserRepository repository;
+    private final UserMapper mapper;
 
     @Autowired
-    public UserService(UserRepository repository) {
+    public UserService(UserRepository repository, UserMapper mapper) {
         this.repository = repository;
+        this.mapper = mapper;
     }
-
 
     public UserDto createNewMember(CreateMemberDto createMemberDto) {
         User member = new User(createMemberDto.getInss(), createMemberDto.getLastName(), createMemberDto.getMail(), createMemberDto.getCity());
@@ -26,6 +27,6 @@ public class UserService {
         member.setStreetNumber(createMemberDto.getStreetNumber());
         member.setPostalCode(createMemberDto.getPostalCode());
         repository.save(member);
-        return UserMapper.toDto(member);
+        return mapper.toDto(member);
     }
 }

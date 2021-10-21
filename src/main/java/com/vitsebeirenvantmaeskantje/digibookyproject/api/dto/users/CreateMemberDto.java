@@ -3,14 +3,14 @@ package com.vitsebeirenvantmaeskantje.digibookyproject.api.dto.users;
 import com.vitsebeirenvantmaeskantje.digibookyproject.domain.User;
 
 public class CreateMemberDto {
-    private String inss;
-    private String firstName;
-    private String lastName;
-    private String mail;
-    private String city;
-    private String street;
-    private String streetNumber;
-    private int postalCode;
+    private final String inss;
+    private final String firstName;
+    private final String lastName;
+    private final String mail;
+    private final String city;
+    private final String street;
+    private final String streetNumber;
+    private final int postalCode;
     private final User.Role role = User.Role.MEMBER;
 
     public CreateMemberDto(String inss, String firstName, String lastName, String mail, String city, String street,

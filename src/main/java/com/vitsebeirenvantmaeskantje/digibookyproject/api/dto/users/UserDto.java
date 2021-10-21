@@ -32,11 +32,6 @@ public class UserDto {
         return role;
     }
 
-    public UserDto setRole(User.Role role) {
-        this.role = role;
-        return this;
-    }
-
     public String getInss() {
         return inss;
     }

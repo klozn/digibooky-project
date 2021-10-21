@@ -14,8 +14,8 @@ class UserServiceTest {
 
     @Test
     void createMember_returnsUserDtoWithCorrectData() {
-        CreateMemberDto createMemberDto = new CreateMemberDto().setLastName("From the block").setInss("1324564877")
-                .setMail("bobby.fromdablock@test.be").setCity("Harlem");
+        CreateMemberDto createMemberDto = new CreateMemberDto("1324564877", null, "From the block",
+                "bobby.fromdablock@test.be", "Harlem", null, null, 0);
         UserDto created = userService.createNewMember(createMemberDto);
 
         assertNotNull(created.getId());
