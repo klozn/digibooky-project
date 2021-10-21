@@ -23,4 +23,8 @@ public class BookService {
     public List<BookDto> getAllBooks() {
         return bookDtoMapper.toDto(bookRepository.getBooks());
     }
+
+    public BookDto getByIsbn(String isbn){
+        return bookDtoMapper.toDTO(bookRepository.getBookByIsbn(isbn));
+    }
 }

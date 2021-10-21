@@ -46,6 +46,10 @@ public class Book {
         return lent;
     }
 
+    public void setSummary(String summary) {
+        this.summary = summary;
+    }
+
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
