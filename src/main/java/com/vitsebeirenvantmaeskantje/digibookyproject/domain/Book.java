@@ -11,9 +11,11 @@ public class Book {
     private boolean deleted;
     private boolean lent;
 
-    public Book(String isbn, String title) {
+    public Book(String isbn, String title, String authorFirstname, String authorLastname) {
         this.isbn = isbn;
         this.title = title;
+        this.authorFirstname = authorFirstname;
+        this.authorLastname = authorLastname;
     }
 
     public String getIsbn() {
