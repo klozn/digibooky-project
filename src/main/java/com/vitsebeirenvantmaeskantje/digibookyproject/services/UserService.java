@@ -21,11 +21,10 @@ public class UserService {
     }
 
     public UserDto createNewMember(CreateMemberDto createMemberDto) {
-        User member = new User(createMemberDto.getInss(), createMemberDto.getLastName(), createMemberDto.getMail(), createMemberDto.getCity());
-        member.setFirstName(createMemberDto.getFirstName());
-        member.setStreet(createMemberDto.getStreet());
-        member.setStreetNumber(createMemberDto.getStreetNumber());
-        member.setPostalCode(createMemberDto.getPostalCode());
+        User member = new User(createMemberDto.getInss(), createMemberDto.getFirstName(), createMemberDto.getLastName(),
+                createMemberDto.getMail(), createMemberDto.getCity(), createMemberDto.getStreet(),
+                createMemberDto.getStreetNumber(), createMemberDto.getPostalCode());
+
         repository.save(member);
         return mapper.toDto(member);
     }

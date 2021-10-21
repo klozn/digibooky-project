@@ -17,20 +17,43 @@ public class User {
     private int postalCode;
     private Role role;
 
-    public User(String inss, String lastName, String mail, String city) {
-        this.id = UUID.randomUUID().toString();
-        this.inss = inss;
-        this.lastName = lastName;
-        this.mail = assertValidMail(mail);
-        this.city = city;
-        role = Role.MEMBER;
+    public User(String inss, String firstName, String lastName, String mail, String city, String street, String streetNumber, int postalCode) {
+        this(inss, firstName, lastName, mail, city, street, streetNumber, postalCode, Role.MEMBER);
     }
 
-    private String assertValidMail(String mail) {
+    public User(String inss, String firstName, String lastName, String mail, String city, String street,
+                String streetNumber, int postalCode, Role role) {
+        id = UUID.randomUUID().toString();
+        setInss(inss);
+        setFirstName(firstName);
+        setLastName(lastName);
+        setMail(mail);
+        setCity(city);
+        setStreet(street);
+        setStreetNumber(streetNumber);
+        setPostalCode(postalCode);
+        setRole(role);
+    }
+
+    private void setInss(String inss) {
+        if (inss == null || inss.isBlank()) {
+            throw new IllegalArgumentException("INSS can't be null or blank");
+        }
+        this.inss = inss;
+    }
+
+    private void setLastName(String lastName) {
+        if (lastName == null || lastName.isBlank()) {
+            throw new IllegalArgumentException("User lastname required");
+        }
+        this.lastName = lastName;
+    }
+
+    private void setMail(String mail) {
         if (!EmailValidator.getInstance().isValid(mail)) {
             throw new IllegalArgumentException("Invalid email for user");
         }
-        return mail;
+        this.mail = mail;
     }
 
     public Role getRole() {
