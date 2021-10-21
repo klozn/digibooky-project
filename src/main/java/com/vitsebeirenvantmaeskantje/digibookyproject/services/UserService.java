@@ -41,7 +41,7 @@ public class UserService {
         assertAdminId(adminId);
         User admin = new User(createAdminDto.getInss(), createAdminDto.getFirstName(), createAdminDto.getLastName(),
                 createAdminDto.getMail(), createAdminDto.getCity(), createAdminDto.getStreet(),
-                createAdminDto.getStreetNumber(), createAdminDto.getPostalCode(), createAdminDto.getRole());
+                createAdminDto.getStreetNumber(), createAdminDto.getPostalCode(), User.Role.ADMIN);
         repository.save(admin);
         return mapper.toDto(admin);
     }
@@ -57,15 +57,15 @@ public class UserService {
 
 
     public List<UserDto> getAllMembers(String userId) {
-        User current = fetchUserIfExistElseThrowException(userId);
-        assertAdmin(current);
+        assertAdminId(userId);
         return repository.getAll().stream()
                 .filter(u -> u.getRole() == User.Role.MEMBER)
                 .map(mapper::toDto)
                 .collect(Collectors.toList());
     }
 
-    private void assertAdmin(User user) {
+    private void assertAdminId(String id) {
+        User user = fetchUserIfExistElseThrowException(id);
         if (user.getRole() != User.Role.ADMIN) {
             throw new UnauthorizedUserException("No admin rights!");
         }

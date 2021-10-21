@@ -1,7 +1,5 @@
 package com.vitsebeirenvantmaeskantje.digibookyproject.api.dto.users;
 
-import com.vitsebeirenvantmaeskantje.digibookyproject.domain.User;
-
 public class CreateAdminDto {
     private final String inss;
     private final String firstName;

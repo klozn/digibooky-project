@@ -1,7 +1,5 @@
 package com.vitsebeirenvantmaeskantje.digibookyproject.api.dto.users;
 
-import com.vitsebeirenvantmaeskantje.digibookyproject.domain.User;
-
 public class CreateLibrarianDto {
     private final String inss;
     private final String firstName;
@@ -11,7 +9,6 @@ public class CreateLibrarianDto {
     private final String street;
     private final String streetNumber;
     private final int postalCode;
-    private final User.Role role = User.Role.LIBRARIAN;
 
     public CreateLibrarianDto(String inss, String firstName, String lastName, String mail, String city, String street, String streetNumber, int postalCode) {
         this.inss = inss;
@@ -54,10 +51,6 @@ public class CreateLibrarianDto {
 
     public int getPostalCode() {
         return postalCode;
-    }
-
-    public User.Role getRole() {
-        return role;
     }
 
 }
