@@ -16,7 +16,7 @@ public class ControllerAdvisor {
 
     @ExceptionHandler
     public void handleIllegalArgumentException(IllegalArgumentException exception, HttpServletResponse response) throws IOException {
-        logger.warn("Illegal Argument: " + exception.getMessage());
+        logger.error("Illegal Argument: " + exception.getMessage());
         response.sendError(HttpStatus.BAD_REQUEST.value(), exception.getMessage());
     }
 }
