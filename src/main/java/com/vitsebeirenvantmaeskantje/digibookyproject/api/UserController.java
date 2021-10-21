@@ -22,6 +22,7 @@ public class UserController {
     @PostMapping(consumes = "application/json", produces = "application/json")
     @ResponseStatus(HttpStatus.CREATED)
     public UserDto createMember(@RequestBody CreateMemberDto createMemberDto){
+        logger.info("Creating new member for email: " + createMemberDto.getMail());
         return userService.createNewMember(createMemberDto);
     }
 }
