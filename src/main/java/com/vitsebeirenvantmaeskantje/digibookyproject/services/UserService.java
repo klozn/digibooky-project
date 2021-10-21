@@ -2,6 +2,7 @@ package com.vitsebeirenvantmaeskantje.digibookyproject.services;
 
 import com.vitsebeirenvantmaeskantje.digibookyproject.api.dto.mappers.UserMapper;
 import com.vitsebeirenvantmaeskantje.digibookyproject.api.dto.users.CreateAdminDto;
+import com.vitsebeirenvantmaeskantje.digibookyproject.api.dto.users.CreateLibrarianDto;
 import com.vitsebeirenvantmaeskantje.digibookyproject.api.dto.users.CreateMemberDto;
 import com.vitsebeirenvantmaeskantje.digibookyproject.api.dto.users.UserDto;
 import com.vitsebeirenvantmaeskantje.digibookyproject.domain.User;
@@ -37,14 +38,23 @@ public class UserService {
     }
 
     public UserDto createNewAdmin(CreateAdminDto createAdminDto, String adminId){
-        User current = fetchUserIfExistElseThrowException(adminId);
-        assertAdmin(current);
+        assertAdminId(adminId);
         User admin = new User(createAdminDto.getInss(), createAdminDto.getFirstName(), createAdminDto.getLastName(),
                 createAdminDto.getMail(), createAdminDto.getCity(), createAdminDto.getStreet(),
                 createAdminDto.getStreetNumber(), createAdminDto.getPostalCode(), createAdminDto.getRole());
         repository.save(admin);
         return mapper.toDto(admin);
     }
+
+    public UserDto createNewLibrarian(CreateLibrarianDto createLibrarianDto, String adminId){
+        assertAdminId(adminId);
+        User librarian = new User(createLibrarianDto.getInss(), createLibrarianDto.getFirstName(), createLibrarianDto.getLastName(),
+                createLibrarianDto.getMail(), createLibrarianDto.getCity(), createLibrarianDto.getStreet(),
+                createLibrarianDto.getStreetNumber(), createLibrarianDto.getPostalCode(), User.Role.LIBRARIAN);
+        repository.save(librarian);
+        return mapper.toDto(librarian);
+    }
+
 
     public List<UserDto> getAllMembers(String userId) {
         User current = fetchUserIfExistElseThrowException(userId);

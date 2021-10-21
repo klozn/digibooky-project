@@ -1,6 +1,7 @@
 package com.vitsebeirenvantmaeskantje.digibookyproject.api;
 
 import com.vitsebeirenvantmaeskantje.digibookyproject.api.dto.users.CreateAdminDto;
+import com.vitsebeirenvantmaeskantje.digibookyproject.api.dto.users.CreateLibrarianDto;
 import com.vitsebeirenvantmaeskantje.digibookyproject.api.dto.users.CreateMemberDto;
 import com.vitsebeirenvantmaeskantje.digibookyproject.api.dto.users.UserDto;
 import com.vitsebeirenvantmaeskantje.digibookyproject.services.UserService;
@@ -38,6 +39,13 @@ public class UserController {
     public UserDto createAdmin(@RequestBody CreateAdminDto createAdminDto, @RequestParam String userId){
         logger.info("Trying to create admin...");
         return userService.createNewAdmin(createAdminDto, userId);
+    }
+
+    @PostMapping(path ="/librarians", consumes = "application/json", produces = "application/json")
+    @ResponseStatus(HttpStatus.CREATED)
+    public UserDto createLibrarian(@RequestBody CreateLibrarianDto createLibrarianDto, @RequestParam String userId){
+        logger.info("Trying to create librarian...");
+        return userService.createNewLibrarian(createLibrarianDto, userId);
     }
 
 
