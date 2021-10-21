@@ -26,4 +26,19 @@ class BookServiceTest {
     }
 
 
+
+    @DisplayName("Get a book by ISBN")
+    @Test
+    void whenAskingForBookByIsbnInService_ThenGetBookDto() {
+        //GIVEN
+        BookService bookService = new BookService(new BookDtoMapper(), new BookRepository());
+
+        //WHEN
+        BookDto result = bookService.getByIsbn("1");
+
+        //THEN
+        Assertions.assertEquals("ABC", result.getAuthorFirstname());
+    }
+
+
 }
