@@ -7,10 +7,10 @@ import java.util.UUID;
 
 public class User {
     private final String id;
-    private final String inss;
+    private String inss;
     private String firstName;
-    private final String lastName;
-    private final String mail;
+    private String lastName;
+    private String mail;
     private String city;
     private String street;
     private String streetNumber;
@@ -60,7 +60,10 @@ public class User {
         return role;
     }
 
-    public void setRole(Role role) {
+    private void setRole(Role role) {
+        if (role == null) {
+            throw new IllegalArgumentException("Role can't be null");
+        }
         this.role = role;
     }
 
@@ -93,6 +96,9 @@ public class User {
     }
 
     public void setCity(String city) {
+        if (city == null || city.isBlank()) {
+            throw new IllegalArgumentException("User city cant be null or blank.");
+        }
         this.city = city;
     }
 
