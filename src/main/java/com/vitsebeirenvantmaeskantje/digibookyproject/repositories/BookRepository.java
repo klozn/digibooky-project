@@ -11,8 +11,13 @@ public class BookRepository {
     private final Map<String, Book> books = new HashMap<>();
 
     public BookRepository() {
-        books.put("1", new Book("1", "test", "ABC", "DE"));
-        books.put("2", new Book("2", "test", "Bart", "W"));
+        Book book1 = new Book("1", "test", "ABC", "DE");
+        Book book2 = new Book("2", "test", "ABC", "DE");
+        book1.setSummary("blablablabla");
+        book2.setSummary("blablablabla");
+
+        books.put("1", book1);
+        books.put("2", book2);
     }
 
     public List<Book> getBooks() {
