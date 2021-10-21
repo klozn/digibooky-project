@@ -1,6 +1,7 @@
 package com.vitsebeirenvantmaeskantje.digibookyproject.services;
 
 import com.vitsebeirenvantmaeskantje.digibookyproject.api.dto.mappers.UserMapper;
+import com.vitsebeirenvantmaeskantje.digibookyproject.api.dto.users.CreateAdminDto;
 import com.vitsebeirenvantmaeskantje.digibookyproject.api.dto.users.CreateMemberDto;
 import com.vitsebeirenvantmaeskantje.digibookyproject.api.dto.users.UserDto;
 import com.vitsebeirenvantmaeskantje.digibookyproject.domain.User;
@@ -13,7 +14,7 @@ import java.util.List;
 import static org.junit.jupiter.api.Assertions.*;
 
 class UserServiceTest {
-
+    private final static String ADMIN_ID = "1";
     UserService userService = new UserService(new UserRepository(), new UserMapper());
 
     @Test
