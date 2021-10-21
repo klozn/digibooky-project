@@ -19,4 +19,16 @@ public class ControllerAdvisor {
         logger.error("Illegal Argument: " + exception.getMessage());
         response.sendError(HttpStatus.BAD_REQUEST.value(), exception.getMessage());
     }
+
+    @ExceptionHandler
+    public void handleUnauthorizedUserException(UnauthorizedUserException exception, HttpServletResponse response) throws IOException{
+        logger.error("Unauthorized user: " + exception.getMessage());
+        response.sendError(HttpStatus.FORBIDDEN.value(), exception.getMessage());
+    }
+
+    @ExceptionHandler
+    public void handleUserNotFoundException(UserNotFoundException exception, HttpServletResponse response) throws IOException{
+        logger.error("User not found: " + exception.getMessage());
+        response.sendError(HttpStatus.NOT_FOUND.value(), exception.getMessage());
+    }
 }
