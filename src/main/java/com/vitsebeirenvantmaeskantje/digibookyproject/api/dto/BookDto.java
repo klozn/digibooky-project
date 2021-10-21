@@ -18,6 +18,14 @@ public class BookDto {
         this.authorLastname = authorLastname;
     }
 
+    public BookDto(String isbn, String title, String authorFirstname, String authorLastname, String summary) {
+        this.isbn = isbn;
+        this.title = title;
+        this.authorFirstname = authorFirstname;
+        this.authorLastname = authorLastname;
+        this.summary = summary;
+    }
+
     public String getIsbn() {
         return isbn;
     }

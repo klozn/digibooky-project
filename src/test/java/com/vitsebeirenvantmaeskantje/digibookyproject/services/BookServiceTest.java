@@ -11,7 +11,6 @@ import java.util.List;
 
 class BookServiceTest {
 
-
     @DisplayName("get booklist from bookrepo in form bookDto")
     @Test
     void whenAskingForBookListInService_ThenGetBookDtos() {
@@ -24,6 +23,21 @@ class BookServiceTest {
         //THEN
         Assertions.assertEquals(2, results.size());
         Assertions.assertEquals("1", results.get(0).getIsbn());
+    }
+
+
+
+    @DisplayName("Get a book by ISBN")
+    @Test
+    void whenAskingForBookByIsbnInService_ThenGetBookDto() {
+        //GIVEN
+        BookService bookService = new BookService(new BookDtoMapper(), new BookRepository());
+
+        //WHEN
+        BookDto result = bookService.getByIsbn("1");
+
+        //THEN
+        Assertions.assertEquals("ABC", result.getAuthorFirstname());
     }
 
 

@@ -11,7 +11,7 @@ import java.util.stream.Collectors;
 public class BookDtoMapper {
 
     public BookDto toDTO(Book book) {
-        return new BookDto(book.getIsbn(), book.getTitle(), book.getAuthorFirstname(), book.getAuthorLastname());
+        return new BookDto(book.getIsbn(), book.getTitle(), book.getAuthorFirstname(), book.getAuthorLastname(), book.getSummary());
     }
 
     public Book toEntity(BookDto bookDto) {
