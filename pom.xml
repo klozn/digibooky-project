@@ -33,6 +33,12 @@
             <artifactId>springdoc-openapi-ui</artifactId>
             <version>1.5.11</version>
         </dependency>
+        <dependency>
+            <groupId>commons-validator</groupId>
+            <artifactId>commons-validator</artifactId>
+            <version>1.7</version>
+        </dependency>
+
     </dependencies>
 
     <build>
