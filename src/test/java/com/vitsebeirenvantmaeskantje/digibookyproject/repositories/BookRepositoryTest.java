@@ -20,8 +20,8 @@ class BookRepositoryTest {
         //WHEN
         List<Book> boeken = bib.getBooks();
         List<Book> results = new ArrayList<>();
-        results.add(new Book("1", "test", "ABC", "DE"));
-        results.add(new Book("2", "test2", "Bart", "W"));
+        results.add(book1);
+        results.add(book2);
 
         //THEN
         Assertions.assertEquals(results, boeken);
@@ -34,14 +34,13 @@ class BookRepositoryTest {
         BookRepository bib = new BookRepository();
 
         //WHEN
-        Book result = bib.getBookByIsbn("1");
+        Book result = bib.getBookByIsbn("123456");
         result.setSummary("Dit is een test");
-        Book expected = new Book("1", "test", "ABC", "DE");
+        Book expected = book1;
         expected.setSummary("Dit is een test");
 
-
         //THEN
-        Assertions.assertEquals(expected,result);
+        Assertions.assertEquals(expected, result);
         Assertions.assertEquals(expected.getSummary(), result.getSummary());
     }
 

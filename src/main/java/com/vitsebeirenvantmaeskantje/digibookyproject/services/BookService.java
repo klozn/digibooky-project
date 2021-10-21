@@ -24,7 +24,11 @@ public class BookService {
         return bookDtoMapper.toDto(bookRepository.getBooks());
     }
 
-    public BookDto getByIsbn(String isbn){
+    public BookDto getByIsbn(String isbn) {
         return bookDtoMapper.toDTO(bookRepository.getBookByIsbn(isbn));
+    }
+
+    public List<BookDto> getBookByIsbnWildcard(String partialISBN, Character wildcard) {
+        return bookDtoMapper.toDto(bookRepository.getBookByIsbnWildcard(partialISBN, wildcard));
     }
 }

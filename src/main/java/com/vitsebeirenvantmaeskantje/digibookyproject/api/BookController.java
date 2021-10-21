@@ -37,4 +37,6 @@ public class BookController {
         logger.info("Retrieved book with id " + ISBN);
         return bookService.getByIsbn(ISBN);
     }
+
+  //  wildcardsearch nog af te werken
 }
