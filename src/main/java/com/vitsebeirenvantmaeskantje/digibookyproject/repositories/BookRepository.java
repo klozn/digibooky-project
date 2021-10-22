@@ -59,7 +59,6 @@ public class BookRepository {
         return true;
     }
 
-
     public Book setBookLentStatus(String isbn, boolean lendingStatus) {
         Book bookToSetLentStatus = getBookByIsbn(isbn);
         bookToSetLentStatus.setLent(lendingStatus);

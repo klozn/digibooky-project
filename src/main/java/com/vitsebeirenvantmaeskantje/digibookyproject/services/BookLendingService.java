@@ -34,11 +34,11 @@ public class BookLendingService {
 
     public BookLendingDto save(CreateBookLendingDto bookLendingDto) {
         if (!bookRepository.assertIsbnExists(bookLendingDto.getIsbn())) {
-            throw new IllegalArgumentException("Book ISBN does not exist");
+            throw new IllegalArgumentException("Book ISBN " + bookLendingDto.getIsbn() + " does not exist");
         }
 
         if (bookRepository.isBookLent(bookLendingDto.getIsbn())) {
-            throw new IllegalArgumentException("Book is already lent");
+            throw new IllegalArgumentException("Book with ISBN " + bookLendingDto.getIsbn() + " is already lent");
         }
 
         userService.assertMemberId(bookLendingDto.getMemberId());

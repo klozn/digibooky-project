@@ -24,7 +24,7 @@ public class BookLendingController {
     @PostMapping(consumes = "application/json",produces = "application/json")
     @ResponseStatus(HttpStatus.CREATED)
     public BookLendingDto lendBook(@RequestBody CreateBookLendingDto createBookLendingDto){
-        logger.info("Attempting to lend book..");
+        logger.info("Attempting to lend book with ISBN " + createBookLendingDto.getIsbn());
         return bookLendingService.save(createBookLendingDto);
     }
 
