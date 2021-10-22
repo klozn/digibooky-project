@@ -1,6 +1,6 @@
 package com.vitsebeirenvantmaeskantje.digibookyproject.api.dto.mappers;
 
-import com.vitsebeirenvantmaeskantje.digibookyproject.api.dto.BookDto;
+import com.vitsebeirenvantmaeskantje.digibookyproject.api.dto.books.BookDto;
 import com.vitsebeirenvantmaeskantje.digibookyproject.domain.Book;
 import org.springframework.stereotype.Component;
 
@@ -10,7 +10,7 @@ import java.util.stream.Collectors;
 @Component
 public class BookDtoMapper {
 
-    public BookDto toDTO(Book book) {
+    public BookDto toDto(Book book) {
         return new BookDto(book.getIsbn(), book.getTitle(), book.getAuthorFirstname(), book.getAuthorLastname(), book.getSummary());
     }
 
@@ -19,7 +19,7 @@ public class BookDtoMapper {
     }
 
     public List<BookDto> toDto(List<Book> books) {
-        return books.stream().map(this::toDTO).collect(Collectors.toList());
+        return books.stream().map(this::toDto).collect(Collectors.toList());
     }
 
     public List<Book> toEntity(List<BookDto> books) {

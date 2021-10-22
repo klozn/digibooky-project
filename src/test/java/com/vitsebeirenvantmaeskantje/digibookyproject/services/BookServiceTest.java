@@ -1,6 +1,7 @@
 package com.vitsebeirenvantmaeskantje.digibookyproject.services;
 
-import com.vitsebeirenvantmaeskantje.digibookyproject.api.dto.BookDto;
+import com.vitsebeirenvantmaeskantje.digibookyproject.api.dto.books.BookDto;
+import com.vitsebeirenvantmaeskantje.digibookyproject.api.dto.books.CreateBookDto;
 import com.vitsebeirenvantmaeskantje.digibookyproject.api.dto.mappers.BookDtoMapper;
 import com.vitsebeirenvantmaeskantje.digibookyproject.api.dto.mappers.UserMapper;
 import com.vitsebeirenvantmaeskantje.digibookyproject.domain.exceptions.UnauthorizedUserException;
@@ -155,13 +156,17 @@ class BookServiceTest {
         @DisplayName("When a member registers a new book, it throws UnauthorizedUserException.")
         @Test
         void whenUserIsMemberRegisterANewBook_ThenAnExceptionIsThrown() {
-            Assertions.assertThrows(UnauthorizedUserException.class, () -> bookService.registerBook(book1, MEMBER_ID));
+            CreateBookDto createBookDto = new CreateBookDto(book1.getIsbn(),book1.getTitle(),book1.getAuthorFirstname(),
+                    book1.getAuthorLastname(),book1.getSummary());
+            Assertions.assertThrows(UnauthorizedUserException.class, () -> bookService.registerBook(createBookDto, MEMBER_ID));
 
         }
         @DisplayName("When an admin registers a new book, it throws UnauthorizedUserException.")
         @Test
         void whenUserIsAdminRegisterANewBook_ThenAnExceptionIsThrown() {
-            Assertions.assertThrows(UnauthorizedUserException.class, () -> bookService.registerBook(book1, ADMIN_ID));
+            CreateBookDto createBookDto = new CreateBookDto(book1.getIsbn(),book1.getTitle(),book1.getAuthorFirstname(),
+                    book1.getAuthorLastname(),book1.getSummary());
+            Assertions.assertThrows(UnauthorizedUserException.class, () -> bookService.registerBook(createBookDto, ADMIN_ID));
 
         }
     }

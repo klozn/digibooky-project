@@ -1,4 +1,4 @@
-package com.vitsebeirenvantmaeskantje.digibookyproject.api.dto;
+package com.vitsebeirenvantmaeskantje.digibookyproject.api.dto.books;
 
 import java.util.Objects;
 

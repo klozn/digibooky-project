@@ -1,8 +1,7 @@
 package com.vitsebeirenvantmaeskantje.digibookyproject.api.dto.mappers;
 
-import com.vitsebeirenvantmaeskantje.digibookyproject.api.dto.BookDto;
+import com.vitsebeirenvantmaeskantje.digibookyproject.api.dto.books.BookDto;
 import com.vitsebeirenvantmaeskantje.digibookyproject.domain.Book;
-import com.vitsebeirenvantmaeskantje.digibookyproject.repositories.BookRepository;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
@@ -37,7 +36,7 @@ class BookDtoMapperTest {
         BookDto expected = new BookDto(VALID_ISBN, "test", "test", "test");
 
         //WHEN
-        BookDto result = mapper.toDTO(book);
+        BookDto result = mapper.toDto(book);
 
 
         //THEN

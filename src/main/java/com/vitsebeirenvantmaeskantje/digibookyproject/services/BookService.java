@@ -1,6 +1,7 @@
 package com.vitsebeirenvantmaeskantje.digibookyproject.services;
 
-import com.vitsebeirenvantmaeskantje.digibookyproject.api.dto.BookDto;
+import com.vitsebeirenvantmaeskantje.digibookyproject.api.dto.books.BookDto;
+import com.vitsebeirenvantmaeskantje.digibookyproject.api.dto.books.CreateBookDto;
 import com.vitsebeirenvantmaeskantje.digibookyproject.api.dto.mappers.BookDtoMapper;
 import com.vitsebeirenvantmaeskantje.digibookyproject.domain.Book;
 import com.vitsebeirenvantmaeskantje.digibookyproject.repositories.BookRepository;
@@ -30,12 +31,12 @@ public class BookService {
     public List<BookDto> getAllBooks() {
         return bookRepository.getBooks().stream()
                 .sorted(Comparator.comparing(Book::getAuthorLastname).thenComparing(Book::getAuthorFirstname))
-                .map(bookDtoMapper::toDTO)
+                .map(bookDtoMapper::toDto)
                 .collect(Collectors.toList());
     }
 
     public BookDto getByIsbn(String isbn) {
-        return bookDtoMapper.toDTO(bookRepository.getBookByIsbn(isbn));
+        return bookDtoMapper.toDto(bookRepository.getBookByIsbn(isbn));
     }
 
     public List<BookDto> getBookByIsbnWildcard(String partialISBN) {

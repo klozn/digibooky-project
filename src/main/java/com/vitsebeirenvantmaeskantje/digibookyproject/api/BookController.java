@@ -1,6 +1,7 @@
 package com.vitsebeirenvantmaeskantje.digibookyproject.api;
 
-import com.vitsebeirenvantmaeskantje.digibookyproject.api.dto.BookDto;
+import com.vitsebeirenvantmaeskantje.digibookyproject.api.dto.books.BookDto;
+import com.vitsebeirenvantmaeskantje.digibookyproject.api.dto.books.CreateBookDto;
 import com.vitsebeirenvantmaeskantje.digibookyproject.services.BookService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -51,4 +52,10 @@ public class BookController {
 
     }
 
+    @PostMapping(consumes = "application/json", produces = "application/json", path = "/{id}")
+    @ResponseStatus(HttpStatus.CREATED)
+    public BookDto registerBook(@RequestBody CreateBookDto createBookDto, @PathVariable("id") String userId){
+        logger.info("Register new book with ISBN "+ createBookDto.getIsbn()+" by userID "+userId+".");
+        return bookService.registerBook(createBookDto, userId);
+    }
 }
