@@ -2,6 +2,7 @@ package com.vitsebeirenvantmaeskantje.digibookyproject.services;
 
 import com.vitsebeirenvantmaeskantje.digibookyproject.api.dto.books.BookDto;
 import com.vitsebeirenvantmaeskantje.digibookyproject.api.dto.books.CreateBookDto;
+import com.vitsebeirenvantmaeskantje.digibookyproject.api.dto.books.UpdateBookDto;
 import com.vitsebeirenvantmaeskantje.digibookyproject.api.dto.mappers.BookDtoMapper;
 import com.vitsebeirenvantmaeskantje.digibookyproject.api.dto.mappers.UserMapper;
 import com.vitsebeirenvantmaeskantje.digibookyproject.domain.exceptions.UnauthorizedUserException;
@@ -191,5 +192,19 @@ class BookServiceTest {
         System.out.println(result.toString());
         //THEN
         Assertions.assertEquals(2, result.size());
+    }
+
+    @DisplayName("Updating a book")
+    @Nested
+    class UpdatingABook{
+
+        @DisplayName("Librarian updates a book, it works")
+        @Test
+        void whenUserIsLibrarianAndUpdatesABook_ThenTheBookIsUpdated(){
+            UpdateBookDto updateBookDto = new UpdateBookDto("new title", "new firstname",
+                    "new lastname","new summary");
+            Assertions.assertDoesNotThrow(() -> bookService.updateBook(book1.getIsbn(),updateBookDto,LIBRARIAN_ID));
+            Assertions.assertEquals("new title", bookRepository.getBookByIsbn(book1.getIsbn()).getTitle());
+        }
     }
 }

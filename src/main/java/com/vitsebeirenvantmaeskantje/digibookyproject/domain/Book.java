@@ -74,12 +74,13 @@ public class Book {
         this.authorFirstname = authorFirstname;
     }
 
-    private void setAuthorLastname(String authorLastname) {
+    public void setAuthorLastname(String authorLastname) {
         if (authorLastname == null || authorLastname.isBlank()) {
             throw new IllegalArgumentException("Author's lastname can't be null or blank.");
         }
         this.authorLastname = authorLastname;
     }
+
 
     @Override
     public boolean equals(Object o) {
