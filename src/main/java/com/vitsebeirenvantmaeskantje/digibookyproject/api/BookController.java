@@ -1,7 +1,6 @@
 package com.vitsebeirenvantmaeskantje.digibookyproject.api;
 
 import com.vitsebeirenvantmaeskantje.digibookyproject.api.dto.BookDto;
-import com.vitsebeirenvantmaeskantje.digibookyproject.api.dto.mappers.BookDtoMapper;
 import com.vitsebeirenvantmaeskantje.digibookyproject.services.BookService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -15,13 +14,11 @@ import java.util.List;
 @RequestMapping(path = "/books")
 public class BookController {
     private final BookService bookService;
-    private final BookDtoMapper bookDtoMapper;
     private final Logger logger = LoggerFactory.getLogger(BookController.class);
 
     @Autowired
-    public BookController(BookService bookService, BookDtoMapper bookDtoMapper) {
+    public BookController(BookService bookService) {
         this.bookService = bookService;
-        this.bookDtoMapper = bookDtoMapper;
     }
 
     @GetMapping(produces = "application/json")
