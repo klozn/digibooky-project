@@ -28,21 +28,19 @@ public class BookController {
         return bookService.getAllBooks();
     }
 
-    @GetMapping(produces = "application/json", path = "{ISBN}")
+    @GetMapping(produces = "application/json", path = "{isbn}")
     @ResponseStatus(HttpStatus.OK)
-    public BookDto getBookByISBN(@PathVariable("ISBN") String ISBN) {
+    public BookDto getBookByISBN(@PathVariable("isbn") String ISBN) {
         logger.info("Retrieved book with id " + ISBN);
         return bookService.getByIsbn(ISBN);
     }
 
-    @GetMapping(produces = "application/json", path = "/search/{searchType}/{partialInput}/{wildcard}")
+    @GetMapping(produces = "application/json", path = "/search/{searchType}/{partialInput}")
     @ResponseStatus(HttpStatus.OK)
     public List<BookDto> getBookByBySearchTypeWithWildCard(@PathVariable("searchType") String searchType,
-                                                           @PathVariable("partialInput") String partialInput,
-                                                           @PathVariable("wildcard") Character wildcard) {
+                                                           @PathVariable("partialInput") String partialInput) {
 
-        logger.info("Searching for book via " + searchType + " with search query " + partialInput
-                + " and wildcard character " + wildcard);
+        logger.info("Searching for book via " + searchType + " with search query ");
 
         return switch (searchType) {
             case "isbn" -> bookService.getBookByIsbnWildcard(partialInput);

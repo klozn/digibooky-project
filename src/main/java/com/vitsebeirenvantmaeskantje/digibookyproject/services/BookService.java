@@ -30,7 +30,7 @@ public class BookService {
         return bookDtoMapper.toDTO(bookRepository.getBookByIsbn(isbn));
     }
 
-    public List<BookDto> getBookByIsbnWildcard(String partialISBN, Character wildcard) {
+    public List<BookDto> getBookByIsbnWildcard(String partialISBN) {
 
         List<BookDto> foundBooks = new ArrayList<>();
 

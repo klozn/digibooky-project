@@ -53,7 +53,7 @@ class BookServiceTest {
     @Test
     void whenAskingForABookByWildcardISBN_ThenGetABookDto() {
         //WHEN
-        List<BookDto> result = bookService.getBookByIsbnWildcard("123*", '*');
+        List<BookDto> result = bookService.getBookByIsbnWildcard("123*");
         List<BookDto> expected = new ArrayList<>();
         expected.add(book1);
         //THEN
@@ -65,7 +65,7 @@ class BookServiceTest {
     @Test
     void whenLookingForABookUsingAUselessWildCard_ThenReceiveNoBook() {
         //WHEN
-        List<BookDto> result = bookService.getBookByIsbnWildcard("7*", '*');
+        List<BookDto> result = bookService.getBookByIsbnWildcard("7*");
 
         //THEN
         Assertions.assertEquals(0, result.size());
@@ -75,7 +75,7 @@ class BookServiceTest {
     @Test
     void whenLookingForABookUsingAWildCard_ThenReceiveMultipleBooks() {
         //WHEN
-        List<BookDto> result = bookService.getBookByIsbnWildcard("****5*", '*');
+        List<BookDto> result = bookService.getBookByIsbnWildcard("*5*");
 
         //THEN
         Assertions.assertEquals(2, result.size());
@@ -87,7 +87,7 @@ class BookServiceTest {
     @Test
     void whenAskingForABookByWildcardTitle_ThenGetABookDto() {
         //WHEN
-        List<BookDto> result = bookService.getBookByTitleWildcard("***test*", '*');
+        List<BookDto> result = bookService.getBookByTitleWildcard("*test*");
         List<BookDto> expected = new ArrayList<>();
         expected.add(book1);
         //THEN
@@ -99,7 +99,7 @@ class BookServiceTest {
     @Test
     void whenLookingForABookUsingAUselessTitleWildCard_ThenReceiveNoBook() {
         //WHEN
-        List<BookDto> result = bookService.getBookByTitleWildcard("notfound*", '*');
+        List<BookDto> result = bookService.getBookByTitleWildcard("notfound*");
 
         //THEN
         Assertions.assertEquals(0, result.size());
@@ -109,7 +109,7 @@ class BookServiceTest {
     @Test
     void whenLookingForABookUsingATitleWildCard_ThenReceiveMultipleBooks() {
         //WHEN
-        List<BookDto> result = bookService.getBookByTitleWildcard("de*", '*');
+        List<BookDto> result = bookService.getBookByTitleWildcard("de*");
         System.out.println(result.toString());
         //THEN
         Assertions.assertEquals(3, result.size());
@@ -121,7 +121,7 @@ class BookServiceTest {
     @Test
     void whenAskingForABookByWildcardAuthorFullName_ThenGetABookDto() {
         //WHEN
-        List<BookDto> result = bookService.getBookByAuthorWildcard("T*", '*');
+        List<BookDto> result = bookService.getBookByAuthorWildcard("T*");
         List<BookDto> expected = new ArrayList<>();
         expected.add(book1);
         //THEN
@@ -133,7 +133,7 @@ class BookServiceTest {
     @Test
     void whenLookingForABookUsingAUselessAuthorFullNameWildCard_ThenReceiveNoBook() {
         //WHEN
-        List<BookDto> result = bookService.getBookByAuthorWildcard("notfound*", '*');
+        List<BookDto> result = bookService.getBookByAuthorWildcard("notfound*");
 
         //THEN
         Assertions.assertEquals(0, result.size());
@@ -143,7 +143,7 @@ class BookServiceTest {
     @Test
     void whenLookingForABookUsingAuthorFullNameWildCard_ThenReceiveMultipleBooks() {
         //WHEN
-        List<BookDto> result = bookService.getBookByAuthorWildcard("Bart*", '*');
+        List<BookDto> result = bookService.getBookByAuthorWildcard("Bart*");
         System.out.println(result.toString());
         //THEN
         Assertions.assertEquals(2, result.size());
