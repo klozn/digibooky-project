@@ -36,7 +36,7 @@ class UserServiceTest {
     }
 
     @Test
-    void ifUserIsNotAdmin_WhenGettingMembers_ThrowException(){
+    void ifUserIsNotAdmin_WhenGettingMembers_ThrowException() {
         UserDto member = userService.createNewMember(new CreateMemberDto("1324564877", null, "From the block",
                 "bobby.fromdablock@test.be", "Harlem", null, null, 0));
 
@@ -67,9 +67,9 @@ class UserServiceTest {
         UserDto admin = userService.createNewAdmin(new CreateAdminDto("1324564877", null, "From the block",
                 "bobby.fromdablock@test.be", "Harlem", null, null, 0), ADMIN_ID);
 
-            assertSame(admin.getRole(), User.Role.ADMIN);
-        }
+        assertSame(admin.getRole(), User.Role.ADMIN);
     }
+
 
     @Nested
     @DisplayName("Create Librarian test")
@@ -104,3 +104,4 @@ class UserServiceTest {
         }
     }
 }
+

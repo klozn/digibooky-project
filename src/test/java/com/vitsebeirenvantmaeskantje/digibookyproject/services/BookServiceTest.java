@@ -108,4 +108,38 @@ class BookServiceTest {
         //THEN
         Assertions.assertEquals(2, result.size());
     }
+
+    //AUTHOR
+
+    @DisplayName("Get a book using a wildcard for the author's full name")
+    @Test
+    void whenAskingForABookByWildcardAuthorFullName_ThenGetABookDto() {
+        //WHEN
+        List<BookDto> result = bookService.getBookByAuthorWildcard("T*", '*');
+        List<BookDto> expected = new ArrayList<>();
+        expected.add(book1);
+        //THEN
+        Assertions.assertEquals(expected, result);
+
+    }
+
+    @DisplayName("Wildcard author's full name does not find a book")
+    @Test
+    void whenLookingForABookUsingAUselessAuthorFullNameWildCard_ThenReceiveNoBook() {
+        //WHEN
+        List<BookDto> result = bookService.getBookByAuthorWildcard("notfound*", '*');
+
+        //THEN
+        Assertions.assertEquals(0, result.size());
+    }
+
+    @DisplayName("Wildcard finds multiple books based on author's full name")
+    @Test
+    void whenLookingForABookUsingAuthorFullNameWildCard_ThenReceiveMultipleBooks() {
+        //WHEN
+        List<BookDto> result = bookService.getBookByAuthorWildcard("Bart*", '*');
+        System.out.println(result.toString());
+        //THEN
+        Assertions.assertEquals(2, result.size());
+    }
 }

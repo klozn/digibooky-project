@@ -52,4 +52,15 @@ public class BookService {
 
         return foundBooks;
     }
+
+    public List<BookDto> getBookByAuthorWildcard(String partialInput, Character wildcard) {
+        List<BookDto> foundBooks = new ArrayList<>();
+
+        for (BookDto book : getAllBooks()) {
+            if (PatternMatcher.patternMatcher(partialInput, book.getBookAuthorFullName(), wildcard))
+                foundBooks.add(book);
+        }
+
+        return foundBooks;
+    }
 }
