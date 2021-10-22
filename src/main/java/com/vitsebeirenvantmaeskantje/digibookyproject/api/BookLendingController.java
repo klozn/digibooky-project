@@ -12,4 +12,20 @@ import org.springframework.web.bind.annotation.*;
 @RestController
 @RequestMapping(path = "/lendings")
 public class BookLendingController {
+
+    private final BookLendingService bookLendingService;
+    private final Logger logger = LoggerFactory.getLogger(BookLendingController.class);
+
+    @Autowired
+    public BookLendingController(BookLendingService bookLendingService) {
+        this.bookLendingService = bookLendingService;
+    }
+
+    @PostMapping(consumes = "application/json",produces = "application/json")
+    @ResponseStatus(HttpStatus.CREATED)
+    public BookLendingDto lendBook(@RequestBody CreateBookLendingDto createBookLendingDto){
+        logger.info("Attempting to lend book..");
+        return bookLendingService.save(createBookLendingDto);
+    }
+
 }

@@ -13,16 +13,19 @@ public class BookLending {
     private LocalDate returnDate;
 
     public BookLending(String isbn, String memberId) {
-        id = UUID.randomUUID().toString();
+        setId();
         this.isbn = isbn;
         this.memberId = memberId;
         setReturnDate();
     }
 
-    public void setReturnDate() {
+    private void setReturnDate() {
         this.returnDate = LocalDate.now().plusDays(DEFAULT_LENDING_PERIOD_IN_DAYS);
     }
 
+    private void setId(){
+        this.id = UUID.randomUUID().toString();
+    }
     public String getId() {
         return id;
     }
@@ -38,6 +41,7 @@ public class BookLending {
     public LocalDate getReturnDate() {
         return returnDate;
     }
+
 
 
 }
