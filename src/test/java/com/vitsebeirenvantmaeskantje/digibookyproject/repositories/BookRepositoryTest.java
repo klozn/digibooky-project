@@ -49,36 +49,4 @@ class BookRepositoryTest {
         Assertions.assertEquals(expected, result);
         Assertions.assertEquals(expected.getSummary(), result.getSummary());
     }
-
-    @DisplayName("use wildcard to find a book")
-    @Test
-    void whenLookingForABookUsingAWildCard_ThenReceiveABook() {
-        //WHEN
-        List<Book> result = bib.getBookByIsbnWildcard("123*", '*');
-        List<Book> expected = new ArrayList<>();
-        expected.add(bib.getBookByIsbn("123456"));
-
-        //THEN
-        Assertions.assertEquals(expected, result);
-    }
-
-    @DisplayName("Wildcard does not find a book")
-    @Test
-    void whenLookingForABookUsingAUselessWildCard_ThenReceiveNoBook() {
-        //WHEN
-        List<Book> result = bib.getBookByIsbnWildcard("7*", '*');
-
-        //THEN
-        Assertions.assertEquals(0, result.size());
-    }
-
-    @DisplayName("Wildcard finds multiple books")
-    @Test
-    void whenLookingForABookUsingAWildCard_ThenReceiveMultipleBooks() {
-        //WHEN
-        List<Book> result = bib.getBookByIsbnWildcard("*2*", '*');
-
-        //THEN
-        Assertions.assertEquals(2, result.size());
-    }
 }

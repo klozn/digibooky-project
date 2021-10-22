@@ -2,7 +2,6 @@ package com.vitsebeirenvantmaeskantje.digibookyproject.services;
 
 import com.vitsebeirenvantmaeskantje.digibookyproject.api.dto.BookDto;
 import com.vitsebeirenvantmaeskantje.digibookyproject.api.dto.mappers.BookDtoMapper;
-import com.vitsebeirenvantmaeskantje.digibookyproject.domain.Book;
 import com.vitsebeirenvantmaeskantje.digibookyproject.repositories.BookRepository;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
@@ -20,8 +19,8 @@ class BookServiceTest {
     @BeforeEach
     void setup() {
         bookService = new BookService(new BookDtoMapper(), new BookRepository());
-        book1 = new BookDto("123456", "test", "ABC", "DE");
-        book2 = new BookDto("222256", "test2", "Bart", "W");
+        book1 = new BookDto("123456", "de test", "ABC", "DE");
+        book2 = new BookDto("222256", "de grote afrekening", "Bart", "W");
     }
 
     @DisplayName("get booklist from bookrepo in form bookDto")
@@ -50,13 +49,63 @@ class BookServiceTest {
     @Test
     void whenAskingForABookByWildcardISBN_ThenGetABookDto() {
         //WHEN
-        List<BookDto> result = bookService.getBookByIsbnWildcard("123*",'*');
+        List<BookDto> result = bookService.getBookByIsbnWildcard("123*", '*');
         List<BookDto> expected = new ArrayList<>();
         expected.add(book1);
         //THEN
-        Assertions.assertEquals(expected,result);
+        Assertions.assertEquals(expected, result);
 
     }
 
+    @DisplayName("Wildcard ISBN does not find a book")
+    @Test
+    void whenLookingForABookUsingAUselessWildCard_ThenReceiveNoBook() {
+        //WHEN
+        List<BookDto> result = bookService.getBookByIsbnWildcard("7*", '*');
 
+        //THEN
+        Assertions.assertEquals(0, result.size());
+    }
+
+    @DisplayName("Wildcard ISBN finds multiple books")
+    @Test
+    void whenLookingForABookUsingAWildCard_ThenReceiveMultipleBooks() {
+        //WHEN
+        List<BookDto> result = bookService.getBookByIsbnWildcard("****5*", '*');
+
+        //THEN
+        Assertions.assertEquals(2, result.size());
+    }
+
+    @DisplayName("Get a book using a wildcard for the title")
+    @Test
+    void whenAskingForABookByWildcardTitle_ThenGetABookDto() {
+        //WHEN
+        List<BookDto> result = bookService.getBookByTitleWildcard("***test*", '*');
+        List<BookDto> expected = new ArrayList<>();
+        expected.add(book1);
+        //THEN
+        Assertions.assertEquals(expected, result);
+
+    }
+
+    @DisplayName("Wildcard title does not find a book")
+    @Test
+    void whenLookingForABookUsingAUselessTitleWildCard_ThenReceiveNoBook() {
+        //WHEN
+        List<BookDto> result = bookService.getBookByTitleWildcard("notfound*", '*');
+
+        //THEN
+        Assertions.assertEquals(0, result.size());
+    }
+
+    @DisplayName("Wildcard finds multiple books based on title")
+    @Test
+    void whenLookingForABookUsingATitleWildCard_ThenReceiveMultipleBooks() {
+        //WHEN
+        List<BookDto> result = bookService.getBookByTitleWildcard("de*", '*');
+        System.out.println(result.toString());
+        //THEN
+        Assertions.assertEquals(2, result.size());
+    }
 }
