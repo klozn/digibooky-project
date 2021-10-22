@@ -47,13 +47,13 @@ class BookDtoMapperTest {
     @Test
     void whenListBookDtoIsConvertedToBook_ThenReceivesListBook() {
         //GIVEN
-        BookDto bookDto = new BookDto("1", "test", "test", "test");
+        BookDto bookDto = new BookDto(VALID_ISBN, "test", "test", "test");
         List<BookDto> bookDtos = new ArrayList<>();
         bookDtos.add(bookDto);
 
         BookDtoMapper mapper = new BookDtoMapper();
 
-        Book book = new Book("1", "test", "test", "test");
+        Book book = new Book(VALID_ISBN, "test", "test", "test");
         List<Book> expected = new ArrayList<>();
         expected.add(book);
 
@@ -73,7 +73,7 @@ class BookDtoMapperTest {
         List<Book> books = new ArrayList<>();
         books.add(book);
 
-        BookDto bookDto = new BookDto("1", "test", "test", "test");
+        BookDto bookDto = new BookDto(VALID_ISBN, "test", "test", "test");
         List<BookDto> expected = new ArrayList<>();
         expected.add(bookDto);
 

@@ -12,10 +12,10 @@ public class Book {
     private boolean lent;
 
     public Book(String isbn, String title, String authorFirstname, String authorLastname) {
-        this.isbn = isbn;
-        this.title = title;
-        this.authorFirstname = authorFirstname;
-        this.authorLastname = authorLastname;
+        setIsbn(isbn);
+        setTitle(title);
+        setAuthorFirstname(authorFirstname);
+        setAuthorLastname(authorLastname);
     }
 
     public String getIsbn() {
@@ -46,12 +46,37 @@ public class Book {
         return lent;
     }
 
+    public void setIsbn(String isbn) {
+        if (!ISBNValidator.getInstance().isValid(isbn)) {
+            throw new IllegalArgumentException("Invalid isbn.");
+        }
+        this.isbn = isbn;
+    }
+
+    public void setTitle(String title) {
+        if (title == null || title.isBlank()) {
+            throw new IllegalArgumentException("The title can't be null or blank.");
+        }
+        this.title = title;
+    }
+
     public void setSummary(String summary) {
         this.summary = summary;
     }
 
     public String getBookAuthorFullName(){
         return authorFirstname + " " + authorLastname;
+    }
+
+    public void setAuthorFirstname(String authorFirstname) {
+        this.authorFirstname = authorFirstname;
+    }
+
+    private void setAuthorLastname(String authorLastname) {
+        if (authorLastname == null || authorLastname.isBlank()) {
+            throw new IllegalArgumentException("Author's lastname can't be null or blank.");
+        }
+        this.authorLastname = authorLastname;
     }
 
     @Override

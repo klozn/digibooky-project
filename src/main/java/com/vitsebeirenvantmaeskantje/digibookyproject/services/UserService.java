@@ -12,6 +12,7 @@ import com.vitsebeirenvantmaeskantje.digibookyproject.repositories.UserRepositor
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.util.Comparator;
 import java.util.List;
 
 import java.util.stream.Collectors;
@@ -61,6 +62,7 @@ public class UserService {
         return repository.getAll().stream()
                 .filter(u -> u.getRole() == User.Role.MEMBER)
                 .map(mapper::toDto)
+                .sorted(Comparator.comparing(UserDto::getLastName).thenComparing(UserDto::getFirstName))
                 .collect(Collectors.toList());
     }
 
@@ -68,6 +70,13 @@ public class UserService {
         User user = fetchUserIfExistElseThrowException(id);
         if (user.getRole() != User.Role.ADMIN) {
             throw new UnauthorizedUserException("No admin rights!");
+        }
+    }
+
+    protected void assertLibrarianId(String id) {
+        User user = fetchUserIfExistElseThrowException(id);
+        if (user.getRole() != User.Role.LIBRARIAN) {
+            throw new UnauthorizedUserException("No librarian rights!");
         }
     }
 

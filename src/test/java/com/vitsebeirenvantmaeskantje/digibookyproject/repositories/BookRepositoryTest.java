@@ -20,10 +20,9 @@ class BookRepositoryTest {
     @BeforeEach
     void setUp() {
         bookRepository = new BookRepository();
-        book1 = new Book("123456", "de test", "Tom", "De Kock");
-        book2 = new Book("222256", "de grote afrekening", "Bart", "Waterslaeghers");
-        book3 = new Book("698726", "de grote afrekening - deel 2", "Bart", "Waterslaeghers");
-
+        book1 = bookRepository.getBookByIsbn(BookRepository.ISBN_ONE);
+        book2 = bookRepository.getBookByIsbn(BookRepository.ISBN_TWO);
+        book3 = bookRepository.getBookByIsbn(BookRepository.ISBN_THREE);
     }
 
     @DisplayName("When the library has books and you ask them --> returns books")
@@ -44,7 +43,7 @@ class BookRepositoryTest {
     @Test
     void whenInspectingABook_ThenReceivesDetailsOfBook() {
         //WHEN
-        Book result = bookRepository.getBookByIsbn("123456");
+        Book result = bookRepository.getBookByIsbn(BookRepository.ISBN_ONE);
         result.setSummary("Dit is een test");
         Book expected = book1;
         expected.setSummary("Dit is een test");

@@ -2,6 +2,7 @@ package com.vitsebeirenvantmaeskantje.digibookyproject.services;
 
 import com.vitsebeirenvantmaeskantje.digibookyproject.api.dto.BookDto;
 import com.vitsebeirenvantmaeskantje.digibookyproject.api.dto.mappers.BookDtoMapper;
+import com.vitsebeirenvantmaeskantje.digibookyproject.domain.Book;
 import com.vitsebeirenvantmaeskantje.digibookyproject.repositories.BookRepository;
 import com.vitsebeirenvantmaeskantje.digibookyproject.services.utility.PatternMatcher;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -62,5 +63,12 @@ public class BookService {
         }
 
         return foundBooks;
+    }
+
+    public BookDto registerBook(BookDto bookDto, String id){
+        userService.assertLibrarianId(id);
+        bookRepository.save(new Book(bookDto.getIsbn(), bookDto.getTitle(), bookDto.getAuthorFirstname(),
+                bookDto.getAuthorLastname()));
+        return bookDto;
     }
 }

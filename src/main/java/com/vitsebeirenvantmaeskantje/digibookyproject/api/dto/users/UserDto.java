@@ -2,6 +2,8 @@ package com.vitsebeirenvantmaeskantje.digibookyproject.api.dto.users;
 
 import com.vitsebeirenvantmaeskantje.digibookyproject.domain.User;
 
+import java.util.Objects;
+
 public class UserDto {
     private final String id;
     private final String inss;
@@ -68,5 +70,16 @@ public class UserDto {
         return postalCode;
     }
 
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        UserDto userDto = (UserDto) o;
+        return Objects.equals(id, userDto.id) && Objects.equals(inss, userDto.inss);
+    }
 
+    @Override
+    public int hashCode() {
+        return Objects.hash(id, inss);
+    }
 }

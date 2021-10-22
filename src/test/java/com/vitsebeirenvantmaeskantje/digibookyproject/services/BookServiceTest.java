@@ -2,14 +2,18 @@ package com.vitsebeirenvantmaeskantje.digibookyproject.services;
 
 import com.vitsebeirenvantmaeskantje.digibookyproject.api.dto.BookDto;
 import com.vitsebeirenvantmaeskantje.digibookyproject.api.dto.mappers.BookDtoMapper;
+import com.vitsebeirenvantmaeskantje.digibookyproject.api.dto.mappers.UserMapper;
+import com.vitsebeirenvantmaeskantje.digibookyproject.api.dto.users.CreateLibrarianDto;
+import com.vitsebeirenvantmaeskantje.digibookyproject.domain.Book;
+import com.vitsebeirenvantmaeskantje.digibookyproject.domain.exceptions.UnauthorizedUserException;
 import com.vitsebeirenvantmaeskantje.digibookyproject.repositories.BookRepository;
-import org.junit.jupiter.api.Assertions;
-import org.junit.jupiter.api.BeforeEach;
-import org.junit.jupiter.api.DisplayName;
-import org.junit.jupiter.api.Test;
+import com.vitsebeirenvantmaeskantje.digibookyproject.repositories.UserRepository;
+import org.junit.jupiter.api.*;
 
 import java.util.ArrayList;
 import java.util.List;
+
+import static org.junit.jupiter.api.Assertions.assertThrows;
 
 class BookServiceTest {
     private BookService bookService;
@@ -33,7 +37,7 @@ class BookServiceTest {
 
         //THEN
         Assertions.assertEquals(3, results.size());
-        Assertions.assertEquals("123456", results.get(0).getIsbn());
+        Assertions.assertEquals(BookRepository.ISBN_ONE, results.get(0).getIsbn());
     }
 
 
@@ -43,7 +47,7 @@ class BookServiceTest {
     @Test
     void whenAskingForBookByIsbnInService_ThenGetBookDto() {
         //WHEN
-        BookDto result = bookService.getByIsbn("123456");
+        BookDto result = bookService.getByIsbn(BookRepository.ISBN_ONE);
 
         //THEN
         Assertions.assertEquals("Tom", result.getAuthorFirstname());
@@ -53,7 +57,7 @@ class BookServiceTest {
     @Test
     void whenAskingForABookByWildcardISBN_ThenGetABookDto() {
         //WHEN
-        List<BookDto> result = bookService.getBookByIsbnWildcard("123*");
+        List<BookDto> result = bookService.getBookByIsbnWildcard("06*");
         List<BookDto> expected = new ArrayList<>();
         expected.add(book1);
         //THEN
@@ -65,7 +69,7 @@ class BookServiceTest {
     @Test
     void whenLookingForABookUsingAUselessWildCard_ThenReceiveNoBook() {
         //WHEN
-        List<BookDto> result = bookService.getBookByIsbnWildcard("7*");
+        List<BookDto> result = bookService.getBookByIsbnWildcard("71111*");
 
         //THEN
         Assertions.assertEquals(0, result.size());
@@ -127,6 +131,37 @@ class BookServiceTest {
         //THEN
         Assertions.assertEquals(expected, result);
 
+    }
+
+    @DisplayName("Registering a new book")
+    @Nested
+    class RegisteringANewBook{
+
+        @DisplayName("When a librarian registers a new book, it works.")
+        @Test
+        void whenUserIsLibrarianRegisterANewBook_ThenNewBookIsAddedToTheLibrary(){
+            Assertions.assertDoesNotThrow(() -> bookService.registerBook(book1, LIBRARIAN_ID));
+            BookDto created = bookService.registerBook(book1, LIBRARIAN_ID);
+
+            Assertions.assertEquals(book1.getIsbn(), created.getIsbn());
+            Assertions.assertEquals(book1.getTitle(), created.getTitle());
+            Assertions.assertEquals(book1.getAuthorFirstname(), created.getAuthorFirstname());
+            Assertions.assertEquals(book1.getAuthorLastname(), created.getAuthorLastname());
+            Assertions.assertEquals(3,bookRepository.getBooks().size());
+
+        }
+        @DisplayName("When a member registers a new book, it throws UnauthorizedUserException.")
+        @Test
+        void whenUserIsMemberRegisterANewBook_ThenAnExceptionIsThrown() {
+            Assertions.assertThrows(UnauthorizedUserException.class, () -> bookService.registerBook(book1, MEMBER_ID));
+
+        }
+        @DisplayName("When an admin registers a new book, it throws UnauthorizedUserException.")
+        @Test
+        void whenUserIsAdminRegisterANewBook_ThenAnExceptionIsThrown() {
+            Assertions.assertThrows(UnauthorizedUserException.class, () -> bookService.registerBook(book1, ADMIN_ID));
+
+        }
     }
 
     @DisplayName("Wildcard author's full name does not find a book")

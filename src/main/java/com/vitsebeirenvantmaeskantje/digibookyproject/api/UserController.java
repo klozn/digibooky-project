@@ -51,10 +51,10 @@ public class UserController {
 
 
     //GETTERS
-    @GetMapping(produces = "application/json")
+    @GetMapping(path = "/{id}/members", produces = "application/json")
     @ResponseStatus(HttpStatus.OK)
-    public List<UserDto> getAllMembers(@RequestParam String userId){
+    public List<UserDto> getAllMembers(@PathVariable String id){
         logger.info("Gathering all members...");
-        return userService.getAllMembers(userId);
+        return userService.getAllMembers(id);
     }
 }
