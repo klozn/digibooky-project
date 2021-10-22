@@ -46,6 +46,20 @@ public class BookRepository {
         return foundByISBN.get();
     }
 
+    public boolean isBookLent(String isbn) {
+        return getBookByIsbn(isbn).isLent();
+    }
+
+    public boolean assertIsbnExists(String isbn) {
+        try {
+            getBookByIsbn(isbn);
+        } catch (IllegalArgumentException exception) {
+            return false;
+        }
+        return true;
+    }
+
+
     public Book setBookLentStatus(String isbn, boolean lendingStatus) {
         Book bookToSetLentStatus = getBookByIsbn(isbn);
         bookToSetLentStatus.setLent(lendingStatus);

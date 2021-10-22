@@ -14,7 +14,6 @@ import org.springframework.stereotype.Service;
 
 import java.util.Comparator;
 import java.util.List;
-
 import java.util.stream.Collectors;
 
 @Service
@@ -38,7 +37,7 @@ public class UserService {
         return mapper.toDto(member);
     }
 
-    public UserDto createNewAdmin(CreateAdminDto createAdminDto, String adminId){
+    public UserDto createNewAdmin(CreateAdminDto createAdminDto, String adminId) {
         assertAdminId(adminId);
         User admin = new User(createAdminDto.getInss(), createAdminDto.getFirstName(), createAdminDto.getLastName(),
                 createAdminDto.getMail(), createAdminDto.getCity(), createAdminDto.getStreet(),
@@ -47,7 +46,7 @@ public class UserService {
         return mapper.toDto(admin);
     }
 
-    public UserDto createNewLibrarian(CreateLibrarianDto createLibrarianDto, String adminId){
+    public UserDto createNewLibrarian(CreateLibrarianDto createLibrarianDto, String adminId) {
         assertAdminId(adminId);
         User librarian = new User(createLibrarianDto.getInss(), createLibrarianDto.getFirstName(), createLibrarianDto.getLastName(),
                 createLibrarianDto.getMail(), createLibrarianDto.getCity(), createLibrarianDto.getStreet(),
@@ -80,7 +79,15 @@ public class UserService {
         }
     }
 
-    protected User fetchUserIfExistElseThrowException(String id){
+    protected void assertMemberId(String id) {
+        try {
+            fetchUserIfExistElseThrowException(id);
+        } catch (UserNotFoundException exception) {
+            throw new UserNotFoundException(exception.getMessage());
+        }
+    }
+
+    protected User fetchUserIfExistElseThrowException(String id) {
         User user = repository.fetchUser(id);
         if (user == null) {
             throw new UserNotFoundException("User with id " + id + " not found.");

@@ -4,7 +4,6 @@ import com.vitsebeirenvantmaeskantje.digibookyproject.api.dto.booklendings.BookL
 import com.vitsebeirenvantmaeskantje.digibookyproject.api.dto.booklendings.CreateBookLendingDto;
 import com.vitsebeirenvantmaeskantje.digibookyproject.api.dto.mappers.BookLendingMapper;
 import com.vitsebeirenvantmaeskantje.digibookyproject.domain.BookLending;
-import com.vitsebeirenvantmaeskantje.digibookyproject.domain.exceptions.UserNotFoundException;
 import com.vitsebeirenvantmaeskantje.digibookyproject.repositories.BookLendingRepository;
 import com.vitsebeirenvantmaeskantje.digibookyproject.repositories.BookRepository;
 import com.vitsebeirenvantmaeskantje.digibookyproject.repositories.UserRepository;
@@ -34,15 +33,15 @@ public class BookLendingService {
     }
 
     public BookLendingDto save(CreateBookLendingDto bookLendingDto) {
-        if (bookRepository.getBookByIsbn(bookLendingDto.getIsbn()).isLent()) {
+        if (!bookRepository.assertIsbnExists(bookLendingDto.getIsbn())) {
+            throw new IllegalArgumentException("Book ISBN does not exist");
+        }
+
+        if (bookRepository.isBookLent(bookLendingDto.getIsbn())) {
             throw new IllegalArgumentException("Book is already lent");
         }
 
-        try {
-            userService.fetchUserIfExistElseThrowException(bookLendingDto.getMemberId());
-        } catch (UserNotFoundException exception) {
-            throw new UserNotFoundException("User not found" + exception.getMessage());
-        }
+        userService.assertMemberId(bookLendingDto.getMemberId());
 
         BookLending lentBook = new BookLending(bookLendingDto.getIsbn(), bookLendingDto.getMemberId());
         bookLendingRepository.save(lentBook);

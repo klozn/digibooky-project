@@ -20,8 +20,4 @@ public class BookLendingRepository {
         return lentBooks.put(bookLending.getId(), bookLending);
     }
 
-    public void setBookLentTrue(){
-
-    }
-
 }
