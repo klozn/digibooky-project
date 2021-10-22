@@ -15,12 +15,14 @@ class BookServiceTest {
     private BookService bookService;
     private BookDto book1;
     private BookDto book2;
+    private BookDto book3;
 
     @BeforeEach
     void setup() {
         bookService = new BookService(new BookDtoMapper(), new BookRepository());
-        book1 = new BookDto("123456", "de test", "ABC", "DE");
-        book2 = new BookDto("222256", "de grote afrekening", "Bart", "W");
+        book1 = new BookDto("123456", "de test", "Tom", "De Kock");
+        book2 = new BookDto("222256", "de grote afrekening", "Bart", "Waterslaeghers");
+        book3 = new BookDto("698726", "de grote afrekening - deel 2", "Bart", "Waterslaeghers");
     }
 
     @DisplayName("get booklist from bookrepo in form bookDto")
@@ -30,10 +32,12 @@ class BookServiceTest {
         List<BookDto> results = bookService.getAllBooks();
 
         //THEN
-        Assertions.assertEquals(2, results.size());
+        Assertions.assertEquals(3, results.size());
         Assertions.assertEquals("123456", results.get(0).getIsbn());
     }
 
+
+    //ISBN
 
     @DisplayName("Get a book by ISBN")
     @Test
@@ -42,7 +46,7 @@ class BookServiceTest {
         BookDto result = bookService.getByIsbn("123456");
 
         //THEN
-        Assertions.assertEquals("ABC", result.getAuthorFirstname());
+        Assertions.assertEquals("Tom", result.getAuthorFirstname());
     }
 
     @DisplayName("Get a book using a wildcard for the ISBN")
@@ -77,6 +81,8 @@ class BookServiceTest {
         Assertions.assertEquals(2, result.size());
     }
 
+    //TITLE
+
     @DisplayName("Get a book using a wildcard for the title")
     @Test
     void whenAskingForABookByWildcardTitle_ThenGetABookDto() {
@@ -106,7 +112,7 @@ class BookServiceTest {
         List<BookDto> result = bookService.getBookByTitleWildcard("de*", '*');
         System.out.println(result.toString());
         //THEN
-        Assertions.assertEquals(2, result.size());
+        Assertions.assertEquals(3, result.size());
     }
 
     //AUTHOR

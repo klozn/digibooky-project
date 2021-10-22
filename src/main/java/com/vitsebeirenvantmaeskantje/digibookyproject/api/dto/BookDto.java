@@ -54,6 +54,10 @@ public class BookDto {
         return lent;
     }
 
+    public String getBookAuthorFullName(){
+        return authorFirstname + " " + authorLastname;
+    }
+
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;

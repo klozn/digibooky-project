@@ -50,6 +50,10 @@ public class Book {
         this.summary = summary;
     }
 
+    public String getBookAuthorFullName(){
+        return authorFirstname + " " + authorLastname;
+    }
+
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;

@@ -50,7 +50,7 @@ public class BookController {
         return switch (searchType) {
             case "ISBN" -> bookService.getBookByIsbnWildcard(partialInput, wildcard);
             case "bookTitle" -> bookService.getBookByTitleWildcard(partialInput, wildcard);
-            //case "bookAuthor" -> bookService.getBookByAuthorWildcard(partialInput, wildcard);
+            case "bookAuthor" -> bookService.getBookByAuthorWildcard(partialInput, wildcard);
             default -> throw new IllegalArgumentException("Impossible search type.");
         };
 
