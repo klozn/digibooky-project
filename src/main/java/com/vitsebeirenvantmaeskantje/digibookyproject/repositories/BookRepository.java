@@ -38,13 +38,18 @@ public class BookRepository {
         return book;
     }
 
-
     public Book getBookByIsbn(String isbn) throws IllegalArgumentException {
         Optional<Book> foundByISBN = Optional.ofNullable(books.get(isbn));
         if (foundByISBN.isEmpty()) {
             throw new IllegalArgumentException("Book with ISBN " + isbn + " not found");
         }
         return foundByISBN.get();
+    }
+
+    public Book setBookLentStatus(String isbn, boolean lendingStatus) {
+        Book bookToSetLentStatus = getBookByIsbn(isbn);
+        bookToSetLentStatus.setLent(lendingStatus);
+        return bookToSetLentStatus;
     }
 
 }

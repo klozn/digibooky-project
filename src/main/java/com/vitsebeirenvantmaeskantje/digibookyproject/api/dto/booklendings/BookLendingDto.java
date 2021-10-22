@@ -1,4 +1,4 @@
-package com.vitsebeirenvantmaeskantje.digibookyproject.api.dto;
+package com.vitsebeirenvantmaeskantje.digibookyproject.api.dto.booklendings;
 
 import java.time.LocalDate;
 

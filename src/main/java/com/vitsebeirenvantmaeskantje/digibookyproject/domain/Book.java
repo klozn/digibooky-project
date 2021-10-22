@@ -81,6 +81,9 @@ public class Book {
         this.authorLastname = authorLastname;
     }
 
+    public void setLent(boolean lent) {
+        this.lent = lent;
+    }
 
     @Override
     public boolean equals(Object o) {

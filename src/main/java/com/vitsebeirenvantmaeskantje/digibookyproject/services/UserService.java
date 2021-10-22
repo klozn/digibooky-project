@@ -80,7 +80,7 @@ public class UserService {
         }
     }
 
-    private User fetchUserIfExistElseThrowException(String id){
+    protected User fetchUserIfExistElseThrowException(String id){
         User user = repository.fetchUser(id);
         if (user == null) {
             throw new UserNotFoundException("User with id " + id + " not found.");
