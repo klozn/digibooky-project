@@ -143,8 +143,10 @@ class BookServiceTest {
         @DisplayName("When a librarian registers a new book, it works.")
         @Test
         void whenUserIsLibrarianRegisterANewBook_ThenNewBookIsAddedToTheLibrary(){
-            Assertions.assertDoesNotThrow(() -> bookService.registerBook(book1, LIBRARIAN_ID));
-            BookDto created = bookService.registerBook(book1, LIBRARIAN_ID);
+            CreateBookDto createBookDto = new CreateBookDto(book1.getIsbn(),book1.getTitle(),book1.getAuthorFirstname(),
+                    book1.getAuthorLastname(),book1.getSummary());
+            Assertions.assertDoesNotThrow(() -> bookService.registerBook(createBookDto, LIBRARIAN_ID));
+            BookDto created = bookService.registerBook(createBookDto, LIBRARIAN_ID);
 
             Assertions.assertEquals(book1.getIsbn(), created.getIsbn());
             Assertions.assertEquals(book1.getTitle(), created.getTitle());

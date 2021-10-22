@@ -73,10 +73,11 @@ public class BookService {
         return foundBooks;
     }
 
-    public BookDto registerBook(BookDto bookDto, String id){
+    public BookDto registerBook(CreateBookDto createBookDto, String id){
         userService.assertLibrarianId(id);
-        bookRepository.save(new Book(bookDto.getIsbn(), bookDto.getTitle(), bookDto.getAuthorFirstname(),
-                bookDto.getAuthorLastname()));
-        return bookDto;
+        Book created = bookRepository.save(new Book(createBookDto.getIsbn(), createBookDto.getTitle(),
+                createBookDto.getAuthorFirstname(), createBookDto.getAuthorLastname()));
+        created.setSummary(createBookDto.getSummary());
+        return bookDtoMapper.toDto(created);
     }
 }
