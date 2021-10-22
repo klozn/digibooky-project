@@ -59,4 +59,12 @@ public class BookController {
         logger.info("Register new book with ISBN " + createBookDto.getIsbn() + " by userID " + userId + ".");
         return bookService.registerBook(createBookDto, userId);
     }
+
+    @PutMapping(consumes = "application/json", produces = "application/json", path = "/{isbn}/{userId}")
+    @ResponseStatus(HttpStatus.OK)
+    public BookDto updateBook(@RequestBody UpdateBookDto updateBookDto, @PathVariable String isbn, @PathVariable String userId) {
+        logger.info("Updating book with ISBN " + isbn + " by userID " + userId + ".");
+        return bookService.updateBook(isbn, updateBookDto, userId);
+    }
+
 }

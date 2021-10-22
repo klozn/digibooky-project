@@ -9,6 +9,7 @@ import com.vitsebeirenvantmaeskantje.digibookyproject.domain.exceptions.Unauthor
 import com.vitsebeirenvantmaeskantje.digibookyproject.repositories.BookRepository;
 import com.vitsebeirenvantmaeskantje.digibookyproject.repositories.UserRepository;
 import org.junit.jupiter.api.*;
+import org.springframework.util.Assert;
 
 import java.util.ArrayList;
 import java.util.List;

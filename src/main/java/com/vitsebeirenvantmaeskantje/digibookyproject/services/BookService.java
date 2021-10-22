@@ -2,8 +2,10 @@ package com.vitsebeirenvantmaeskantje.digibookyproject.services;
 
 import com.vitsebeirenvantmaeskantje.digibookyproject.api.dto.books.BookDto;
 import com.vitsebeirenvantmaeskantje.digibookyproject.api.dto.books.CreateBookDto;
+import com.vitsebeirenvantmaeskantje.digibookyproject.api.dto.books.UpdateBookDto;
 import com.vitsebeirenvantmaeskantje.digibookyproject.api.dto.mappers.BookDtoMapper;
 import com.vitsebeirenvantmaeskantje.digibookyproject.domain.Book;
+import com.vitsebeirenvantmaeskantje.digibookyproject.domain.exceptions.BookIsNotFoundException;
 import com.vitsebeirenvantmaeskantje.digibookyproject.repositories.BookRepository;
 import com.vitsebeirenvantmaeskantje.digibookyproject.services.utility.PatternMatcher;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -36,7 +38,7 @@ public class BookService {
     }
 
     public BookDto getByIsbn(String isbn) {
-        return bookDtoMapper.toDto(bookRepository.getBookByIsbn(isbn));
+        return bookDtoMapper.toDto(fetchBookByIsbnElseThrowException(isbn));
     }
 
     public List<BookDto> getBookByIsbnWildcard(String partialISBN) {
@@ -79,5 +81,24 @@ public class BookService {
                 createBookDto.getAuthorFirstname(), createBookDto.getAuthorLastname()));
         created.setSummary(createBookDto.getSummary());
         return bookDtoMapper.toDto(created);
+    }
+
+    public BookDto updateBook(String isbn, UpdateBookDto updateBookDto, String userId) {
+        userService.assertLibrarianId(userId);
+        Book toUpdate = fetchBookByIsbnElseThrowException(isbn);
+        toUpdate.setTitle(updateBookDto.getTitle());
+        toUpdate.setAuthorFirstname(updateBookDto.getAuthorFirstname());
+        toUpdate.setAuthorLastname(updateBookDto.getAuthorLastname());
+        toUpdate.setSummary(updateBookDto.getSummary());
+        bookRepository.save(toUpdate);
+        return bookDtoMapper.toDto(toUpdate);
+    }
+
+    private Book fetchBookByIsbnElseThrowException(String isbn) {
+        Book book = bookRepository.getBookByIsbn(isbn);
+        if (book == null) {
+            throw new BookIsNotFoundException("No book found with isbn: " + isbn);
+        }
+        return book;
     }
 }
