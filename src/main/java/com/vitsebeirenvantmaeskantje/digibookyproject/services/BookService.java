@@ -35,29 +35,29 @@ public class BookService {
         List<BookDto> foundBooks = new ArrayList<>();
 
         for (BookDto book : getAllBooks()) {
-            if (PatternMatcher.patternMatcher(partialISBN, book.getIsbn(), wildcard))
+            if (PatternMatcher.matches(partialISBN, book.getIsbn()))
                 foundBooks.add(book);
         }
 
         return foundBooks;
     }
 
-    public List<BookDto> getBookByTitleWildcard(String partialInput, Character wildcard) {
+    public List<BookDto> getBookByTitleWildcard(String partialInput) {
         List<BookDto> foundBooks = new ArrayList<>();
 
         for (BookDto book : getAllBooks()) {
-            if (PatternMatcher.patternMatcher(partialInput, book.getTitle(), wildcard))
+            if (PatternMatcher.matches(partialInput, book.getTitle()))
                 foundBooks.add(book);
         }
 
         return foundBooks;
     }
 
-    public List<BookDto> getBookByAuthorWildcard(String partialInput, Character wildcard) {
+    public List<BookDto> getBookByAuthorWildcard(String partialInput) {
         List<BookDto> foundBooks = new ArrayList<>();
 
         for (BookDto book : getAllBooks()) {
-            if (PatternMatcher.patternMatcher(partialInput, book.getBookAuthorFullName(), wildcard))
+            if (PatternMatcher.matches(partialInput, book.getBookAuthorFullName()))
                 foundBooks.add(book);
         }
 

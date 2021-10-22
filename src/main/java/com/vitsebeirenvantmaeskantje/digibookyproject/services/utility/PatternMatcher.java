@@ -1,35 +1,56 @@
 package com.vitsebeirenvantmaeskantje.digibookyproject.services.utility;
 
+import java.util.regex.Pattern;
+
 public class PatternMatcher {
-    public static boolean patternMatcher(String wildcardInput, String stringToCompareTo, Character wildcard) {
 
-        // If we reach at the end of both strings,
-        // we are done
-        if (wildcardInput.length() == 0 && stringToCompareTo.length() == 0)
-            return true;
+    /**
+     * Matches strings against glob like wildcard expressions where <code>?</code>
+     * matches any single character and <code>*</code> matches any number of any
+     * character. Multiple expressions can be separated with a colon (:). In this
+     * case the expression matches if at least one part matches.
+     */
 
-        // Make sure that the characters after '*'
-        // are present in second string.
-        // This function assumes that the first
-        // string will not contain two consecutive '*'
-        if (wildcardInput.length() > 1 && wildcardInput.charAt(0) == wildcard &&
-                stringToCompareTo.length() == 0)
-            return false;
-
-        // If the first string contains '*',
-        // or current characters of both strings match
-        if ((wildcardInput.length() > 1 && wildcardInput.charAt(0) == wildcard) ||
-                (wildcardInput.length() != 0 && stringToCompareTo.length() != 0 &&
-                        wildcardInput.charAt(0) == stringToCompareTo.charAt(0)))
-            return patternMatcher(wildcardInput.substring(1),
-                    stringToCompareTo.substring(1), wildcard);
-
-        // If there is *, then there are two possibilities
-        // a) We consider current character of second string
-        // b) We ignore current character of second string.
-        if (wildcardInput.length() > 0 && wildcardInput.charAt(0) == wildcard)
-            return patternMatcher(wildcardInput.substring(1), stringToCompareTo, wildcard) ||
-                    patternMatcher(wildcardInput, stringToCompareTo.substring(1), wildcard);
-        return false;
+    /**
+     * Creates a new matcher with the given expression.
+     *
+     * @param expression wildcard expressions
+     */
+    private static Pattern patternMatcher(final String expression) {
+        final String[] parts = expression.split("\\:");
+        final StringBuilder regex = new StringBuilder(expression.length() * 2);
+        boolean next = false;
+        for (final String part : parts) {
+            if (next) {
+                regex.append('|');
+            }
+            regex.append('(').append(toRegex(part)).append(')');
+            next = true;
+        }
+        return Pattern.compile(regex.toString());
     }
+
+    private static CharSequence toRegex(final String expression) {
+        final StringBuilder regex = new StringBuilder(expression.length() * 2);
+        for (final char c : expression.toCharArray()) {
+            switch (c) {
+                case '?' -> regex.append(".");
+                case '*' -> regex.append(".*");
+                default -> regex.append(Pattern.quote(String.valueOf(c)));
+            }
+        }
+        return regex;
+    }
+
+    /**
+     * Matches the given string against the expressions of this matcher.
+     *
+     * @param wildcardInput     string to test
+     * @param stringToCompareTo string to compare to
+     * @return <code>true</code>, if the expression matches
+     */
+    public static boolean matches(String wildcardInput, String stringToCompareTo) {
+        return patternMatcher(wildcardInput).matcher(stringToCompareTo).matches();
+    }
+
 }
