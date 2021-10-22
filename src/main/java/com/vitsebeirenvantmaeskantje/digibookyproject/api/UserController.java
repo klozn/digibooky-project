@@ -43,9 +43,9 @@ public class UserController {
 
     @PostMapping(path ="/librarians", consumes = "application/json", produces = "application/json")
     @ResponseStatus(HttpStatus.CREATED)
-    public UserDto createLibrarian(@RequestBody CreateLibrarianDto createLibrarianDto, @RequestParam String userId){
+    public UserDto createLibrarian(@RequestBody CreateLibrarianDto createLibrarianDto, @PathVariable String id){
         logger.info("Trying to create librarian...");
-        return userService.createNewLibrarian(createLibrarianDto, userId);
+        return userService.createNewLibrarian(createLibrarianDto, id);
     }
 
 
