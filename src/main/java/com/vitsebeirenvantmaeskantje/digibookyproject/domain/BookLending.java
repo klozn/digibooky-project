@@ -7,7 +7,7 @@ public class BookLending {
 
     private static final int DEFAULT_LENDING_PERIOD_IN_DAYS = 21;
 
-    private final String id;
+    private String id;
     private final String isbn;
     private final String memberId;
     private LocalDate returnDate;
