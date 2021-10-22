@@ -10,7 +10,8 @@ public class CreateLibrarianDto {
     private final String streetNumber;
     private final int postalCode;
 
-    public CreateLibrarianDto(String inss, String firstName, String lastName, String mail, String city, String street, String streetNumber, int postalCode) {
+    public CreateLibrarianDto(String inss, String firstName, String lastName, String mail, String city, String street,
+                              String streetNumber, int postalCode) {
         this.inss = inss;
         this.firstName = firstName;
         this.lastName = lastName;

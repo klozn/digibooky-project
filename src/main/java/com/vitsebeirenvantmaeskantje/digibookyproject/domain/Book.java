@@ -1,10 +1,12 @@
 package com.vitsebeirenvantmaeskantje.digibookyproject.domain;
 
+import org.apache.commons.validator.routines.ISBNValidator;
+
 import java.util.Objects;
 
 public class Book {
-    private final String isbn;
-    private final String title;
+    private String isbn;
+    private String title;
     private String authorFirstname;
     private String authorLastname;
     private String summary;

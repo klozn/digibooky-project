@@ -15,6 +15,10 @@ public class UserRepository {
     public UserRepository() {
         myUsers.put("1", new User("123456789", "Rob","Vanoudenhoven","robvanoudenhoven@telenet.be",
                 "Robland", null, null, 0, User.Role.ADMIN));
+        myUsers.put("2", new User("898425142", "Bob","Vanjongenhoven","robvanjongenhoven@telenet.be",
+                "Bobland", null, null, 0, User.Role.LIBRARIAN));
+        myUsers.put("3", new User("874987563", "Job","Vanjonenhoven","Jobvanjongenhoven@telenet.be",
+                "Jobland", null, null, 0, User.Role.MEMBER));
     }
 
     public User save(User user){

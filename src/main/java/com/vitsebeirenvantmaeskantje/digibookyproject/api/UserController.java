@@ -34,21 +34,19 @@ public class UserController {
         return userService.createNewMember(createMemberDto);
     }
 
-    @PostMapping(path = "/admins", consumes = "application/json", produces = "application/json")
+    @PostMapping(path = "/{id}/registerAdmin", consumes = "application/json", produces = "application/json")
     @ResponseStatus(HttpStatus.CREATED)
-    public UserDto createAdmin(@RequestBody CreateAdminDto createAdminDto, @RequestParam String userId){
+    public UserDto createAdmin(@RequestBody CreateAdminDto createAdminDto, @PathVariable String id){
         logger.info("Trying to create admin...");
-        return userService.createNewAdmin(createAdminDto, userId);
+        return userService.createNewAdmin(createAdminDto, id);
     }
 
-    @PostMapping(path ="/librarians", consumes = "application/json", produces = "application/json")
+    @PostMapping(path ="/{id}/registerLibrarian", consumes = "application/json", produces = "application/json")
     @ResponseStatus(HttpStatus.CREATED)
     public UserDto createLibrarian(@RequestBody CreateLibrarianDto createLibrarianDto, @PathVariable String id){
         logger.info("Trying to create librarian...");
         return userService.createNewLibrarian(createLibrarianDto, id);
     }
-
-
 
     //GETTERS
     @GetMapping(path = "/{id}/members", produces = "application/json")

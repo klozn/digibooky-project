@@ -8,23 +8,30 @@ import com.vitsebeirenvantmaeskantje.digibookyproject.services.utility.PatternMa
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.util.Comparator;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.stream.Collectors;
 
 @Service
 public class BookService {
 
     private final BookDtoMapper bookDtoMapper;
     private final BookRepository bookRepository;
+    private final UserService userService;
 
     @Autowired
-    public BookService(BookDtoMapper bookDtoMapper, BookRepository bookRepository) {
+    public BookService(BookDtoMapper bookDtoMapper, BookRepository bookRepository, UserService userService) {
         this.bookDtoMapper = bookDtoMapper;
         this.bookRepository = bookRepository;
+        this.userService = userService;
     }
 
     public List<BookDto> getAllBooks() {
-        return bookDtoMapper.toDto(bookRepository.getBooks());
+        return bookRepository.getBooks().stream()
+                .sorted(Comparator.comparing(Book::getAuthorLastname).thenComparing(Book::getAuthorFirstname))
+                .map(bookDtoMapper::toDTO)
+                .collect(Collectors.toList());
     }
 
     public BookDto getByIsbn(String isbn) {

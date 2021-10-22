@@ -3,8 +3,6 @@ package com.vitsebeirenvantmaeskantje.digibookyproject.services;
 import com.vitsebeirenvantmaeskantje.digibookyproject.api.dto.BookDto;
 import com.vitsebeirenvantmaeskantje.digibookyproject.api.dto.mappers.BookDtoMapper;
 import com.vitsebeirenvantmaeskantje.digibookyproject.api.dto.mappers.UserMapper;
-import com.vitsebeirenvantmaeskantje.digibookyproject.api.dto.users.CreateLibrarianDto;
-import com.vitsebeirenvantmaeskantje.digibookyproject.domain.Book;
 import com.vitsebeirenvantmaeskantje.digibookyproject.domain.exceptions.UnauthorizedUserException;
 import com.vitsebeirenvantmaeskantje.digibookyproject.repositories.BookRepository;
 import com.vitsebeirenvantmaeskantje.digibookyproject.repositories.UserRepository;
@@ -13,20 +11,24 @@ import org.junit.jupiter.api.*;
 import java.util.ArrayList;
 import java.util.List;
 
-import static org.junit.jupiter.api.Assertions.assertThrows;
-
 class BookServiceTest {
+    private final static String ADMIN_ID = "1";
+    private final static String LIBRARIAN_ID = "2";
+    private final static String MEMBER_ID = "3";
     private BookService bookService;
+    private BookRepository bookRepository;
     private BookDto book1;
     private BookDto book2;
     private BookDto book3;
 
     @BeforeEach
     void setup() {
-        bookService = new BookService(new BookDtoMapper(), new BookRepository());
-        book1 = new BookDto("123456", "de test", "Tom", "De Kock");
-        book2 = new BookDto("222256", "de grote afrekening", "Bart", "Waterslaeghers");
-        book3 = new BookDto("698726", "de grote afrekening - deel 2", "Bart", "Waterslaeghers");
+        book1 = new BookDto(BookRepository.ISBN_ONE, "de test", "Tom", "De Kock");
+        book2 = new BookDto(BookRepository.ISBN_TWO, "de grote afrekening", "Bart", "Waterslaeghers");
+        book3 = new BookDto(BookRepository.ISBN_THREE, "de grote afrekening - deel 2", "Bart", "Waterslaeghers");
+        bookRepository = new BookRepository();
+        bookService = new BookService(new BookDtoMapper(), bookRepository, new UserService(new UserRepository(), new UserMapper()));
+
     }
 
     @DisplayName("get booklist from bookrepo in form bookDto")
@@ -59,7 +61,7 @@ class BookServiceTest {
         //WHEN
         List<BookDto> result = bookService.getBookByIsbnWildcard("06*");
         List<BookDto> expected = new ArrayList<>();
-        expected.add(book1);
+        expected.add(bookService.getByIsbn(BookRepository.ISBN_ONE));
         //THEN
         Assertions.assertEquals(expected, result);
 

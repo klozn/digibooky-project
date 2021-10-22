@@ -8,13 +8,16 @@ import java.util.*;
 @Repository
 public class BookRepository {
 
+    public final static String ISBN_ONE = "0685374599";
+    public final static String ISBN_TWO = "0305293222";
+    public final static String ISBN_THREE = "0920401961";
     private final Map<String, Book> books = new HashMap<>();
 
     public BookRepository() {
 
-        Book book1 = new Book("123456", "de test", "Tom", "De Kock");
-        Book book2 = new Book("222256", "de grote afrekening", "Bart", "Waterslaeghers");
-        Book book3 = new Book("698726", "de grote afrekening - deel 2", "Bart", "Waterslaeghers");
+        Book book1 = new Book(ISBN_ONE, "de test", "Tom", "De Kock");
+        Book book2 = new Book(ISBN_TWO, "de grote afrekening", "Bart", "Waterslaeghers");
+        Book book3 = new Book(ISBN_THREE, "de grote afrekening - deel 2", "Bart", "Waterslaeghers");
 
         book1.setSummary("blablablabla");
         book2.setSummary("blablablabla");
@@ -28,6 +31,11 @@ public class BookRepository {
 
     public List<Book> getBooks() {
         return new ArrayList<>(books.values());
+    }
+
+    public Book save(Book book) {
+        books.put(book.getIsbn(), book);
+        return book;
     }
 
 

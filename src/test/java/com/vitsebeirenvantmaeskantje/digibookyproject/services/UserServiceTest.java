@@ -15,6 +15,7 @@ import org.junit.jupiter.api.Nested;
 import java.util.List;
 
 import static org.junit.jupiter.api.Assertions.*;
+import static org.assertj.core.api.Assertions.*;
 
 
 @DisplayName("User test")
@@ -35,6 +36,7 @@ class UserServiceTest {
         assertEquals("Harlem", created.getCity());
     }
 
+
     @Test
     void ifUserIsNotAdmin_WhenGettingMembers_ThrowException() {
         UserDto member = userService.createNewMember(new CreateMemberDto("1324564877", null, "From the block",
@@ -49,25 +51,40 @@ class UserServiceTest {
                 "bobby.fromdablock@test.be", "Harlem", null, null, 0));
 
         List<UserDto> members = userService.getAllMembers(ADMIN_ID);
-
-        assertEquals(member.getId(), members.get(0).getId());
+        assertThat(members).contains(member);
     }
 
-    @Test
-    void ifUserIsNotAdmin_whenCreateAdmin_thenThrowException() {
-        UserDto member = userService.createNewMember(new CreateMemberDto("1324564877", null, "From the block",
-                "bobby.fromdablock@test.be", "Harlem", null, null, 0));
-        assertThrows(UnauthorizedUserException.class, () ->
-                userService.createNewAdmin(new CreateAdminDto("874654", null, "From the block",
-                        "bobby.fromdablock@test.be", "Harlem", null, null, 0), member.getId()));
-    }
+    @Nested
+    @DisplayName("create admin tests")
+    class RegisterAdmin {
+        @Test
+        @DisplayName("Member can't register admin")
+        void ifUserIsMember_whenCreateAdmin_thenThrowException() {
+            UserDto member = userService.createNewMember(new CreateMemberDto("1324564877", null, "From the block",
+                    "bobby.fromdablock@test.be", "Harlem", null, null, 0));
+            assertThrows(UnauthorizedUserException.class, () ->
+                    userService.createNewAdmin(new CreateAdminDto("874654", null, "From the block",
+                            "bobby.fromdablock@test.be", "Harlem", null, null, 0), member.getId()));
+        }
 
-    @Test
-    void ifUserIsAdmin_whenCreateAdmin_returnsNewAdmin() {
-        UserDto admin = userService.createNewAdmin(new CreateAdminDto("1324564877", null, "From the block",
-                "bobby.fromdablock@test.be", "Harlem", null, null, 0), ADMIN_ID);
+        @Test
+        @DisplayName("Librarian can't register admin")
+        void ifUserIsLibrarian_whenCreateAdmin_thenThrowException() {
+            UserDto librarian = userService.createNewLibrarian(new CreateLibrarianDto("1324564877", null, "From the block",
+                    "bobby.fromdablock@test.be", "Harlem", null, null, 0), ADMIN_ID);
+            assertThrows(UnauthorizedUserException.class, () ->
+                    userService.createNewAdmin(new CreateAdminDto("874654", null, "From the block",
+                            "bobby.fromdablock@test.be", "Harlem", null, null, 0), librarian.getId()));
+        }
 
-        assertSame(admin.getRole(), User.Role.ADMIN);
+        @Test
+        @DisplayName("Admin can register admin")
+        void ifUserIsAdmin_whenCreateAdmin_returnsNewAdmin() {
+            UserDto admin = userService.createNewAdmin(new CreateAdminDto("1324564877", null, "From the block",
+                    "bobby.fromdablock@test.be", "Harlem", null, null, 0), ADMIN_ID);
+
+            assertSame(admin.getRole(), User.Role.ADMIN);
+        }
     }
 
 

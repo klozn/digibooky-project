@@ -2,6 +2,7 @@ package com.vitsebeirenvantmaeskantje.digibookyproject.api.dto.mappers;
 
 import com.vitsebeirenvantmaeskantje.digibookyproject.api.dto.BookDto;
 import com.vitsebeirenvantmaeskantje.digibookyproject.domain.Book;
+import com.vitsebeirenvantmaeskantje.digibookyproject.repositories.BookRepository;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
@@ -10,18 +11,18 @@ import java.util.ArrayList;
 import java.util.List;
 
 class BookDtoMapperTest {
+    private final static String VALID_ISBN = "0205080057";
 
     @DisplayName("BookDto to Book")
     @Test
     void whenBookDtoIsConvertedToBook_ThenReceivesBook() {
         //GIVEN
-        BookDto bookDto = new BookDto("1", "test", "test", "test");
+        BookDto bookDto = new BookDto(VALID_ISBN, "test", "test", "test");
         BookDtoMapper mapper = new BookDtoMapper();
-        Book expected = new Book("1", "test", "test", "test");
+        Book expected = new Book(VALID_ISBN, "test", "test", "test");
 
         //WHEN
         Book result = mapper.toEntity(bookDto);
-
 
         //THEN
         Assertions.assertEquals(expected, result);
@@ -31,9 +32,9 @@ class BookDtoMapperTest {
     @Test
     void whenBookIsConvertedToBook_ThenReceivesBook() {
         //GIVEN
-        Book book = new Book("1", "test", "test", "test");
+        Book book = new Book(VALID_ISBN, "test", "test", "test");
         BookDtoMapper mapper = new BookDtoMapper();
-        BookDto expected = new BookDto("1", "test", "test", "test");
+        BookDto expected = new BookDto(VALID_ISBN, "test", "test", "test");
 
         //WHEN
         BookDto result = mapper.toDTO(book);
@@ -69,7 +70,7 @@ class BookDtoMapperTest {
     @Test
     void whenListBookIsConvertedToBook_ThenReceivesListBookDto() {
         //GIVEN
-        Book book = new Book("1", "test", "test", "test");
+        Book book = new Book(VALID_ISBN, "test", "test", "test");
         List<Book> books = new ArrayList<>();
         books.add(book);
 

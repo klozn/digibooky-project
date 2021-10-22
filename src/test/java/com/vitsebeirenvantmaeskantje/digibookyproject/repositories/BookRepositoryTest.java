@@ -6,8 +6,9 @@ import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 
-import java.util.ArrayList;
 import java.util.List;
+
+import static org.assertj.core.api.Assertions.*;
 
 
 class BookRepositoryTest {
@@ -29,14 +30,10 @@ class BookRepositoryTest {
     @Test
     void whenGettingAllBooks_ThenReceiveBooks() {
         //WHEN
-        List<Book> boeken = bookRepository.getBooks();
-        List<Book> results = new ArrayList<>();
-        results.add(book1);
-        results.add(book3);
-        results.add(book2);
+        List<Book> books = bookRepository.getBooks();
 
         //THEN
-        Assertions.assertEquals(results, boeken);
+        assertThat(books).containsExactlyInAnyOrder(book1, book2, book3);
     }
 
     @DisplayName("View details of book")
