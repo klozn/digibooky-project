@@ -15,12 +15,15 @@ class BookRepositoryTest {
     private BookRepository bookRepository;
     private Book book1;
     private Book book2;
+    private Book book3;
 
     @BeforeEach
     void setUp() {
         bookRepository = new BookRepository();
-        book1 = new Book("123456", "test", "ABC", "DE");
-        book2 = new Book("222256", "test2", "Bart", "W");
+        book1 = new Book("123456", "de test", "Tom", "De Kock");
+        book2 = new Book("222256", "de grote afrekening", "Bart", "Waterslaeghers");
+        book3 = new Book("698726", "de grote afrekening - deel 2", "Bart", "Waterslaeghers");
+
     }
 
     @DisplayName("When the library has books and you ask them --> returns books")
@@ -30,6 +33,7 @@ class BookRepositoryTest {
         List<Book> boeken = bookRepository.getBooks();
         List<Book> results = new ArrayList<>();
         results.add(book1);
+        results.add(book3);
         results.add(book2);
 
         //THEN
