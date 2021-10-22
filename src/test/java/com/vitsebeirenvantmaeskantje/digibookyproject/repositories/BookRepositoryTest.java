@@ -12,13 +12,13 @@ import java.util.List;
 
 class BookRepositoryTest {
 
-    private BookRepository bib;
+    private BookRepository bookRepository;
     private Book book1;
     private Book book2;
 
     @BeforeEach
     void setUp() {
-        bib = new BookRepository();
+        bookRepository = new BookRepository();
         book1 = new Book("123456", "test", "ABC", "DE");
         book2 = new Book("222256", "test2", "Bart", "W");
     }
@@ -27,7 +27,7 @@ class BookRepositoryTest {
     @Test
     void whenGettingAllBooks_ThenReceiveBooks() {
         //WHEN
-        List<Book> boeken = bib.getBooks();
+        List<Book> boeken = bookRepository.getBooks();
         List<Book> results = new ArrayList<>();
         results.add(book1);
         results.add(book2);
@@ -40,7 +40,7 @@ class BookRepositoryTest {
     @Test
     void whenInspectingABook_ThenReceivesDetailsOfBook() {
         //WHEN
-        Book result = bib.getBookByIsbn("123456");
+        Book result = bookRepository.getBookByIsbn("123456");
         result.setSummary("Dit is een test");
         Book expected = book1;
         expected.setSummary("Dit is een test");

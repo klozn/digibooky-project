@@ -38,5 +38,22 @@ public class BookController {
         return bookService.getByIsbn(ISBN);
     }
 
-  //  wildcardsearch nog af te werken
+    @GetMapping(produces = "application/json", path = "/search/{searchType}/{partialInput}/{wildcard}")
+    @ResponseStatus(HttpStatus.OK)
+    public List<BookDto> getBookByBySearchTypeWithWildCard(@PathVariable("searchType") String searchType,
+                                                           @PathVariable("partialInput") String partialInput,
+                                                           @PathVariable("wildcard") Character wildcard) {
+
+        logger.info("Searching for book via " + searchType + " with search query " + partialInput
+                + " and wildcard character " + wildcard);
+
+        return switch (searchType) {
+            case "ISBN" -> bookService.getBookByIsbnWildcard(partialInput, wildcard);
+            case "bookTitle" -> bookService.getBookByTitleWildcard(partialInput, wildcard);
+            //case "bookAuthor" -> bookService.getBookByAuthorWildcard(partialInput, wildcard);
+            default -> throw new IllegalArgumentException("Impossible search type.");
+        };
+
+    }
+
 }
