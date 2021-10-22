@@ -1,27 +1,21 @@
-package com.vitsebeirenvantmaeskantje.digibookyproject.domain;
+package com.vitsebeirenvantmaeskantje.digibookyproject.api.dto;
 
 import java.time.LocalDate;
-import java.util.UUID;
 
-public class BookLending {
-
-    private static final int DEFAULT_LENDING_PERIOD_IN_DAYS = 21;
+public class BookLendingDto {
 
     private final String id;
     private final String isbn;
     private final String memberId;
     private LocalDate returnDate;
 
-    public BookLending(String isbn, String memberId) {
-        id = UUID.randomUUID().toString();
+    public BookLendingDto(String id, String isbn, String memberId, LocalDate returnDate) {
+        this.id = id;
         this.isbn = isbn;
         this.memberId = memberId;
-        setReturnDate();
+        this.returnDate = returnDate;
     }
 
-    public void setReturnDate() {
-        this.returnDate = LocalDate.now().plusDays(DEFAULT_LENDING_PERIOD_IN_DAYS);
-    }
 
     public String getId() {
         return id;
@@ -39,5 +33,7 @@ public class BookLending {
         return returnDate;
     }
 
-
+    public void setReturnDate(LocalDate returnDate) {
+        this.returnDate = returnDate;
+    }
 }
