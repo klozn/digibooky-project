@@ -39,6 +39,7 @@ public class BookService {
                 .collect(Collectors.toList());
     }
 
+
     public BookDto getByIsbn(String isbn) {
         return bookDtoMapper.toDto(fetchBookByIsbnElseThrowException(isbn));
     }

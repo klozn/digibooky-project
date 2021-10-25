@@ -75,15 +75,15 @@ public class BookLendingService {
                 .findAny().orElse(null)).getMemberId();
     }
 
-    public  BookLendingDto returnBook(String lendingID){
-        if(!isTrueLendingId(lendingID)){
+    public BookLendingDto returnBook(String lendingID) {
+        if (!isTrueLendingId(lendingID)) {
             throw new IllegalArgumentException("Lent book's ID not found.");
         }
-        if(!isReturnedInTime(lendingID)){
+        if (!isReturnedInTime(lendingID)) {
             System.out.println("Book is overdue!");
         }
         BookLending bookLending = bookLendingRepository.getBookLending(lendingID);
-        bookService.setBookLentStatus(bookLending.getIsbn(),false);
+        bookService.setBookLentStatus(bookLending.getIsbn(), false);
         bookLendingRepository.returnBook(bookLending);
 
         return bookLendingMapper.toDto(bookLending);
@@ -101,11 +101,10 @@ public class BookLendingService {
         return bookLending.getReturnDate().isAfter(CURRENT_DATE);
     }
 
-    public boolean isTrueLendingId(String lendingID){
+    public boolean isTrueLendingId(String lendingID) {
         return bookLendingRepository.getLentBooks().stream()
                 .anyMatch(book -> book.getId().equals(lendingID));
     }
-    
-    
+
 
 }

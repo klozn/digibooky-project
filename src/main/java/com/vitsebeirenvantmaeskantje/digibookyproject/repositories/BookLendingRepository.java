@@ -26,6 +26,7 @@ public class BookLendingRepository {
 
     public void returnBook(BookLending bookLending){
         bookLending.setReturned(true);
+        lentBooks.remove(bookLending.getId());
     }
 
 

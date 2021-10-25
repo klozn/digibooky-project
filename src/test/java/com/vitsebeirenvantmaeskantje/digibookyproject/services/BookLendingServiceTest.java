@@ -6,6 +6,7 @@ import com.vitsebeirenvantmaeskantje.digibookyproject.api.dto.books.BookDto;
 import com.vitsebeirenvantmaeskantje.digibookyproject.api.dto.mappers.BookDtoMapper;
 import com.vitsebeirenvantmaeskantje.digibookyproject.api.dto.mappers.BookLendingMapper;
 import com.vitsebeirenvantmaeskantje.digibookyproject.api.dto.mappers.UserMapper;
+import com.vitsebeirenvantmaeskantje.digibookyproject.domain.BookLending;
 import com.vitsebeirenvantmaeskantje.digibookyproject.domain.exceptions.UserNotFoundException;
 import com.vitsebeirenvantmaeskantje.digibookyproject.repositories.BookLendingRepository;
 import com.vitsebeirenvantmaeskantje.digibookyproject.repositories.BookRepository;
@@ -13,15 +14,25 @@ import com.vitsebeirenvantmaeskantje.digibookyproject.repositories.UserRepositor
 import org.junit.jupiter.api.*;
 
 import java.time.LocalDate;
+import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
+
 
 import static org.junit.jupiter.api.Assertions.assertThrows;
 
 class BookLendingServiceTest {
 
+    private final static String ADMIN_ID = "1";
+    private final static String LIBRARIAN_ID = "2";
+    private final static String MEMBER_ID = "3";
     private static final String ISBN_ONE = BookRepository.ISBN_ONE;
+    private static final String ISBN_TWO = BookRepository.ISBN_TWO;
+    private static final String ISBN_THREE = BookRepository.ISBN_THREE;
 
     private BookLendingService bookLendingService;
+    private BookLendingRepository bookLendingRepository;
+    private BookService bookService;
 
     private CreateBookLendingDto validDTO;
     private CreateBookLendingDto invalidISBNDTO;
@@ -30,10 +41,12 @@ class BookLendingServiceTest {
 
     @BeforeEach
     void setup() {
+        bookLendingRepository = new BookLendingRepository();
+        bookService = new BookService(new BookDtoMapper(), new BookRepository(),
+                new UserService(new UserRepository(), new UserMapper()));
         bookLendingService = new BookLendingService(new BookLendingMapper(),
-                new BookLendingRepository(), new UserService(new UserRepository(), new UserMapper()),
-                new BookService(new BookDtoMapper(), new BookRepository(),
-                        new UserService(new UserRepository(), new UserMapper())));
+                bookLendingRepository, new UserService(new UserRepository(), new UserMapper()),bookService
+                );
 
         validDTO = new CreateBookLendingDto(ISBN_ONE, "1");
         invalidISBNDTO = new CreateBookLendingDto("111", "1");
@@ -147,6 +160,35 @@ class BookLendingServiceTest {
 
             //THEN
             assertThrows(IllegalArgumentException.class, () -> bookLendingService.returnBook(lendingId));
+        }
+    }
+
+    @Nested
+    @DisplayName("Overdue Books")
+    class OverdueBooks {
+
+        @DisplayName("librarian get list of overdue books")
+        @Test
+        void whenLibrarianAskForListOfOverdueBooks_ThenHeGetsAListOfOverdueBooks() {
+
+            //GIVEN
+            BookLending lentBook = new BookLending(ISBN_ONE,"1",LocalDate.of(2020,10,10));
+            BookLending lentBook2 = new BookLending(ISBN_TWO,"1");
+            BookLending lentBook3 = new BookLending(ISBN_THREE,"1");
+
+            bookLendingRepository.save(lentBook);
+            bookLendingRepository.save(lentBook2);
+            bookLendingRepository.save(lentBook3);
+
+
+            //WHEN
+            List<BookDto> lentBooks = bookLendingService.getLentBooksByMemberId("1",LIBRARIAN_ID);
+            List<BookDto> overdueBooks = bookLendingService.getOverdueBooks(LIBRARIAN_ID);
+            //THEN
+            Assertions.assertEquals(3,lentBooks.size());
+            Assertions.assertEquals(1, overdueBooks.size());
+            Assertions.assertEquals(overdueBooks.get(0), bookService.getByIsbn(lentBook.getIsbn()));
+
         }
     }
 

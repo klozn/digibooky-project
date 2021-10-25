@@ -56,4 +56,5 @@ public class BookLending {
     public void setReturned(boolean returned) {
         this.returned = returned;
     }
+
 }
