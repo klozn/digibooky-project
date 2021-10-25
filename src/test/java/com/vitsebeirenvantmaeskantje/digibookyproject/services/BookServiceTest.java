@@ -5,6 +5,8 @@ import com.vitsebeirenvantmaeskantje.digibookyproject.api.dto.books.CreateBookDt
 import com.vitsebeirenvantmaeskantje.digibookyproject.api.dto.books.UpdateBookDto;
 import com.vitsebeirenvantmaeskantje.digibookyproject.api.dto.mappers.BookDtoMapper;
 import com.vitsebeirenvantmaeskantje.digibookyproject.api.dto.mappers.UserMapper;
+import com.vitsebeirenvantmaeskantje.digibookyproject.domain.Book;
+import com.vitsebeirenvantmaeskantje.digibookyproject.domain.exceptions.BookIsDeletedException;
 import com.vitsebeirenvantmaeskantje.digibookyproject.domain.exceptions.UnauthorizedUserException;
 import com.vitsebeirenvantmaeskantje.digibookyproject.repositories.BookRepository;
 import com.vitsebeirenvantmaeskantje.digibookyproject.repositories.UserRepository;
@@ -45,8 +47,6 @@ class BookServiceTest {
         Assertions.assertEquals(BookRepository.ISBN_ONE, results.get(0).getIsbn());
     }
 
-
-    //ISBN
 
     @DisplayName("Get a book by ISBN")
     @Test
@@ -207,5 +207,31 @@ class BookServiceTest {
             Assertions.assertDoesNotThrow(() -> bookService.updateBook(book1.getIsbn(),updateBookDto,LIBRARIAN_ID));
             Assertions.assertEquals("new title", bookRepository.getBookByIsbn(book1.getIsbn()).getTitle());
         }
+    }
+
+    @DisplayName("librarian deleting a book")
+    @Test
+    void deleteBook_whenUserIsLibrarian_thenBookIsDeleted() {
+        BookDto deletedBook = bookService.deleteByIsbn(BookRepository.ISBN_ONE, LIBRARIAN_ID);
+
+        Assertions.assertFalse(bookService.getAllBooks().contains(deletedBook));
+        Assertions.assertTrue(deletedBook.isDeleted());
+    }
+
+    @DisplayName("admin deleting a book throws exception")
+    @Test
+    void deleteBook_whenUserIsAdmin_thenThrowUnauthorizedUserException() {
+        Assertions.assertThrows(UnauthorizedUserException.class,
+                () -> bookService.deleteByIsbn(BookRepository.ISBN_ONE, ADMIN_ID));
+
+    }
+
+    @DisplayName("get book from repo that is deleted throws exception")
+    @Test
+    void getBookByISBN_whenBookIsDeleted_throwsException() {
+        bookService.deleteByIsbn(BookRepository.ISBN_ONE, LIBRARIAN_ID);
+        Assertions.assertThrows(BookIsDeletedException.class, () -> bookService.getByIsbn(BookRepository.ISBN_ONE));
+        Assertions.assertDoesNotThrow(() -> bookService.getBookByTitleWildcard("test"));
+        Assertions.assertDoesNotThrow(() -> bookService.getBookByAuthorWildcard("kock"));
     }
 }

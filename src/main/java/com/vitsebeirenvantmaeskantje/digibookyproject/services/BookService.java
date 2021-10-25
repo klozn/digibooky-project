@@ -5,6 +5,7 @@ import com.vitsebeirenvantmaeskantje.digibookyproject.api.dto.books.CreateBookDt
 import com.vitsebeirenvantmaeskantje.digibookyproject.api.dto.books.UpdateBookDto;
 import com.vitsebeirenvantmaeskantje.digibookyproject.api.dto.mappers.BookDtoMapper;
 import com.vitsebeirenvantmaeskantje.digibookyproject.domain.Book;
+import com.vitsebeirenvantmaeskantje.digibookyproject.domain.exceptions.BookIsDeletedException;
 import com.vitsebeirenvantmaeskantje.digibookyproject.domain.exceptions.BookIsNotFoundException;
 import com.vitsebeirenvantmaeskantje.digibookyproject.repositories.BookRepository;
 import com.vitsebeirenvantmaeskantje.digibookyproject.services.utility.PatternMatcher;
@@ -32,6 +33,7 @@ public class BookService {
 
     public List<BookDto> getAllBooks() {
         return bookRepository.getBooks().stream()
+                .filter(book -> !book.isDeleted())
                 .sorted(Comparator.comparing(Book::getAuthorLastname).thenComparing(Book::getAuthorFirstname))
                 .map(bookDtoMapper::toDto)
                 .collect(Collectors.toList());
@@ -46,7 +48,7 @@ public class BookService {
         List<BookDto> foundBooks = new ArrayList<>();
 
         for (BookDto book : getAllBooks()) {
-            if (PatternMatcher.matches(partialISBN, book.getIsbn()))
+            if (!book.isDeleted() && PatternMatcher.matches(partialISBN, book.getIsbn()))
                 foundBooks.add(book);
         }
 
@@ -57,7 +59,7 @@ public class BookService {
         List<BookDto> foundBooks = new ArrayList<>();
 
         for (BookDto book : getAllBooks()) {
-            if (PatternMatcher.matches(partialInput, book.getTitle()))
+            if (!book.isDeleted() && PatternMatcher.matches(partialInput, book.getTitle()))
                 foundBooks.add(book);
         }
 
@@ -68,7 +70,7 @@ public class BookService {
         List<BookDto> foundBooks = new ArrayList<>();
 
         for (BookDto book : getAllBooks()) {
-            if (PatternMatcher.matches(partialInput, book.getBookAuthorFullName()))
+            if (!book.isDeleted() && PatternMatcher.matches(partialInput, book.getBookAuthorFullName()))
                 foundBooks.add(book);
         }
 
@@ -99,6 +101,9 @@ public class BookService {
         if (book == null) {
             throw new BookIsNotFoundException("No book found with isbn: " + isbn);
         }
+        if (book.isDeleted()) {
+            throw new BookIsDeletedException("Book with isbn: " + isbn + " has been deleted from the database.");
+        }
         return book;
     }
 
@@ -112,5 +117,13 @@ public class BookService {
 
     public void setBookLentStatus(String isbn, boolean bookLent) {
         bookRepository.setBookLentStatus(isbn, bookLent);
+    }
+
+    public BookDto deleteByIsbn(String isbn, String userId) {
+        userService.assertLibrarianId(userId);
+        Book book = fetchBookByIsbnElseThrowException(isbn);
+        book.setDeleted(true);
+        bookRepository.save(book);
+        return bookDtoMapper.toDto(book);
     }
 }

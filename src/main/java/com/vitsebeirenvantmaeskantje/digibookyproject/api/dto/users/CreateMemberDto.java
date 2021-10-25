@@ -11,7 +11,6 @@ public class CreateMemberDto {
     private final String street;
     private final String streetNumber;
     private final int postalCode;
-    private final User.Role role = User.Role.MEMBER;
 
     public CreateMemberDto(String inss, String firstName, String lastName, String mail, String city, String street,
                            String streetNumber, int postalCode) {
@@ -55,10 +54,6 @@ public class CreateMemberDto {
 
     public int getPostalCode() {
         return postalCode;
-    }
-
-    public User.Role getRole() {
-        return role;
     }
 
 }
