@@ -33,7 +33,7 @@ public class UserController {
         return userService.createNewMember(createMemberDto);
     }
 
-    @PostMapping(path = "/{id}/registerAdmin", consumes = "application/json", produces = "application/json")
+    @PostMapping(path = "/registerAdmin", consumes = "application/json", produces = "application/json")
     @ResponseStatus(HttpStatus.CREATED)
     public UserDto createAdmin(@RequestBody CreateAdminDto createAdminDto) {
         logger.info("Trying to create admin...");
