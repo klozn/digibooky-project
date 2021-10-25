@@ -85,9 +85,9 @@ public class BookService {
         return bookDtoMapper.toDto(created);
     }
 
-    public BookDto updateBook(String isbn, UpdateBookDto updateBookDto, String userId) {
-        userService.assertLibrarianId(userId);
-        Book toUpdate = fetchBookByIsbnForUpdateElseThrowException(isbn);
+    public BookDto updateBook(UpdateBookDto updateBookDto) {
+        userService.assertLibrarianId(updateBookDto.getLibrarianId());
+        Book toUpdate = fetchBookByIsbnForUpdateElseThrowException(updateBookDto.getIsbn());
         toUpdate.setTitle(updateBookDto.getTitle());
         toUpdate.setAuthorFirstname(updateBookDto.getAuthorFirstname());
         toUpdate.setAuthorLastname(updateBookDto.getAuthorLastname());

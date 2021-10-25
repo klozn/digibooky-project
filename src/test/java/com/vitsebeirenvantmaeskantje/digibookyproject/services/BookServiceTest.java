@@ -165,7 +165,7 @@ class BookServiceTest {
         @DisplayName("When a member registers a new book, it throws UnauthorizedUserException.")
         @Test
         void whenUserIsMemberRegisterANewBook_ThenAnExceptionIsThrown() {
-            CreateBookDto createBookDto = new CreateBookDto(book1.getIsbn(), book1.getTitle(), book1.getAuthorFirstname(),
+            CreateBookDto createBookDto = new CreateBookDto(MEMBER_ID, book1.getIsbn(), book1.getTitle(), book1.getAuthorFirstname(),
                     book1.getAuthorLastname(), book1.getSummary());
             Assertions.assertThrows(UnauthorizedUserException.class, () -> bookService.registerBook(createBookDto));
 
@@ -174,7 +174,7 @@ class BookServiceTest {
         @DisplayName("When an admin registers a new book, it throws UnauthorizedUserException.")
         @Test
         void whenUserIsAdminRegisterANewBook_ThenAnExceptionIsThrown() {
-            CreateBookDto createBookDto = new CreateBookDto(book1.getIsbn(), book1.getTitle(), book1.getAuthorFirstname(),
+            CreateBookDto createBookDto = new CreateBookDto(ADMIN_ID, book1.getIsbn(), book1.getTitle(), book1.getAuthorFirstname(),
                     book1.getAuthorLastname(), book1.getSummary());
             Assertions.assertThrows(UnauthorizedUserException.class, () -> bookService.registerBook(createBookDto));
 

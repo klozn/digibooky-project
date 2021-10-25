@@ -46,8 +46,8 @@ public class UserService {
         return mapper.toDto(admin);
     }
 
-    public UserDto createNewLibrarian(CreateLibrarianDto createLibrarianDto, String adminId) {
-        assertAdminId(adminId);
+    public UserDto createNewLibrarian(CreateLibrarianDto createLibrarianDto) {
+        assertAdminId(createLibrarianDto.getAdminId());
         User librarian = new User(createLibrarianDto.getInss(), createLibrarianDto.getFirstName(), createLibrarianDto.getLastName(),
                 createLibrarianDto.getMail(), createLibrarianDto.getCity(), createLibrarianDto.getStreet(),
                 createLibrarianDto.getStreetNumber(), createLibrarianDto.getPostalCode(), User.Role.LIBRARIAN);

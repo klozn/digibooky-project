@@ -70,11 +70,11 @@ class UserServiceTest {
         @Test
         @DisplayName("Librarian can't register admin")
         void ifUserIsLibrarian_whenCreateAdmin_thenThrowException() {
-            UserDto librarian = userService.createNewLibrarian(new CreateLibrarianDto("1324564877", null, "From the block",
-                    "bobby.fromdablock@test.be", "Harlem", null, null, 0), ADMIN_ID);
+            UserDto librarian = userService.createNewLibrarian(new CreateLibrarianDto("1", "1324564877", null, "From the block",
+                    "bobby.fromdablock@test.be", "Harlem", null, null, 0));
             assertThrows(UnauthorizedUserException.class, () ->
-                    userService.createNewAdmin(new CreateAdminDto("874654", null, "From the block",
-                            "bobby.fromdablock@test.be", "Harlem", null, null, 0), librarian.getId()));
+                    userService.createNewAdmin(new CreateAdminDto(librarian.getId(), "874654", null, "From the block",
+                            "bobby.fromdablock@test.be", "Harlem", null, null, 0)));
         }
 
         @Test
@@ -97,18 +97,18 @@ class UserServiceTest {
             UserDto member = userService.createNewMember(new CreateMemberDto("1324564877", null, "From the block",
                     "bobby.fromdablock@test.be", "Harlem", null, null, 0));
             assertThrows(UnauthorizedUserException.class, () ->
-                    userService.createNewLibrarian(new CreateLibrarianDto("874654", null, "From the block",
-                            "bobby.fromdablock@test.be", "Harlem", null, null, 0), member.getId()));
+                    userService.createNewLibrarian(new CreateLibrarianDto(member.getId(), "874654", null, "From the block",
+                            "bobby.fromdablock@test.be", "Harlem", null, null, 0)));
         }
 
         @DisplayName("Librarian can not register a Librarian")
         @Test
         void ifUserIsLibrarian_whenCreateLibrarian_thenThrowException() {
-            UserDto librarian = userService.createNewLibrarian(new CreateLibrarianDto("1324564877", null, "From the block",
-                    "bobby.fromdablock@test.be", "Harlem", null, null, 0), ADMIN_ID);
+            UserDto librarian = userService.createNewLibrarian(new CreateLibrarianDto(ADMIN_ID, "1324564877", null, "From the block",
+                    "bobby.fromdablock@test.be", "Harlem", null, null, 0));
             assertThrows(UnauthorizedUserException.class, () ->
-                    userService.createNewLibrarian(new CreateLibrarianDto("874654", null, "From the block",
-                            "bobby.fromdablock@test.be", "Harlem", null, null, 0), librarian.getId()));
+                    userService.createNewLibrarian(new CreateLibrarianDto(librarian.getId(), "874654", null, "From the block",
+                            "bobby.fromdablock@test.be", "Harlem", null, null, 0)));
         }
 
         @DisplayName("Admin can register a Librarian")

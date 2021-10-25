@@ -40,11 +40,11 @@ public class UserController {
         return userService.createNewAdmin(createAdminDto);
     }
 
-    @PostMapping(path ="/{id}/registerLibrarian", consumes = "application/json", produces = "application/json")
+    @PostMapping(path ="/registerLibrarian", consumes = "application/json", produces = "application/json")
     @ResponseStatus(HttpStatus.CREATED)
-    public UserDto createLibrarian(@RequestBody CreateLibrarianDto createLibrarianDto, @PathVariable String id){
+    public UserDto createLibrarian(@RequestBody CreateLibrarianDto createLibrarianDto){
         logger.info("Trying to create librarian...");
-        return userService.createNewLibrarian(createLibrarianDto, id);
+        return userService.createNewLibrarian(createLibrarianDto);
     }
 
     //GETTERS

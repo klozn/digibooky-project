@@ -59,16 +59,16 @@ public class BookController {
 
     @PostMapping(consumes = "application/json", produces = "application/json")
     @ResponseStatus(HttpStatus.CREATED)
-    public BookDto registerBook(@RequestBody CreateBookDto createBookDto, @PathVariable("id") String userId) {
-        logger.info("Register new book with ISBN " + createBookDto.getIsbn() + " by userID " + userId + ".");
-        return bookService.registerBook(createBookDto, userId);
+    public BookDto registerBook(@RequestBody CreateBookDto createBookDto) {
+        logger.info("Register new book with ISBN " + createBookDto.getIsbn() + " by userID " + createBookDto.getLibrarianId() + ".");
+        return bookService.registerBook(createBookDto);
     }
 
-    @PutMapping(consumes = "application/json", produces = "application/json", path = "/{isbn}/{userId}")
+    @PutMapping(consumes = "application/json", produces = "application/json")
     @ResponseStatus(HttpStatus.OK)
-    public BookDto updateBook(@RequestBody UpdateBookDto updateBookDto, @PathVariable String isbn, @PathVariable String userId) {
-        logger.info("Updating book with ISBN " + isbn + " by userID " + userId + ".");
-        return bookService.updateBook(isbn, updateBookDto, userId);
+    public BookDto updateBook(@RequestBody UpdateBookDto updateBookDto) {
+        logger.info("Updating book with ISBN " + updateBookDto.getIsbn() + " by userID " + updateBookDto.getLibrarianId() + ".");
+        return bookService.updateBook(updateBookDto);
     }
 
     @DeleteMapping(path = "/{isbn}/{userId}", produces = "application/json")

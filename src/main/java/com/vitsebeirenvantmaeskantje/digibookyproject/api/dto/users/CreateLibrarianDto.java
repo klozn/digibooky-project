@@ -1,6 +1,7 @@
 package com.vitsebeirenvantmaeskantje.digibookyproject.api.dto.users;
 
 public class CreateLibrarianDto {
+    private final String adminId;
     private final String inss;
     private final String firstName;
     private final String lastName;
@@ -10,8 +11,9 @@ public class CreateLibrarianDto {
     private final String streetNumber;
     private final int postalCode;
 
-    public CreateLibrarianDto(String inss, String firstName, String lastName, String mail, String city, String street,
+    public CreateLibrarianDto(String adminId, String inss, String firstName, String lastName, String mail, String city, String street,
                               String streetNumber, int postalCode) {
+        this.adminId = adminId;
         this.inss = inss;
         this.firstName = firstName;
         this.lastName = lastName;
@@ -20,6 +22,9 @@ public class CreateLibrarianDto {
         this.street = street;
         this.streetNumber = streetNumber;
         this.postalCode = postalCode;
+    }
+    public String getAdminId() {
+        return adminId;
     }
 
     public String getInss() {
