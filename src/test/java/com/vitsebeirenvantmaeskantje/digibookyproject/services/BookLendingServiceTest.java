@@ -9,10 +9,8 @@ import com.vitsebeirenvantmaeskantje.digibookyproject.domain.exceptions.UserNotF
 import com.vitsebeirenvantmaeskantje.digibookyproject.repositories.BookLendingRepository;
 import com.vitsebeirenvantmaeskantje.digibookyproject.repositories.BookRepository;
 import com.vitsebeirenvantmaeskantje.digibookyproject.repositories.UserRepository;
-import org.junit.jupiter.api.Assertions;
-import org.junit.jupiter.api.BeforeEach;
-import org.junit.jupiter.api.DisplayName;
-import org.junit.jupiter.api.Test;
+import org.apache.tomcat.jni.Local;
+import org.junit.jupiter.api.*;
 
 import java.time.LocalDate;
 
@@ -35,7 +33,7 @@ class BookLendingServiceTest {
         bookLendingService = new BookLendingService(new BookLendingMapper(),
                 new BookLendingRepository(), new UserService(new UserRepository(), new UserMapper()),
                 new BookService(new BookDtoMapper(), new BookRepository(),
-                new UserService(new UserRepository(), new UserMapper())));
+                        new UserService(new UserRepository(), new UserMapper())));
 
         validDTO = new CreateBookLendingDto(ISBN_ONE, "1");
         invalidISBNDTO = new CreateBookLendingDto("111", "1");
@@ -109,5 +107,45 @@ class BookLendingServiceTest {
         // TODO: 25/10/2021 implement
         assertTrue(false);
     }*/
+
+    @Nested
+    @DisplayName("Returning a book")
+    class ReturningABook {
+
+        @DisplayName("Member returns a book that is not overdue")
+        @Test
+        void whenReturningABookThatIsNotOverdue_ThenItIsAlright() {
+            //GIVEN
+            BookLendingDto lentBook = bookLendingService.save(validDTO);
+            String lendingId = lentBook.getId();
+            LocalDate localDate = LocalDate.now();
+            LocalDate lastReturningDate = lentBook.getReturnDate();
+            String isbnReturnedBook = lentBook.getIsbn();
+            BookService bookService = new BookService(new BookDtoMapper(), new BookRepository(),
+                    new UserService(new UserRepository(), new UserMapper()));
+            //WHEN
+            bookLendingService.returnBook(lendingId);
+            //THEN
+            Assertions.assertTrue(lastReturningDate.isAfter(localDate));
+            Assertions.assertFalse(bookService.isBookLent(isbnReturnedBook));
+        }
+
+
+        @DisplayName("Member gives wrong lending id.")
+        @Test
+        void whenMemberDeliversAWrongLendingID_ThenThrowAnException(){
+            //GIVEN
+            BookLendingDto lentBook = bookLendingService.save(validDTO);
+            String lendingId = "test";
+            LocalDate localDate = LocalDate.now();
+            LocalDate lastReturningDate = lentBook.getReturnDate();
+            String isbnReturnedBook = lentBook.getIsbn();
+            BookService bookService = new BookService(new BookDtoMapper(), new BookRepository(),
+                    new UserService(new UserRepository(), new UserMapper()));
+
+            //THEN
+            assertThrows(IllegalArgumentException.class, () -> bookLendingService.returnBook(lendingId));
+        }
+    }
 
 }

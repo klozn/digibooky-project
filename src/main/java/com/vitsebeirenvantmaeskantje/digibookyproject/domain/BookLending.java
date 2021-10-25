@@ -11,12 +11,20 @@ public class BookLending {
     private final String isbn;
     private final String memberId;
     private LocalDate returnDate;
+    private boolean returned;
 
     public BookLending(String isbn, String memberId) {
         setId();
         this.isbn = isbn;
         this.memberId = memberId;
         setReturnDate();
+        setReturned(false);
+    }
+
+    public BookLending(String isbn, String memberId, LocalDate returnDate) {
+        this.isbn = isbn;
+        this.memberId = memberId;
+        this.returnDate = returnDate;
     }
 
     private void setReturnDate() {
@@ -42,6 +50,10 @@ public class BookLending {
         return returnDate;
     }
 
-
-
+    public boolean isReturned() {
+        return returned;
+    }
+    public void setReturned(boolean returned) {
+        this.returned = returned;
+    }
 }

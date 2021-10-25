@@ -12,7 +12,7 @@ import java.util.stream.Collectors;
 public class BookLendingMapper {
 
     public BookLendingDto toDto(BookLending bookLending) {
-        return new BookLendingDto(bookLending.getId(), bookLending.getIsbn(), bookLending.getMemberId(), bookLending.getReturnDate());
+        return new BookLendingDto(bookLending.getId(), bookLending.getIsbn(), bookLending.getMemberId(), bookLending.getReturnDate(),bookLending.isReturned());
     }
 
     public BookLending toEntity(CreateBookLendingDto bookLendingDto) {

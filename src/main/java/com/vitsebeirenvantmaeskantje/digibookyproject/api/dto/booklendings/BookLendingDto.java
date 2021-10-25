@@ -8,12 +8,14 @@ public class BookLendingDto {
     private final String isbn;
     private final String memberId;
     private final LocalDate returnDate;
+    private final boolean returned;
 
-    public BookLendingDto(String id, String isbn, String memberId, LocalDate returnDate) {
+    public BookLendingDto(String id, String isbn, String memberId, LocalDate returnDate, boolean returned) {
         this.id = id;
         this.isbn = isbn;
         this.memberId = memberId;
         this.returnDate = returnDate;
+        this.returned = returned;
     }
 
     public String getId() {
