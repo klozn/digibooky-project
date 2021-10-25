@@ -24,6 +24,21 @@ public class BookLendingController {
         this.bookLendingService = bookLendingService;
     }
 
+    @GetMapping(path = "/{id}/overduebooks", produces="application/json")
+    @ResponseStatus(HttpStatus.OK)
+    public List<BookDto> getAllOverdueBooks(@PathVariable String id){
+        logger.info("Trying to gather all overdue books");
+        return bookLendingService.getOverdueBooks(id);
+    }
+
+    @GetMapping(path = "/{id}/lentbooks/{memberid}", produces="application/json")
+    @ResponseStatus(HttpStatus.OK)
+    public List<BookDto> getAllOverdueBooks(@PathVariable String id, @PathVariable String memberid){
+        logger.info("Trying to gather all overdue books");
+        return bookLendingService.getLentBooksByMemberId(memberid,id);
+    }
+
+
     @PostMapping(consumes = "application/json", produces = "application/json")
     @ResponseStatus(HttpStatus.CREATED)
     public BookLendingDto lendBook(@RequestBody CreateBookLendingDto createBookLendingDto) {

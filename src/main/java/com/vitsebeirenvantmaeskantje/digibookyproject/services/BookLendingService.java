@@ -69,6 +69,15 @@ public class BookLendingService {
                 .collect(Collectors.toList());
     }
 
+
+    public List<BookDto> getOverdueBooks(String librarianId) {
+        userService.assertLibrarianId(librarianId);
+        return bookLendingRepository.getLentBooks().stream()
+                .filter(bookLending -> bookLending.getReturnDate().isBefore(LocalDate.now()))
+                .map(bookLending -> bookService.getByIsbn(bookLending.getIsbn()))
+                .collect(Collectors.toList());
+    }
+
     public String getMemberIdByLentBookISBN(String isbn) {
         return Objects.requireNonNull(bookLendingRepository.getLentBooks().stream()
                 .filter(bookLending -> bookLending.getIsbn().equals(isbn))
