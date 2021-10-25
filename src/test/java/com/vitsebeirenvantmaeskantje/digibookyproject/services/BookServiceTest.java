@@ -3,7 +3,6 @@ package com.vitsebeirenvantmaeskantje.digibookyproject.services;
 import com.vitsebeirenvantmaeskantje.digibookyproject.api.dto.booklendings.CreateBookLendingDto;
 import com.vitsebeirenvantmaeskantje.digibookyproject.api.dto.books.BookDto;
 import com.vitsebeirenvantmaeskantje.digibookyproject.api.dto.books.CreateBookDto;
-import com.vitsebeirenvantmaeskantje.digibookyproject.api.dto.books.EnhancedBookDto;
 import com.vitsebeirenvantmaeskantje.digibookyproject.api.dto.books.UpdateBookDto;
 import com.vitsebeirenvantmaeskantje.digibookyproject.api.dto.mappers.BookDtoMapper;
 import com.vitsebeirenvantmaeskantje.digibookyproject.api.dto.mappers.BookLendingMapper;
@@ -145,13 +144,13 @@ class BookServiceTest {
 
     @DisplayName("Registering a new book")
     @Nested
-    class RegisteringANewBook{
+    class RegisteringANewBook {
 
         @DisplayName("When a librarian registers a new book, it works.")
         @Test
-        void whenUserIsLibrarianRegisterANewBook_ThenNewBookIsAddedToTheLibrary(){
-            CreateBookDto createBookDto = new CreateBookDto(book1.getIsbn(),book1.getTitle(),book1.getAuthorFirstname(),
-                    book1.getAuthorLastname(),book1.getSummary());
+        void whenUserIsLibrarianRegisterANewBook_ThenNewBookIsAddedToTheLibrary() {
+            CreateBookDto createBookDto = new CreateBookDto(book1.getIsbn(), book1.getTitle(), book1.getAuthorFirstname(),
+                    book1.getAuthorLastname(), book1.getSummary());
             Assertions.assertDoesNotThrow(() -> bookService.registerBook(createBookDto, LIBRARIAN_ID));
             BookDto created = bookService.registerBook(createBookDto, LIBRARIAN_ID);
 
@@ -159,22 +158,24 @@ class BookServiceTest {
             Assertions.assertEquals(book1.getTitle(), created.getTitle());
             Assertions.assertEquals(book1.getAuthorFirstname(), created.getAuthorFirstname());
             Assertions.assertEquals(book1.getAuthorLastname(), created.getAuthorLastname());
-            Assertions.assertEquals(3,bookRepository.getBooks().size());
+            Assertions.assertEquals(3, bookRepository.getBooks().size());
 
         }
+
         @DisplayName("When a member registers a new book, it throws UnauthorizedUserException.")
         @Test
         void whenUserIsMemberRegisterANewBook_ThenAnExceptionIsThrown() {
-            CreateBookDto createBookDto = new CreateBookDto(book1.getIsbn(),book1.getTitle(),book1.getAuthorFirstname(),
-                    book1.getAuthorLastname(),book1.getSummary());
+            CreateBookDto createBookDto = new CreateBookDto(book1.getIsbn(), book1.getTitle(), book1.getAuthorFirstname(),
+                    book1.getAuthorLastname(), book1.getSummary());
             Assertions.assertThrows(UnauthorizedUserException.class, () -> bookService.registerBook(createBookDto, MEMBER_ID));
 
         }
+
         @DisplayName("When an admin registers a new book, it throws UnauthorizedUserException.")
         @Test
         void whenUserIsAdminRegisterANewBook_ThenAnExceptionIsThrown() {
-            CreateBookDto createBookDto = new CreateBookDto(book1.getIsbn(),book1.getTitle(),book1.getAuthorFirstname(),
-                    book1.getAuthorLastname(),book1.getSummary());
+            CreateBookDto createBookDto = new CreateBookDto(book1.getIsbn(), book1.getTitle(), book1.getAuthorFirstname(),
+                    book1.getAuthorLastname(), book1.getSummary());
             Assertions.assertThrows(UnauthorizedUserException.class, () -> bookService.registerBook(createBookDto, ADMIN_ID));
 
         }
@@ -202,14 +203,14 @@ class BookServiceTest {
 
     @DisplayName("Updating a book")
     @Nested
-    class UpdatingABook{
+    class UpdatingABook {
 
         @DisplayName("Librarian updates a book, it works")
         @Test
-        void whenUserIsLibrarianAndUpdatesABook_ThenTheBookIsUpdated(){
+        void whenUserIsLibrarianAndUpdatesABook_ThenTheBookIsUpdated() {
             UpdateBookDto updateBookDto = new UpdateBookDto("new title", "new firstname",
-                    "new lastname","new summary");
-            Assertions.assertDoesNotThrow(() -> bookService.updateBook(book1.getIsbn(),updateBookDto,LIBRARIAN_ID));
+                    "new lastname", "new summary");
+            Assertions.assertDoesNotThrow(() -> bookService.updateBook(book1.getIsbn(), updateBookDto, LIBRARIAN_ID));
             Assertions.assertEquals("new title", bookRepository.getBookByIsbn(book1.getIsbn()).getTitle());
         }
     }

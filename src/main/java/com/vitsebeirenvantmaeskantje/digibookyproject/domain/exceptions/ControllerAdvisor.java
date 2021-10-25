@@ -31,4 +31,10 @@ public class ControllerAdvisor {
         logger.error("User not found: " + exception.getMessage());
         response.sendError(HttpStatus.NOT_FOUND.value(), exception.getMessage());
     }
+
+    @ExceptionHandler
+    public void handleBookIsDeletedException(BookIsDeletedException exception, HttpServletResponse response) throws IOException{
+        logger.error("Requested book is deleted: " + exception.getMessage());
+        response.sendError(HttpStatus.NOT_FOUND.value(), exception.getMessage());
+    }
 }

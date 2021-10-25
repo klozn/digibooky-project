@@ -4,6 +4,8 @@ import com.vitsebeirenvantmaeskantje.digibookyproject.api.dto.booklendings.Creat
 import com.vitsebeirenvantmaeskantje.digibookyproject.api.dto.mappers.BookDtoMapper;
 import com.vitsebeirenvantmaeskantje.digibookyproject.api.dto.mappers.BookLendingMapper;
 import com.vitsebeirenvantmaeskantje.digibookyproject.api.dto.mappers.UserMapper;
+import com.vitsebeirenvantmaeskantje.digibookyproject.domain.Book;
+import com.vitsebeirenvantmaeskantje.digibookyproject.domain.exceptions.BookIsDeletedException;
 import com.vitsebeirenvantmaeskantje.digibookyproject.repositories.BookLendingRepository;
 import com.vitsebeirenvantmaeskantje.digibookyproject.repositories.BookRepository;
 import com.vitsebeirenvantmaeskantje.digibookyproject.repositories.UserRepository;
@@ -12,7 +14,12 @@ import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 
+import static org.junit.jupiter.api.Assertions.assertDoesNotThrow;
+import static org.junit.jupiter.api.Assertions.assertThrows;
+
 class BookDetailsServiceTest {
+
+    private final static String LIBRARIAN_ID = "2";
 
     private UserService userService;
     private BookService bookService;
@@ -36,5 +43,19 @@ class BookDetailsServiceTest {
         String expected = "Job Vanjongenhoven";
 
         Assertions.assertEquals(expected, bookDetailsService.getBookDetails(BookRepository.ISBN_ONE).getLenderFullName());
+    }
+
+    @DisplayName("When retrieving details of a book with invalid ISBN, exception is thrown")
+    @Test
+    void whenAskingForBookDetailsOfInvalidISBN_ThenExceptionIsThrown() {
+        assertThrows(IllegalArgumentException.class, () -> bookDetailsService.getBookDetails("invalid"));
+    }
+
+    @DisplayName("When retrieving details of a deleted book, exception is thrown")
+    @Test
+    void whenAskingForBookDetailsOfDeletedBook_ThenExceptionIsThrown() {
+        bookService.deleteByIsbn(BookRepository.ISBN_ONE, LIBRARIAN_ID);
+
+       assertThrows(BookIsDeletedException.class, () -> bookDetailsService.getBookDetails(BookRepository.ISBN_ONE));
     }
 }
