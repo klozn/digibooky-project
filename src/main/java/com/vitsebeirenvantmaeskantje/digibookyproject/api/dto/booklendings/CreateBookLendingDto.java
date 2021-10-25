@@ -17,4 +17,7 @@ public class CreateBookLendingDto {
     public String getMemberId() {
         return memberId;
     }
+
+
+
 }

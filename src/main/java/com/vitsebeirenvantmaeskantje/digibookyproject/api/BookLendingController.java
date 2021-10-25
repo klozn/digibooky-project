@@ -27,4 +27,12 @@ public class BookLendingController {
         logger.info("Attempting to lend book with ISBN " + createBookLendingDto.getIsbn());
         return bookLendingService.save(createBookLendingDto);
     }
+
+    @PutMapping( path = "/{id}", produces = "application/json")
+    @ResponseStatus(HttpStatus.OK)
+    public BookLendingDto returnBook(@PathVariable("id") String id){
+        logger.info("Attempting to return book with lending id " + id);
+        return bookLendingService.returnBook(id);
+    }
+
 }

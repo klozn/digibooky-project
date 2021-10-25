@@ -28,6 +28,7 @@ public class BookLendingService {
     private final BookLendingRepository bookLendingRepository;
     private final UserService userService;
     private final BookService bookService;
+    private final LocalDate CURRENT_DATE = LocalDate.now();
 
     @Autowired
     public BookLendingService(BookLendingMapper bookLendingMapper, BookLendingRepository bookLendingRepository,
@@ -58,5 +59,52 @@ public class BookLendingService {
         bookService.setBookLentStatus(bookLendingDto.getIsbn(), true);
         return bookLendingMapper.toDto(lentBook);
     }
+
+    public List<BookDto> getLentBooksByMemberId(String memberId, String librarianId) {
+        userService.assertLibrarianId(librarianId);
+        return bookLendingRepository.getLentBooks().stream()
+                .filter(bookLending -> bookLending.getMemberId().equals(memberId))
+                .map(bookLending -> bookService.getByIsbn(bookLending.getIsbn()))
+                .collect(Collectors.toList());
+    }
+
+    public String getMemberIdByLentBookISBN(String isbn) {
+        return Objects.requireNonNull(bookLendingRepository.getLentBooks().stream()
+                .filter(bookLending -> bookLending.getIsbn().equals(isbn))
+                .findAny().orElse(null)).getMemberId();
+    }
+
+    public  BookLendingDto returnBook(String lendingID){
+        if(!isTrueLendingId(lendingID)){
+            throw new IllegalArgumentException("Lent book's ID not found.");
+        }
+        if(!isReturnedInTime(lendingID)){
+            System.out.println("Book is overdue!");
+        }
+        BookLending bookLending = bookLendingRepository.getBookLending(lendingID);
+        bookService.setBookLentStatus(bookLending.getIsbn(),false);
+        bookLendingRepository.returnBook(bookLending);
+
+        return bookLendingMapper.toDto(bookLending);
+
+    }
+
+    private boolean isReturnedInTime(String lendingID) {
+        List<BookLending> books = new ArrayList<>();
+        for (BookLending book : bookLendingRepository.getLentBooks()) {
+            if (book.getId().equals(lendingID)) {
+                books.add(book);
+            }
+        }
+        BookLending bookLending = books.get(0);
+        return bookLending.getReturnDate().isAfter(CURRENT_DATE);
+    }
+
+    public boolean isTrueLendingId(String lendingID){
+        return bookLendingRepository.getLentBooks().stream()
+                .anyMatch(book -> book.getId().equals(lendingID));
+    }
+    
+    
 
 }

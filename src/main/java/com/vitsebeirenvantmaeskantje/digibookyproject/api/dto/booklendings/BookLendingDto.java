@@ -34,4 +34,6 @@ public class BookLendingDto {
         return returnDate;
     }
 
+    public boolean isReturned(){return returned;}
+
 }
