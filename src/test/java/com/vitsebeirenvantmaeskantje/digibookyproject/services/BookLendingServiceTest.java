@@ -2,6 +2,7 @@ package com.vitsebeirenvantmaeskantje.digibookyproject.services;
 
 import com.vitsebeirenvantmaeskantje.digibookyproject.api.dto.booklendings.BookLendingDto;
 import com.vitsebeirenvantmaeskantje.digibookyproject.api.dto.booklendings.CreateBookLendingDto;
+import com.vitsebeirenvantmaeskantje.digibookyproject.api.dto.books.BookDto;
 import com.vitsebeirenvantmaeskantje.digibookyproject.api.dto.mappers.BookDtoMapper;
 import com.vitsebeirenvantmaeskantje.digibookyproject.api.dto.mappers.BookLendingMapper;
 import com.vitsebeirenvantmaeskantje.digibookyproject.api.dto.mappers.UserMapper;
@@ -100,12 +101,14 @@ class BookLendingServiceTest {
         assertThrows(UserNotFoundException.class, () -> bookLendingService.save(invalidMemberIdDTO));
     }
 
-/*    @DisplayName("get lent books by memberId returns all non returned books lent to that member")
+    @DisplayName("get lent books by memberId returns all non returned books lent to that member")
     @Test
     void getLentBooksByMemberId_whenUserIsLibrarian_returnsAllNonReturnedBooksLentToThatMember() {
-        // TODO: 25/10/2021 implement
-        assertTrue(false);
-    }*/
+        bookLendingService.save(new CreateBookLendingDto(ISBN_ONE, "3"));
+        List<BookDto> books = bookLendingService.getLentBooksByMemberId("3", "2");
+
+        Assertions.assertEquals(ISBN_ONE, books.get(0).getIsbn());
+    }
 
     @Nested
     @DisplayName("Returning a book")

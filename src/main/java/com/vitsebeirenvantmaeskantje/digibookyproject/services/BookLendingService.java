@@ -63,6 +63,7 @@ public class BookLendingService {
     public List<BookDto> getLentBooksByMemberId(String memberId, String librarianId) {
         userService.assertLibrarianId(librarianId);
         return bookLendingRepository.getLentBooks().stream()
+                .filter(bookLending -> !bookLending.isReturned())
                 .filter(bookLending -> bookLending.getMemberId().equals(memberId))
                 .map(bookLending -> bookService.getByIsbn(bookLending.getIsbn()))
                 .collect(Collectors.toList());

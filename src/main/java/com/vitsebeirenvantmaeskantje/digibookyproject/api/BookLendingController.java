@@ -2,6 +2,7 @@ package com.vitsebeirenvantmaeskantje.digibookyproject.api;
 
 import com.vitsebeirenvantmaeskantje.digibookyproject.api.dto.booklendings.BookLendingDto;
 import com.vitsebeirenvantmaeskantje.digibookyproject.api.dto.booklendings.CreateBookLendingDto;
+import com.vitsebeirenvantmaeskantje.digibookyproject.api.dto.books.BookDto;
 import com.vitsebeirenvantmaeskantje.digibookyproject.services.BookLendingService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -35,6 +36,13 @@ public class BookLendingController {
     public BookLendingDto returnBook(@PathVariable("id") String id){
         logger.info("Attempting to return book with lending id " + id);
         return bookLendingService.returnBook(id);
+    }
+
+    @GetMapping(path = "/lentbooks/{memberId}/{librarianId}", produces = "application/json")
+    @ResponseStatus(HttpStatus.OK)
+    public List<BookDto> getLentBooksByMemberId(@PathVariable String memberId, @PathVariable String librarianId) {
+        logger.info("Getting books lent to member with id: " + memberId + ", by librarian with id: " + librarianId);
+        return bookLendingService.getLentBooksByMemberId(memberId, librarianId);
     }
 
 }
