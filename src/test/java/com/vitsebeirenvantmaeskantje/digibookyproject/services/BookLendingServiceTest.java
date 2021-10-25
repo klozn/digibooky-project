@@ -9,13 +9,12 @@ import com.vitsebeirenvantmaeskantje.digibookyproject.domain.exceptions.UserNotF
 import com.vitsebeirenvantmaeskantje.digibookyproject.repositories.BookLendingRepository;
 import com.vitsebeirenvantmaeskantje.digibookyproject.repositories.BookRepository;
 import com.vitsebeirenvantmaeskantje.digibookyproject.repositories.UserRepository;
-import org.apache.tomcat.jni.Local;
 import org.junit.jupiter.api.*;
 
 import java.time.LocalDate;
+import java.util.List;
 
 import static org.junit.jupiter.api.Assertions.assertThrows;
-import static org.junit.jupiter.api.Assertions.assertTrue;
 
 class BookLendingServiceTest {
 
@@ -133,7 +132,7 @@ class BookLendingServiceTest {
 
         @DisplayName("Member gives wrong lending id.")
         @Test
-        void whenMemberDeliversAWrongLendingID_ThenThrowAnException(){
+        void whenMemberDeliversAWrongLendingID_ThenThrowAnException() {
             //GIVEN
             BookLendingDto lentBook = bookLendingService.save(validDTO);
             String lendingId = "test";
