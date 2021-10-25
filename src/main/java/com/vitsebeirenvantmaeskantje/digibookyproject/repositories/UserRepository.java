@@ -17,7 +17,7 @@ public class UserRepository {
                 "Robland", null, null, 0, User.Role.ADMIN));
         myUsers.put("2", new User("898425142", "Bob","Vanjongenhoven","robvanjongenhoven@telenet.be",
                 "Bobland", null, null, 0, User.Role.LIBRARIAN));
-        myUsers.put("3", new User("874987563", "Job","Vanjonenhoven","Jobvanjongenhoven@telenet.be",
+        myUsers.put("3", new User("874987563", "Job","Vanjongenhoven","Jobvanjongenhoven@telenet.be",
                 "Jobland", null, null, 0, User.Role.MEMBER));
     }
 

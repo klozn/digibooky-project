@@ -2,9 +2,11 @@ package com.vitsebeirenvantmaeskantje.digibookyproject.services;
 
 import com.vitsebeirenvantmaeskantje.digibookyproject.api.dto.books.BookDto;
 import com.vitsebeirenvantmaeskantje.digibookyproject.api.dto.books.CreateBookDto;
+import com.vitsebeirenvantmaeskantje.digibookyproject.api.dto.books.EnhancedBookDto;
 import com.vitsebeirenvantmaeskantje.digibookyproject.api.dto.books.UpdateBookDto;
 import com.vitsebeirenvantmaeskantje.digibookyproject.api.dto.mappers.BookDtoMapper;
 import com.vitsebeirenvantmaeskantje.digibookyproject.domain.Book;
+import com.vitsebeirenvantmaeskantje.digibookyproject.domain.User;
 import com.vitsebeirenvantmaeskantje.digibookyproject.domain.exceptions.BookIsDeletedException;
 import com.vitsebeirenvantmaeskantje.digibookyproject.domain.exceptions.BookIsNotFoundException;
 import com.vitsebeirenvantmaeskantje.digibookyproject.repositories.BookRepository;

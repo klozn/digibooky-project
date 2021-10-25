@@ -2,7 +2,9 @@ package com.vitsebeirenvantmaeskantje.digibookyproject.api;
 
 import com.vitsebeirenvantmaeskantje.digibookyproject.api.dto.books.BookDto;
 import com.vitsebeirenvantmaeskantje.digibookyproject.api.dto.books.CreateBookDto;
+import com.vitsebeirenvantmaeskantje.digibookyproject.api.dto.books.EnhancedBookDto;
 import com.vitsebeirenvantmaeskantje.digibookyproject.api.dto.books.UpdateBookDto;
+import com.vitsebeirenvantmaeskantje.digibookyproject.services.BookDetailsService;
 import com.vitsebeirenvantmaeskantje.digibookyproject.services.BookService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -16,11 +18,13 @@ import java.util.List;
 @RequestMapping(path = "/books")
 public class BookController {
     private final BookService bookService;
+    private final BookDetailsService bookDetailsService;
     private final Logger logger = LoggerFactory.getLogger(BookController.class);
 
     @Autowired
-    public BookController(BookService bookService) {
+    public BookController(BookService bookService, BookDetailsService bookDetailsService) {
         this.bookService = bookService;
+        this.bookDetailsService = bookDetailsService;
     }
 
     @GetMapping(produces = "application/json")
@@ -32,9 +36,9 @@ public class BookController {
 
     @GetMapping(produces = "application/json", path = "{isbn}")
     @ResponseStatus(HttpStatus.OK)
-    public BookDto getBookByISBN(@PathVariable("isbn") String ISBN) {
+    public EnhancedBookDto getBookByISBN(@PathVariable("isbn") String ISBN) {
         logger.info("Retrieved book with id " + ISBN);
-        return bookService.getByIsbn(ISBN);
+        return bookDetailsService.getBookDetails(ISBN);
     }
 
     @GetMapping(produces = "application/json", path = "/search/{searchType}/{partialInput}")

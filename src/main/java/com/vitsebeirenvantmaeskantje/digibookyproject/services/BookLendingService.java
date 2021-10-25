@@ -2,12 +2,18 @@ package com.vitsebeirenvantmaeskantje.digibookyproject.services;
 
 import com.vitsebeirenvantmaeskantje.digibookyproject.api.dto.booklendings.BookLendingDto;
 import com.vitsebeirenvantmaeskantje.digibookyproject.api.dto.booklendings.CreateBookLendingDto;
+import com.vitsebeirenvantmaeskantje.digibookyproject.api.dto.books.BookDto;
+import com.vitsebeirenvantmaeskantje.digibookyproject.api.dto.books.EnhancedBookDto;
 import com.vitsebeirenvantmaeskantje.digibookyproject.api.dto.mappers.BookLendingMapper;
 import com.vitsebeirenvantmaeskantje.digibookyproject.domain.BookLending;
 import com.vitsebeirenvantmaeskantje.digibookyproject.domain.exceptions.UserNotFoundException;
 import com.vitsebeirenvantmaeskantje.digibookyproject.repositories.BookLendingRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+
+import java.util.List;
+import java.util.Objects;
+import java.util.stream.Collectors;
 
 @Service
 public class BookLendingService {
@@ -45,6 +51,20 @@ public class BookLendingService {
 
         bookService.setBookLentStatus(bookLendingDto.getIsbn(), true);
         return bookLendingMapper.toDto(lentBook);
+    }
+
+    public List<BookDto> getLentBooksByMemberId(String memberId, String librarianId) {
+        userService.assertLibrarianId(librarianId);
+        return bookLendingRepository.getLentBooks().stream()
+                .filter(bookLending -> bookLending.getMemberId().equals(memberId))
+                .map(bookLending -> bookService.getByIsbn(bookLending.getIsbn()))
+                .collect(Collectors.toList());
+    }
+
+    public String getMemberIdByLentBookISBN(String isbn) {
+        return Objects.requireNonNull(bookLendingRepository.getLentBooks().stream()
+                .filter(bookLending -> bookLending.getIsbn().equals(isbn))
+                .findAny().orElse(null)).getMemberId();
     }
 
 }

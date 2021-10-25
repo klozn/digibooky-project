@@ -17,6 +17,7 @@ import org.junit.jupiter.api.Test;
 import java.time.LocalDate;
 
 import static org.junit.jupiter.api.Assertions.assertThrows;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 
 class BookLendingServiceTest {
 
@@ -101,5 +102,12 @@ class BookLendingServiceTest {
 
         assertThrows(UserNotFoundException.class, () -> bookLendingService.save(invalidMemberIdDTO));
     }
+
+/*    @DisplayName("get lent books by memberId returns all non returned books lent to that member")
+    @Test
+    void getLentBooksByMemberId_whenUserIsLibrarian_returnsAllNonReturnedBooksLentToThatMember() {
+        // TODO: 25/10/2021 implement
+        assertTrue(false);
+    }*/
 
 }

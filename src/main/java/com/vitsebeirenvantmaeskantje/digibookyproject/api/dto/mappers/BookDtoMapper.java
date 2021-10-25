@@ -1,6 +1,7 @@
 package com.vitsebeirenvantmaeskantje.digibookyproject.api.dto.mappers;
 
 import com.vitsebeirenvantmaeskantje.digibookyproject.api.dto.books.BookDto;
+import com.vitsebeirenvantmaeskantje.digibookyproject.api.dto.books.EnhancedBookDto;
 import com.vitsebeirenvantmaeskantje.digibookyproject.domain.Book;
 import org.springframework.stereotype.Component;
 
@@ -24,6 +25,16 @@ public class BookDtoMapper {
 
     public List<Book> toEntity(List<BookDto> books) {
         return books.stream().map(this::toEntity).collect(Collectors.toList());
+    }
+
+    public EnhancedBookDto toEnhancedBookDto(BookDto book, String lenderFullName) {
+        return new EnhancedBookDto(book.getIsbn(), book.getTitle(), book.getAuthorFirstname(), book.getAuthorLastname(),
+                book.getSummary(), book.isLent(), lenderFullName);
+    }
+
+    public BookDto toDto(EnhancedBookDto enhancedBookDto) {
+        return new BookDto(enhancedBookDto.getIsbn(), enhancedBookDto.getTitle(), enhancedBookDto.getAuthorFirstname(),
+                enhancedBookDto.getAuthorLastname(), enhancedBookDto.getSummary());
     }
 
 }

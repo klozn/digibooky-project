@@ -1,17 +1,19 @@
 package com.vitsebeirenvantmaeskantje.digibookyproject.services;
 
+import com.vitsebeirenvantmaeskantje.digibookyproject.api.dto.booklendings.CreateBookLendingDto;
 import com.vitsebeirenvantmaeskantje.digibookyproject.api.dto.books.BookDto;
 import com.vitsebeirenvantmaeskantje.digibookyproject.api.dto.books.CreateBookDto;
+import com.vitsebeirenvantmaeskantje.digibookyproject.api.dto.books.EnhancedBookDto;
 import com.vitsebeirenvantmaeskantje.digibookyproject.api.dto.books.UpdateBookDto;
 import com.vitsebeirenvantmaeskantje.digibookyproject.api.dto.mappers.BookDtoMapper;
+import com.vitsebeirenvantmaeskantje.digibookyproject.api.dto.mappers.BookLendingMapper;
 import com.vitsebeirenvantmaeskantje.digibookyproject.api.dto.mappers.UserMapper;
-import com.vitsebeirenvantmaeskantje.digibookyproject.domain.Book;
 import com.vitsebeirenvantmaeskantje.digibookyproject.domain.exceptions.BookIsDeletedException;
 import com.vitsebeirenvantmaeskantje.digibookyproject.domain.exceptions.UnauthorizedUserException;
+import com.vitsebeirenvantmaeskantje.digibookyproject.repositories.BookLendingRepository;
 import com.vitsebeirenvantmaeskantje.digibookyproject.repositories.BookRepository;
 import com.vitsebeirenvantmaeskantje.digibookyproject.repositories.UserRepository;
 import org.junit.jupiter.api.*;
-import org.springframework.util.Assert;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -22,6 +24,7 @@ class BookServiceTest {
     private final static String MEMBER_ID = "3";
     private BookService bookService;
     private BookRepository bookRepository;
+    private BookLendingService bookLendingService;
     private BookDto book1;
     private BookDto book2;
     private BookDto book3;
@@ -33,7 +36,8 @@ class BookServiceTest {
         book3 = new BookDto(BookRepository.ISBN_THREE, "de grote afrekening - deel 2", "Bart", "Waterslaeghers");
         bookRepository = new BookRepository();
         bookService = new BookService(new BookDtoMapper(), bookRepository, new UserService(new UserRepository(), new UserMapper()));
-
+        bookLendingService = new BookLendingService(new BookLendingMapper(), new BookLendingRepository(),
+                new UserService(new UserRepository(), new UserMapper()), bookService);
     }
 
     @DisplayName("get booklist from bookrepo in form bookDto")
@@ -52,6 +56,7 @@ class BookServiceTest {
     @Test
     void whenAskingForBookByIsbnInService_ThenGetBookDto() {
         //WHEN
+        bookLendingService.save(new CreateBookLendingDto(BookRepository.ISBN_ONE, MEMBER_ID));
         BookDto result = bookService.getByIsbn(BookRepository.ISBN_ONE);
 
         //THEN
