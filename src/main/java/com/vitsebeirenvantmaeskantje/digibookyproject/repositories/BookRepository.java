@@ -51,12 +51,7 @@ public class BookRepository {
     }
 
     public boolean assertIsbnExists(String isbn) {
-        try {
-            getBookByIsbn(isbn);
-        } catch (IllegalArgumentException exception) {
-            return false;
-        }
-        return true;
+        return books.containsKey(isbn);
     }
 
     public Book setBookLentStatus(String isbn, boolean lendingStatus) {

@@ -34,4 +34,8 @@ public class UserRepository {
         return myUsers.get(id);
     }
 
+    public boolean assertUserIdExists(String memberId){
+        return myUsers.containsKey(memberId);
+    }
+
 }

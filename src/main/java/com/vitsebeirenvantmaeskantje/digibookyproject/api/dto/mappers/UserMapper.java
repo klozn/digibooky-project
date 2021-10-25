@@ -11,5 +11,4 @@ public class UserMapper {
                 user.getCity(), user.getStreet(), user.getStreetNumber(), user.getPostalCode(), user.getRole());
     }
 
-
 }

@@ -4,9 +4,8 @@ import com.vitsebeirenvantmaeskantje.digibookyproject.api.dto.booklendings.BookL
 import com.vitsebeirenvantmaeskantje.digibookyproject.api.dto.booklendings.CreateBookLendingDto;
 import com.vitsebeirenvantmaeskantje.digibookyproject.api.dto.mappers.BookLendingMapper;
 import com.vitsebeirenvantmaeskantje.digibookyproject.domain.BookLending;
+import com.vitsebeirenvantmaeskantje.digibookyproject.domain.exceptions.UserNotFoundException;
 import com.vitsebeirenvantmaeskantje.digibookyproject.repositories.BookLendingRepository;
-import com.vitsebeirenvantmaeskantje.digibookyproject.repositories.BookRepository;
-import com.vitsebeirenvantmaeskantje.digibookyproject.repositories.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -14,41 +13,38 @@ import org.springframework.stereotype.Service;
 public class BookLendingService {
 
     private final BookLendingMapper bookLendingMapper;
-    private final BookRepository bookRepository;
     private final BookLendingRepository bookLendingRepository;
     private final UserService userService;
     private final BookService bookService;
-    private final UserRepository userRepository;
 
     @Autowired
-    public BookLendingService(BookLendingMapper bookLendingMapper, BookRepository bookRepository,
-                              BookLendingRepository bookLendingRepository, UserService userService,
-                              BookService bookService, UserRepository userRepository) {
+    public BookLendingService(BookLendingMapper bookLendingMapper, BookLendingRepository bookLendingRepository,
+                              UserService userService, BookService bookService) {
         this.bookLendingMapper = bookLendingMapper;
-        this.bookRepository = bookRepository;
         this.bookLendingRepository = bookLendingRepository;
         this.userService = userService;
         this.bookService = bookService;
-        this.userRepository = userRepository;
     }
 
     public BookLendingDto save(CreateBookLendingDto bookLendingDto) {
-        if (!bookRepository.assertIsbnExists(bookLendingDto.getIsbn())) {
+
+        if (!bookService.assertIsbnExists(bookLendingDto.getIsbn())) {
             throw new IllegalArgumentException("Book ISBN " + bookLendingDto.getIsbn() + " does not exist");
         }
 
-        if (bookRepository.isBookLent(bookLendingDto.getIsbn())) {
+        if (bookService.isBookLent(bookLendingDto.getIsbn())) {
             throw new IllegalArgumentException("Book with ISBN " + bookLendingDto.getIsbn() + " is already lent");
         }
 
-        userService.assertMemberId(bookLendingDto.getMemberId());
+        if (!userService.assertUserIdExistsABoolean(bookLendingDto.getMemberId())) {
+            throw new UserNotFoundException("User with id " + bookLendingDto.getMemberId() + " does not exist");
+        }
 
         BookLending lentBook = new BookLending(bookLendingDto.getIsbn(), bookLendingDto.getMemberId());
         bookLendingRepository.save(lentBook);
 
-        bookRepository.setBookLentStatus(bookLendingDto.getIsbn(), true);
+        bookService.setBookLentStatus(bookLendingDto.getIsbn(), true);
         return bookLendingMapper.toDto(lentBook);
     }
-
 
 }

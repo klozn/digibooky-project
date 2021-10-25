@@ -42,7 +42,7 @@ public class BookController {
     public List<BookDto> getBookByBySearchTypeWithWildCard(@PathVariable("searchType") String searchType,
                                                            @PathVariable("partialInput") String partialInput) {
 
-        logger.info("Searching for book via " + searchType + " with search query ");
+        logger.info("Searching for book via " + searchType + " with search query " + partialInput);
 
         return switch (searchType) {
             case "isbn" -> bookService.getBookByIsbnWildcard(partialInput);

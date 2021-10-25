@@ -11,8 +11,8 @@ import com.vitsebeirenvantmaeskantje.digibookyproject.services.utility.PatternMa
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import java.util.Comparator;
 import java.util.ArrayList;
+import java.util.Comparator;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -75,7 +75,7 @@ public class BookService {
         return foundBooks;
     }
 
-    public BookDto registerBook(CreateBookDto createBookDto, String id){
+    public BookDto registerBook(CreateBookDto createBookDto, String id) {
         userService.assertLibrarianId(id);
         Book created = bookRepository.save(new Book(createBookDto.getIsbn(), createBookDto.getTitle(),
                 createBookDto.getAuthorFirstname(), createBookDto.getAuthorLastname()));
@@ -100,5 +100,17 @@ public class BookService {
             throw new BookIsNotFoundException("No book found with isbn: " + isbn);
         }
         return book;
+    }
+
+    public boolean assertIsbnExists(String isbn) {
+        return bookRepository.assertIsbnExists(isbn);
+    }
+
+    public boolean isBookLent(String isbn) {
+        return bookRepository.isBookLent(isbn);
+    }
+
+    public void setBookLentStatus(String isbn, boolean bookLent) {
+        bookRepository.setBookLentStatus(isbn, bookLent);
     }
 }

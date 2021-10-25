@@ -7,7 +7,7 @@ public class BookLendingDto {
     private final String id;
     private final String isbn;
     private final String memberId;
-    private LocalDate returnDate;
+    private final LocalDate returnDate;
 
     public BookLendingDto(String id, String isbn, String memberId, LocalDate returnDate) {
         this.id = id;
@@ -15,7 +15,6 @@ public class BookLendingDto {
         this.memberId = memberId;
         this.returnDate = returnDate;
     }
-
 
     public String getId() {
         return id;
@@ -33,7 +32,4 @@ public class BookLendingDto {
         return returnDate;
     }
 
-    public void setReturnDate(LocalDate returnDate) {
-        this.returnDate = returnDate;
-    }
 }

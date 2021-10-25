@@ -21,11 +21,10 @@ public class BookLendingController {
         this.bookLendingService = bookLendingService;
     }
 
-    @PostMapping(consumes = "application/json",produces = "application/json")
+    @PostMapping(consumes = "application/json", produces = "application/json")
     @ResponseStatus(HttpStatus.CREATED)
-    public BookLendingDto lendBook(@RequestBody CreateBookLendingDto createBookLendingDto){
+    public BookLendingDto lendBook(@RequestBody CreateBookLendingDto createBookLendingDto) {
         logger.info("Attempting to lend book with ISBN " + createBookLendingDto.getIsbn());
         return bookLendingService.save(createBookLendingDto);
     }
-
 }

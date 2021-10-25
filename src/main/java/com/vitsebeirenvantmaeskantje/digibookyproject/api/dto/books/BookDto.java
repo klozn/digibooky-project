@@ -26,6 +26,16 @@ public class BookDto {
         this.summary = summary;
     }
 
+    public BookDto(String isbn, String title, String authorFirstname, String authorLastname, boolean deleted, boolean lent, String summary) {
+        this.isbn = isbn;
+        this.title = title;
+        this.authorFirstname = authorFirstname;
+        this.authorLastname = authorLastname;
+        this.lent = lent;
+        this.deleted = deleted;
+        this.summary = summary;
+    }
+
     public String getIsbn() {
         return isbn;
     }

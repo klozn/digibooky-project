@@ -79,12 +79,9 @@ public class UserService {
         }
     }
 
-    protected void assertMemberId(String id) {
-        try {
-            fetchUserIfExistElseThrowException(id);
-        } catch (UserNotFoundException exception) {
-            throw new UserNotFoundException(exception.getMessage());
-        }
+    public boolean assertUserIdExistsABoolean(String memberId)
+    {
+        return repository.assertUserIdExists(memberId);
     }
 
     protected User fetchUserIfExistElseThrowException(String id) {
