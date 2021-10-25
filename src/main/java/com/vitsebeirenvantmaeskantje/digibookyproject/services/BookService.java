@@ -2,11 +2,9 @@ package com.vitsebeirenvantmaeskantje.digibookyproject.services;
 
 import com.vitsebeirenvantmaeskantje.digibookyproject.api.dto.books.BookDto;
 import com.vitsebeirenvantmaeskantje.digibookyproject.api.dto.books.CreateBookDto;
-import com.vitsebeirenvantmaeskantje.digibookyproject.api.dto.books.EnhancedBookDto;
 import com.vitsebeirenvantmaeskantje.digibookyproject.api.dto.books.UpdateBookDto;
 import com.vitsebeirenvantmaeskantje.digibookyproject.api.dto.mappers.BookDtoMapper;
 import com.vitsebeirenvantmaeskantje.digibookyproject.domain.Book;
-import com.vitsebeirenvantmaeskantje.digibookyproject.domain.User;
 import com.vitsebeirenvantmaeskantje.digibookyproject.domain.exceptions.BookIsDeletedException;
 import com.vitsebeirenvantmaeskantje.digibookyproject.domain.exceptions.BookIsNotFoundException;
 import com.vitsebeirenvantmaeskantje.digibookyproject.repositories.BookRepository;
@@ -89,7 +87,7 @@ public class BookService {
 
     public BookDto updateBook(String isbn, UpdateBookDto updateBookDto, String userId) {
         userService.assertLibrarianId(userId);
-        Book toUpdate = fetchBookByIsbnElseThrowException(isbn);
+        Book toUpdate = fetchBookByIsbnForUpdateElseThrowException(isbn);
         toUpdate.setTitle(updateBookDto.getTitle());
         toUpdate.setAuthorFirstname(updateBookDto.getAuthorFirstname());
         toUpdate.setAuthorLastname(updateBookDto.getAuthorLastname());
@@ -105,6 +103,14 @@ public class BookService {
         }
         if (book.isDeleted()) {
             throw new BookIsDeletedException("Book with isbn: " + isbn + " has been deleted from the database.");
+        }
+        return book;
+    }
+
+    private Book fetchBookByIsbnForUpdateElseThrowException(String isbn) {
+        Book book = bookRepository.getBookByIsbn(isbn);
+        if (book == null) {
+            throw new BookIsNotFoundException("No book found with isbn: " + isbn);
         }
         return book;
     }
