@@ -43,8 +43,8 @@ class BookLendingServiceTest {
         bookService = new BookService(new BookDtoMapper(), new BookRepository(),
                 new UserService(new UserRepository(), new UserMapper()));
         bookLendingService = new BookLendingService(new BookLendingMapper(),
-                bookLendingRepository, new UserService(new UserRepository(), new UserMapper()),bookService
-                );
+                bookLendingRepository, new UserService(new UserRepository(), new UserMapper()), bookService
+        );
 
         validDTO = new CreateBookLendingDto(ISBN_ONE, "1");
         invalidISBNDTO = new CreateBookLendingDto("111", "1");
@@ -143,17 +143,7 @@ class BookLendingServiceTest {
         @DisplayName("Member gives wrong lending id.")
         @Test
         void whenMemberDeliversAWrongLendingID_ThenThrowAnException() {
-            //GIVEN
-            BookLendingDto lentBook = bookLendingService.save(validDTO);
-            String lendingId = "test";
-            LocalDate localDate = LocalDate.now();
-            LocalDate lastReturningDate = lentBook.getReturnDate();
-            String isbnReturnedBook = lentBook.getIsbn();
-            BookService bookService = new BookService(new BookDtoMapper(), new BookRepository(),
-                    new UserService(new UserRepository(), new UserMapper()));
-
-            //THEN
-            assertThrows(IllegalArgumentException.class, () -> bookLendingService.returnBook(lendingId));
+            assertThrows(IllegalArgumentException.class, () -> bookLendingService.returnBook("test"));
         }
     }
 
@@ -166,9 +156,9 @@ class BookLendingServiceTest {
         void whenLibrarianAskForListOfOverdueBooks_ThenHeGetsAListOfOverdueBooks() {
 
             //GIVEN
-            BookLending lentBook = new BookLending(ISBN_ONE,"1",LocalDate.of(2020,10,10));
-            BookLending lentBook2 = new BookLending(ISBN_TWO,"1");
-            BookLending lentBook3 = new BookLending(ISBN_THREE,"1");
+            BookLending lentBook = new BookLending(ISBN_ONE, "1", LocalDate.of(2020, 10, 10));
+            BookLending lentBook2 = new BookLending(ISBN_TWO, "1");
+            BookLending lentBook3 = new BookLending(ISBN_THREE, "1");
 
             bookLendingRepository.save(lentBook);
             bookLendingRepository.save(lentBook2);
@@ -176,10 +166,10 @@ class BookLendingServiceTest {
 
 
             //WHEN
-            List<BookDto> lentBooks = bookLendingService.getLentBooksByMemberId("1",LIBRARIAN_ID);
+            List<BookDto> lentBooks = bookLendingService.getLentBooksByMemberId("1", LIBRARIAN_ID);
             List<BookDto> overdueBooks = bookLendingService.getOverdueBooks(LIBRARIAN_ID);
             //THEN
-            Assertions.assertEquals(3,lentBooks.size());
+            Assertions.assertEquals(3, lentBooks.size());
             Assertions.assertEquals(1, overdueBooks.size());
             Assertions.assertEquals(overdueBooks.get(0), bookService.getByIsbn(lentBook.getIsbn()));
 

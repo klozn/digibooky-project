@@ -79,8 +79,7 @@ public class UserService {
         }
     }
 
-    public boolean assertUserIdExistsABoolean(String memberId)
-    {
+    public boolean assertUserIdExistsABoolean(String memberId) {
         return repository.assertUserIdExists(memberId);
     }
 

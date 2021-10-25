@@ -20,11 +20,11 @@ public class BookLendingRepository {
         return lentBooks.put(bookLending.getId(), bookLending);
     }
 
-    public BookLending getBookLending(String bookLendingId){
+    public BookLending getBookLending(String bookLendingId) {
         return lentBooks.get(bookLendingId);
     }
 
-    public void returnBook(BookLending bookLending){
+    public void returnBook(BookLending bookLending) {
         bookLending.setReturned(true);
         lentBooks.remove(bookLending.getId());
     }

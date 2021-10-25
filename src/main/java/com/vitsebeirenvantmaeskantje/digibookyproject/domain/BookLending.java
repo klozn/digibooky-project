@@ -31,9 +31,10 @@ public class BookLending {
         this.returnDate = LocalDate.now().plusDays(DEFAULT_LENDING_PERIOD_IN_DAYS);
     }
 
-    private void setId(){
+    private void setId() {
         this.id = UUID.randomUUID().toString();
     }
+
     public String getId() {
         return id;
     }
@@ -53,6 +54,7 @@ public class BookLending {
     public boolean isReturned() {
         return returned;
     }
+
     public void setReturned(boolean returned) {
         this.returned = returned;
     }
