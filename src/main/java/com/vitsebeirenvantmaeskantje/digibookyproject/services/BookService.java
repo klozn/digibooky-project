@@ -77,8 +77,8 @@ public class BookService {
         return foundBooks;
     }
 
-    public BookDto registerBook(CreateBookDto createBookDto, String id) {
-        userService.assertLibrarianId(id);
+    public BookDto registerBook(CreateBookDto createBookDto) {
+        userService.assertLibrarianId(createBookDto.getLibrarianId());
         Book created = bookRepository.save(new Book(createBookDto.getIsbn(), createBookDto.getTitle(),
                 createBookDto.getAuthorFirstname(), createBookDto.getAuthorLastname()));
         created.setSummary(createBookDto.getSummary());

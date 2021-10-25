@@ -9,13 +9,13 @@ import com.vitsebeirenvantmaeskantje.digibookyproject.domain.User;
 import com.vitsebeirenvantmaeskantje.digibookyproject.domain.exceptions.UnauthorizedUserException;
 import com.vitsebeirenvantmaeskantje.digibookyproject.repositories.UserRepository;
 import org.junit.jupiter.api.DisplayName;
-import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.Nested;
+import org.junit.jupiter.api.Test;
 
 import java.util.List;
 
+import static org.assertj.core.api.Assertions.assertThat;
 import static org.junit.jupiter.api.Assertions.*;
-import static org.assertj.core.api.Assertions.*;
 
 
 @DisplayName("User test")
@@ -63,8 +63,8 @@ class UserServiceTest {
             UserDto member = userService.createNewMember(new CreateMemberDto("1324564877", null, "From the block",
                     "bobby.fromdablock@test.be", "Harlem", null, null, 0));
             assertThrows(UnauthorizedUserException.class, () ->
-                    userService.createNewAdmin(new CreateAdminDto("874654", null, "From the block",
-                            "bobby.fromdablock@test.be", "Harlem", null, null, 0), member.getId()));
+                    userService.createNewAdmin(new CreateAdminDto(member.getId(), "874654", null, "From the block",
+                            "bobby.fromdablock@test.be", "Harlem", null, null, 0)));
         }
 
         @Test
@@ -80,8 +80,8 @@ class UserServiceTest {
         @Test
         @DisplayName("Admin can register admin")
         void ifUserIsAdmin_whenCreateAdmin_returnsNewAdmin() {
-            UserDto admin = userService.createNewAdmin(new CreateAdminDto("1324564877", null, "From the block",
-                    "bobby.fromdablock@test.be", "Harlem", null, null, 0), ADMIN_ID);
+            UserDto admin = userService.createNewAdmin(new CreateAdminDto(ADMIN_ID, "1324564877", null, "From the block",
+                    "bobby.fromdablock@test.be", "Harlem", null, null, 0));
 
             assertSame(admin.getRole(), User.Role.ADMIN);
         }
@@ -114,8 +114,8 @@ class UserServiceTest {
         @DisplayName("Admin can register a Librarian")
         @Test
         void ifUserIsAdmin_whenCreateLibrarian_returnsNewAdmin() {
-            UserDto librarian = userService.createNewLibrarian(new CreateLibrarianDto("1324564877", null, "From the block",
-                    "bobby.fromdablock@test.be", "Harlem", null, null, 0), ADMIN_ID);
+            UserDto librarian = userService.createNewLibrarian(new CreateLibrarianDto(ADMIN_ID, "1324564877", null, "From the block",
+                    "bobby.fromdablock@test.be", "Harlem", null, null, 0));
 
             assertSame(librarian.getRole(), User.Role.LIBRARIAN);
         }

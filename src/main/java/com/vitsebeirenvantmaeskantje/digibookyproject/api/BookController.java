@@ -41,10 +41,10 @@ public class BookController {
         return bookDetailsService.getBookDetails(ISBN);
     }
 
-    @GetMapping(produces = "application/json", path = "/search/{searchType}/{partialInput}")
+    @GetMapping(produces = "application/json", path = "/search")
     @ResponseStatus(HttpStatus.OK)
-    public List<BookDto> getBookByBySearchTypeWithWildCard(@PathVariable("searchType") String searchType,
-                                                           @PathVariable("partialInput") String partialInput) {
+    public List<BookDto> getBookByBySearchTypeWithWildCard(@RequestParam("searchType") String searchType,
+                                                           @RequestParam("partialInput") String partialInput) {
 
         logger.info("Searching for book via " + searchType + " with search query " + partialInput);
 
@@ -57,7 +57,7 @@ public class BookController {
 
     }
 
-    @PostMapping(consumes = "application/json", produces = "application/json", path = "/{id}")
+    @PostMapping(consumes = "application/json", produces = "application/json")
     @ResponseStatus(HttpStatus.CREATED)
     public BookDto registerBook(@RequestBody CreateBookDto createBookDto, @PathVariable("id") String userId) {
         logger.info("Register new book with ISBN " + createBookDto.getIsbn() + " by userID " + userId + ".");

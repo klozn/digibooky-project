@@ -149,10 +149,10 @@ class BookServiceTest {
         @DisplayName("When a librarian registers a new book, it works.")
         @Test
         void whenUserIsLibrarianRegisterANewBook_ThenNewBookIsAddedToTheLibrary() {
-            CreateBookDto createBookDto = new CreateBookDto(book1.getIsbn(), book1.getTitle(), book1.getAuthorFirstname(),
+            CreateBookDto createBookDto = new CreateBookDto(LIBRARIAN_ID, book1.getIsbn(), book1.getTitle(), book1.getAuthorFirstname(),
                     book1.getAuthorLastname(), book1.getSummary());
-            Assertions.assertDoesNotThrow(() -> bookService.registerBook(createBookDto, LIBRARIAN_ID));
-            BookDto created = bookService.registerBook(createBookDto, LIBRARIAN_ID);
+            Assertions.assertDoesNotThrow(() -> bookService.registerBook(createBookDto));
+            BookDto created = bookService.registerBook(createBookDto);
 
             Assertions.assertEquals(book1.getIsbn(), created.getIsbn());
             Assertions.assertEquals(book1.getTitle(), created.getTitle());
@@ -167,7 +167,7 @@ class BookServiceTest {
         void whenUserIsMemberRegisterANewBook_ThenAnExceptionIsThrown() {
             CreateBookDto createBookDto = new CreateBookDto(book1.getIsbn(), book1.getTitle(), book1.getAuthorFirstname(),
                     book1.getAuthorLastname(), book1.getSummary());
-            Assertions.assertThrows(UnauthorizedUserException.class, () -> bookService.registerBook(createBookDto, MEMBER_ID));
+            Assertions.assertThrows(UnauthorizedUserException.class, () -> bookService.registerBook(createBookDto));
 
         }
 
@@ -176,7 +176,7 @@ class BookServiceTest {
         void whenUserIsAdminRegisterANewBook_ThenAnExceptionIsThrown() {
             CreateBookDto createBookDto = new CreateBookDto(book1.getIsbn(), book1.getTitle(), book1.getAuthorFirstname(),
                     book1.getAuthorLastname(), book1.getSummary());
-            Assertions.assertThrows(UnauthorizedUserException.class, () -> bookService.registerBook(createBookDto, ADMIN_ID));
+            Assertions.assertThrows(UnauthorizedUserException.class, () -> bookService.registerBook(createBookDto));
 
         }
     }
@@ -208,9 +208,9 @@ class BookServiceTest {
         @DisplayName("Librarian updates a book, it works")
         @Test
         void whenUserIsLibrarianAndUpdatesABook_ThenTheBookIsUpdated() {
-            UpdateBookDto updateBookDto = new UpdateBookDto("new title", "new firstname",
+            UpdateBookDto updateBookDto = new UpdateBookDto(LIBRARIAN_ID, BookRepository.ISBN_ONE, "new title", "new firstname",
                     "new lastname", "new summary");
-            Assertions.assertDoesNotThrow(() -> bookService.updateBook(book1.getIsbn(), updateBookDto, LIBRARIAN_ID));
+            Assertions.assertDoesNotThrow(() -> bookService.updateBook(updateBookDto));
             Assertions.assertEquals("new title", bookRepository.getBookByIsbn(book1.getIsbn()).getTitle());
         }
     }

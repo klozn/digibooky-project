@@ -35,9 +35,9 @@ public class UserController {
 
     @PostMapping(path = "/{id}/registerAdmin", consumes = "application/json", produces = "application/json")
     @ResponseStatus(HttpStatus.CREATED)
-    public UserDto createAdmin(@RequestBody CreateAdminDto createAdminDto, @PathVariable String id){
+    public UserDto createAdmin(@RequestBody CreateAdminDto createAdminDto){
         logger.info("Trying to create admin...");
-        return userService.createNewAdmin(createAdminDto, id);
+        return userService.createNewAdmin(createAdminDto);
     }
 
     @PostMapping(path ="/{id}/registerLibrarian", consumes = "application/json", produces = "application/json")

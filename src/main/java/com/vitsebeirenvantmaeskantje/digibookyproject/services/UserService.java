@@ -37,8 +37,8 @@ public class UserService {
         return mapper.toDto(member);
     }
 
-    public UserDto createNewAdmin(CreateAdminDto createAdminDto, String adminId) {
-        assertAdminId(adminId);
+    public UserDto createNewAdmin(CreateAdminDto createAdminDto) {
+        assertAdminId(createAdminDto.getAdminId());
         User admin = new User(createAdminDto.getInss(), createAdminDto.getFirstName(), createAdminDto.getLastName(),
                 createAdminDto.getMail(), createAdminDto.getCity(), createAdminDto.getStreet(),
                 createAdminDto.getStreetNumber(), createAdminDto.getPostalCode(), User.Role.ADMIN);
