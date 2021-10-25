@@ -28,7 +28,7 @@ public class UserController {
     //POST
     @PostMapping(consumes = "application/json", produces = "application/json")
     @ResponseStatus(HttpStatus.CREATED)
-    public UserDto createMember(@RequestBody CreateMemberDto createMemberDto){
+    public UserDto createMember(@RequestBody CreateMemberDto createMemberDto) {
         logger.info("Creating new member for email: " + createMemberDto.getMail());
         return userService.createNewMember(createMemberDto);
     }
@@ -50,7 +50,7 @@ public class UserController {
     //GETTERS
     @GetMapping(path = "/{id}/members", produces = "application/json")
     @ResponseStatus(HttpStatus.OK)
-    public List<UserDto> getAllMembers(@PathVariable String id){
+    public List<UserDto> getAllMembers(@PathVariable String id) {
         logger.info("Gathering all members...");
         return userService.getAllMembers(id);
     }

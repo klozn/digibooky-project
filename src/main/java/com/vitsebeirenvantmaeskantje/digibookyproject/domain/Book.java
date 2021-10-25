@@ -66,7 +66,7 @@ public class Book {
         this.summary = summary;
     }
 
-    public String getBookAuthorFullName(){
+    public String getBookAuthorFullName() {
         return authorFirstname + " " + authorLastname;
     }
 
