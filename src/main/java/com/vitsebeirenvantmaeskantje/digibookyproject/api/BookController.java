@@ -71,11 +71,18 @@ public class BookController {
         return bookService.updateBook(isbn, updateBookDto, userId);
     }
 
-    @DeleteMapping(path = "/{isbn}/{userId}", consumes = "application/json", produces = "application/json")
+    @DeleteMapping(path = "/{isbn}/{userId}", produces = "application/json")
     @ResponseStatus(HttpStatus.OK)
     public BookDto deleteBook(@PathVariable String isbn, @PathVariable String userId) {
         logger.info("Deleting book with ISBN " + isbn + " by userID: " + userId + ".");
         return bookService.deleteByIsbn(isbn, userId);
+    }
+
+    @PatchMapping(path = "/undelete/{isbn}/{userId}", produces = "application/json")
+    @ResponseStatus(HttpStatus.OK)
+    public BookDto undeleteBook(@PathVariable String isbn, @PathVariable String userId) {
+        logger.info("Restoring book with ISBN " + isbn + " by userID: " + userId + ".");
+        return bookService.undeleteByIsbn(isbn, userId);
     }
 
 }

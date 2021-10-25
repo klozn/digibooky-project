@@ -134,4 +134,12 @@ public class BookService {
         bookRepository.save(book);
         return bookDtoMapper.toDto(book);
     }
+
+    public BookDto undeleteByIsbn(String isbn, String userId) {
+        userService.assertLibrarianId(userId);
+        Book book = bookRepository.getBookByIsbn(isbn);
+        book.setDeleted(false);
+        bookRepository.save(book);
+        return bookDtoMapper.toDto(book);
+    }
 }
