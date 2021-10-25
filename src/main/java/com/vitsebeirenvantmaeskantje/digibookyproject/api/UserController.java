@@ -35,14 +35,14 @@ public class UserController {
 
     @PostMapping(path = "/{id}/registerAdmin", consumes = "application/json", produces = "application/json")
     @ResponseStatus(HttpStatus.CREATED)
-    public UserDto createAdmin(@RequestBody CreateAdminDto createAdminDto){
+    public UserDto createAdmin(@RequestBody CreateAdminDto createAdminDto) {
         logger.info("Trying to create admin...");
         return userService.createNewAdmin(createAdminDto);
     }
 
-    @PostMapping(path ="/registerLibrarian", consumes = "application/json", produces = "application/json")
+    @PostMapping(path = "/registerLibrarian", consumes = "application/json", produces = "application/json")
     @ResponseStatus(HttpStatus.CREATED)
-    public UserDto createLibrarian(@RequestBody CreateLibrarianDto createLibrarianDto){
+    public UserDto createLibrarian(@RequestBody CreateLibrarianDto createLibrarianDto) {
         logger.info("Trying to create librarian...");
         return userService.createNewLibrarian(createLibrarianDto);
     }

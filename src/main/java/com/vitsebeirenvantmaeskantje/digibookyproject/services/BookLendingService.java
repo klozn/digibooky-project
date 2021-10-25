@@ -3,7 +3,6 @@ package com.vitsebeirenvantmaeskantje.digibookyproject.services;
 import com.vitsebeirenvantmaeskantje.digibookyproject.api.dto.booklendings.BookLendingDto;
 import com.vitsebeirenvantmaeskantje.digibookyproject.api.dto.booklendings.CreateBookLendingDto;
 import com.vitsebeirenvantmaeskantje.digibookyproject.api.dto.books.BookDto;
-import com.vitsebeirenvantmaeskantje.digibookyproject.api.dto.books.EnhancedBookDto;
 import com.vitsebeirenvantmaeskantje.digibookyproject.api.dto.mappers.BookLendingMapper;
 import com.vitsebeirenvantmaeskantje.digibookyproject.domain.BookLending;
 import com.vitsebeirenvantmaeskantje.digibookyproject.domain.exceptions.UserNotFoundException;
@@ -17,9 +16,7 @@ import java.util.stream.Collectors;
 
 import java.time.LocalDate;
 import java.util.ArrayList;
-import java.util.List;
-import java.util.Objects;
-import java.util.stream.Collectors;
+
 
 @Service
 public class BookLendingService {
@@ -73,6 +70,7 @@ public class BookLendingService {
     public List<BookDto> getOverdueBooks(String librarianId) {
         userService.assertLibrarianId(librarianId);
         return bookLendingRepository.getLentBooks().stream()
+                .filter(bookLending -> !bookLending.isReturned())
                 .filter(bookLending -> bookLending.getReturnDate().isBefore(LocalDate.now()))
                 .map(bookLending -> bookService.getByIsbn(bookLending.getIsbn()))
                 .collect(Collectors.toList());

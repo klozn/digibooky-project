@@ -23,9 +23,7 @@ import static org.junit.jupiter.api.Assertions.assertThrows;
 
 class BookLendingServiceTest {
 
-    private final static String ADMIN_ID = "1";
     private final static String LIBRARIAN_ID = "2";
-    private final static String MEMBER_ID = "3";
     private static final String ISBN_ONE = BookRepository.ISBN_ONE;
     private static final String ISBN_TWO = BookRepository.ISBN_TWO;
     private static final String ISBN_THREE = BookRepository.ISBN_THREE;
@@ -132,17 +130,13 @@ class BookLendingServiceTest {
         void whenReturningABookThatIsNotOverdue_ThenItIsAlright() {
             //GIVEN
             BookLendingDto lentBook = bookLendingService.save(validDTO);
-            String lendingId = lentBook.getId();
-            LocalDate localDate = LocalDate.now();
             LocalDate lastReturningDate = lentBook.getReturnDate();
-            String isbnReturnedBook = lentBook.getIsbn();
-            BookService bookService = new BookService(new BookDtoMapper(), new BookRepository(),
-                    new UserService(new UserRepository(), new UserMapper()));
+
             //WHEN
-            bookLendingService.returnBook(lendingId);
+            bookLendingService.returnBook(lentBook.getId());
             //THEN
-            Assertions.assertTrue(lastReturningDate.isAfter(localDate));
-            Assertions.assertFalse(bookService.isBookLent(isbnReturnedBook));
+            Assertions.assertTrue(lastReturningDate.isAfter(LocalDate.now()));
+            Assertions.assertFalse(bookService.isBookLent(lentBook.getIsbn()));
         }
 
 

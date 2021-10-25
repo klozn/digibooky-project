@@ -28,7 +28,7 @@ public class BookLendingController {
     @ResponseStatus(HttpStatus.OK)
     public List<BookDto> getAllOverdueBooks(@PathVariable String id){
         logger.info("Trying to gather all overdue books");
-        return bookLendingService.getOverdueBooks(id);
+        return bookLendingService.getOverdueBooks(librarianId);
     }
 
     @GetMapping(path = "/{id}/lentbooks/{memberid}", produces="application/json")
