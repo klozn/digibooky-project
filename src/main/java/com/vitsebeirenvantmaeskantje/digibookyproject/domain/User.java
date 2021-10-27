@@ -19,6 +19,24 @@ public class User {
     private int postalCode;
     private Role role;
 
+
+    // CODE REVIEW
+    // using overloaded methods in general, and especially constructors, is often frowned upon.
+    // This is because you can't really provide information about why you have the two variations
+    // A common solution for this use case would be using static methods (see the three examples below) and making your actual constructor private
+    // Another solution (which I would prefer) would be to use builders
+    public static User createMember(String inss, String firstName, String lastName, String mail, String city, String street, String streetNumber, int postalCode) {
+        return new User(inss, firstName, lastName, mail, city, street, streetNumber, postalCode, Role.MEMBER);
+    }
+
+    public static User createAdmin(String inss, String firstName, String lastName, String mail, String city, String street, String streetNumber, int postalCode) {
+        return new User(inss, firstName, lastName, mail, city, street, streetNumber, postalCode, Role.ADMIN);
+    }
+
+    public static User createLibrarian(String inss, String firstName, String lastName, String mail, String city, String street, String streetNumber, int postalCode) {
+        return new User(inss, firstName, lastName, mail, city, street, streetNumber, postalCode, Role.LIBRARIAN);
+    }
+
     public User(String inss, String firstName, String lastName, String mail, String city, String street, String streetNumber, int postalCode) {
         this(inss, firstName, lastName, mail, city, street, streetNumber, postalCode, Role.MEMBER);
     }

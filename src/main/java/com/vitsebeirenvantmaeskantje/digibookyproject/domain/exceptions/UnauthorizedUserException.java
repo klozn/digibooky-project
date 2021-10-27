@@ -1,6 +1,7 @@
 package com.vitsebeirenvantmaeskantje.digibookyproject.domain.exceptions;
 
-public class UnauthorizedUserException extends RuntimeException{
+// CODEREVIEW unused constructors
+public class UnauthorizedUserException extends RuntimeException {
     public UnauthorizedUserException() {
     }
 

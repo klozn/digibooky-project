@@ -2,6 +2,9 @@ package com.vitsebeirenvantmaeskantje.digibookyproject.services.utility;
 
 import java.util.regex.Pattern;
 
+// CODEReview your most complex code
+// this should be the most tested code too
+// also: did you ask yourselves while writing this: is this really business logic of DigiBooky? Should this not already exist somewhere?
 public class PatternMatcher {
 
     /**

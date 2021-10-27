@@ -23,6 +23,9 @@ public class UserService {
     private final UserRepository repository;
     private final UserMapper mapper;
 
+    // CODEREVIEW your code allows people to be admins, librarians and members
+    // however, if I am all three, and I change address, i will have to change it three times
+
     @Autowired
     public UserService(UserRepository repository, UserMapper mapper) {
         this.repository = repository;
@@ -68,7 +71,7 @@ public class UserService {
                 .map(mapper::toDto)
                 .sorted(Comparator.comparing(UserDto::getLastName).thenComparing(UserDto::getFirstName))
                 .collect(Collectors.toUnmodifiableList()); // or simply .toList(); since Java16
-                //.collect(Collectors.toList());
+        //.collect(Collectors.toList());
         // CODEREVIEW Optional: Return UnmodifiableList
     }
 

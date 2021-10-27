@@ -24,6 +24,9 @@ class BookDtoMapperTest {
         Book result = mapper.toEntity(bookDto);
 
         //THEN
+        // CODEREVIEW I can introduce bugs and this test will stay green
+        // because the equality check here only bases itself on isbn
+        // for instance: if my mapper mistakenly switches the first and last name (which is very easy because it's all just strings)
         Assertions.assertEquals(expected, result);
     }
 

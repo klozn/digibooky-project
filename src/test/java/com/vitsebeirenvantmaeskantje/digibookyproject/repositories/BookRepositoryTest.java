@@ -8,7 +8,7 @@ import org.junit.jupiter.api.Test;
 
 import java.util.List;
 
-import static org.assertj.core.api.Assertions.*;
+import static org.assertj.core.api.Assertions.assertThat;
 
 
 class BookRepositoryTest {
@@ -39,6 +39,14 @@ class BookRepositoryTest {
     @DisplayName("View details of book")
     @Test
     void whenInspectingABook_ThenReceivesDetailsOfBook() {
+        // CODEReview this test relies on your default list of books
+        // a typical test would construct a new book instance, save it in the repository,
+        // and then check whether a retrieval by its isbn returns the correct Book instance
+        // so:
+        // * given step: construct a book instance and save it in the repository
+        // * when step: retrieve a book using the isbn you used in the given step
+        // * then step: verify whether hte retrieved book instance from the when step equals the constructed instance from the given step
+
         //WHEN
         Book result = bookRepository.getBookByIsbn(BookRepository.ISBN_ONE);
         result.setSummary("Dit is een test");

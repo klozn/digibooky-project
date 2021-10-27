@@ -10,12 +10,11 @@ import com.vitsebeirenvantmaeskantje.digibookyproject.repositories.BookLendingRe
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.time.LocalDate;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
 import java.util.stream.Collectors;
-
-import java.time.LocalDate;
-import java.util.ArrayList;
 
 
 @Service
@@ -87,14 +86,17 @@ public class BookLendingService {
 
     public BookLendingDto returnBook(String lendingID) {
         if (!isTrueLendingId(lendingID)) {
+            // CODEREVIEW you make specific exceptions for when other things are not found (BookNotFound, UserNotFound)
+            // why not here?
             throw new IllegalArgumentException("Lent book's ID not found.");
         }
         if (!isReturnedInTime(lendingID)) {
+            // use loggers for logging. Also: would it not be preferable to include this message in the rest response?
             System.out.println("Book is overdue!");
         }
         BookLending bookLending = bookLendingRepository.getBookLending(lendingID);
         bookService.setBookLentStatus(bookLending.getIsbn(), false); //FIXME call returnBook(isbn) method
-        // bookService.returnBook(bookLending.getIsbn())
+        // CODEREVIEW bookService.returnBook(bookLending.getIsbn())
         bookLendingRepository.returnBook(bookLending);
 
         return bookLendingMapper.toDto(bookLending);
