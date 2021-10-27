@@ -27,6 +27,10 @@ public class BookLendingController {
     @GetMapping(path = "/{librarianId}/overduebooks", produces = "application/json")
     @ResponseStatus(HttpStatus.OK)
     public List<BookDto> getAllOverdueBooks(@PathVariable String librarianId) {
+        // CODEREVIEW improve REST url
+        // Option 1: /lendings/overdue or /lendings/overduebooks
+        // Option 2: /lendings?overdue=true
+        // CODEREVIEW turn {librarianId} into @RequestHeader
         logger.info("Trying to gather all overdue books");
         return bookLendingService.getOverdueBooks(librarianId);
     }
@@ -42,6 +46,8 @@ public class BookLendingController {
     @PutMapping(path = "/{id}", produces = "application/json")
     @ResponseStatus(HttpStatus.OK)
     public BookLendingDto returnBook(@PathVariable("id") String id) {
+        // CODEREVIEW improve variable name (`id`) or method name (`returnBook`)
+        // Is the id a `bookId`, a `lendingId` or a `memberId` (unclear from context or name)
         logger.info("Attempting to return book with lending id " + id);
         return bookLendingService.returnBook(id);
     }
@@ -49,6 +55,10 @@ public class BookLendingController {
     @GetMapping(path = "/lentbooks/{memberId}/{librarianId}", produces = "application/json")
     @ResponseStatus(HttpStatus.OK)
     public List<BookDto> getLentBooksByMemberId(@PathVariable String memberId, @PathVariable String librarianId) {
+        // CODEREVIEW improve REST url
+        // Option 1: /{memberId}/books
+        // Option 2: /lendings?memberId=123
+        // CODEREVIEW turn {librarianId} into @RequestHeader
         logger.info("Getting books lent to member with id: " + memberId + ", by librarian with id: " + librarianId);
         return bookLendingService.getLentBooksByMemberId(memberId, librarianId);
     }

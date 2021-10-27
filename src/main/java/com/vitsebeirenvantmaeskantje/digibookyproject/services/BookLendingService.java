@@ -10,12 +10,11 @@ import com.vitsebeirenvantmaeskantje.digibookyproject.repositories.BookLendingRe
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.time.LocalDate;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
 import java.util.stream.Collectors;
-
-import java.time.LocalDate;
-import java.util.ArrayList;
 
 
 @Service
@@ -25,6 +24,8 @@ public class BookLendingService {
     private final BookLendingRepository bookLendingRepository;
     private final UserService userService;
     private final BookService bookService;
+    // CODEREVIEW Improve name CURRENT_DATE - not a constant
+    // Currently it is referring to 'the moment the Spring Boot server was started'
     private final LocalDate CURRENT_DATE = LocalDate.now();
 
     @Autowired
@@ -37,7 +38,7 @@ public class BookLendingService {
     }
 
     public BookLendingDto save(CreateBookLendingDto bookLendingDto) {
-
+// CODEREVIEW turn the 3 if's below into small `assertMethods`
         if (!bookService.assertIsbnExists(bookLendingDto.getIsbn())) {
             throw new IllegalArgumentException("Book ISBN " + bookLendingDto.getIsbn() + " does not exist");
         }
@@ -77,6 +78,7 @@ public class BookLendingService {
     }
 
     public String getMemberIdByLentBookISBN(String isbn) {
+        // CODEREVIEW The implementation below is a bit of everything :D
         return Objects.requireNonNull(bookLendingRepository.getLentBooks().stream()
                 .filter(bookLending -> bookLending.getIsbn().equals(isbn))
                 .findAny().orElse(null)).getMemberId();
@@ -84,13 +86,17 @@ public class BookLendingService {
 
     public BookLendingDto returnBook(String lendingID) {
         if (!isTrueLendingId(lendingID)) {
+            // CODEREVIEW you make specific exceptions for when other things are not found (BookNotFound, UserNotFound)
+            // why not here?
             throw new IllegalArgumentException("Lent book's ID not found.");
         }
         if (!isReturnedInTime(lendingID)) {
+            // use loggers for logging. Also: would it not be preferable to include this message in the rest response?
             System.out.println("Book is overdue!");
         }
         BookLending bookLending = bookLendingRepository.getBookLending(lendingID);
-        bookService.setBookLentStatus(bookLending.getIsbn(), false);
+        bookService.setBookLentStatus(bookLending.getIsbn(), false); //FIXME call returnBook(isbn) method
+        // CODEREVIEW bookService.returnBook(bookLending.getIsbn())
         bookLendingRepository.returnBook(bookLending);
 
         return bookLendingMapper.toDto(bookLending);
@@ -99,11 +105,13 @@ public class BookLendingService {
 
     private boolean isReturnedInTime(String lendingID) {
         List<BookLending> books = new ArrayList<>();
+        // CODEREVIEW Why are all the `LentBooks` iterated?
         for (BookLending book : bookLendingRepository.getLentBooks()) {
             if (book.getId().equals(lendingID)) {
                 books.add(book);
             }
         }
+        // CODEREVIEW There is a major risk of an `IndexOutOfBoundException`
         BookLending bookLending = books.get(0);
         return bookLending.getReturnDate().isAfter(CURRENT_DATE);
     }

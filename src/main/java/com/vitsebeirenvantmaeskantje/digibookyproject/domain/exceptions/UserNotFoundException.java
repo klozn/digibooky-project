@@ -1,5 +1,6 @@
 package com.vitsebeirenvantmaeskantje.digibookyproject.domain.exceptions;
 
+// CODEREVIEW unused constructors
 public class UserNotFoundException extends RuntimeException {
     public UserNotFoundException() {
     }

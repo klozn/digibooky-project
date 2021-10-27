@@ -11,6 +11,9 @@ public class Book {
     private String authorLastname;
     private String summary;
     private boolean deleted;
+    // CODEREVIEW think about how necessary this field is
+    // in BookLendingService you make a lot of effort to make sure a Book has true for field lent iff there exists a BookLending for the book
+    // there is a lot of value in trying to avoid information duplication in your database
     private boolean lent;
 
     public Book(String isbn, String title, String authorFirstname, String authorLastname) {
@@ -49,6 +52,7 @@ public class Book {
     }
 
     public void setIsbn(String isbn) {
+        // CODEReview: good use of an existing ISBN validator
         if (!ISBNValidator.getInstance().isValid(isbn)) {
             throw new IllegalArgumentException("Invalid isbn.");
         }
@@ -66,6 +70,10 @@ public class Book {
         this.summary = summary;
     }
 
+    // CODEReview unused method
+    // also typically, you would not have such a method here. How you display a name is a user interface concern.
+    // Sometimes you'll want "Pieter Valcke", sometimes "Valcke, Pieter", sometimes "P. Valcke". You don't want to
+    // have methods for all these varieties on your model: your model concerns itself with information, not presentation
     public String getBookAuthorFullName() {
         return authorFirstname + " " + authorLastname;
     }

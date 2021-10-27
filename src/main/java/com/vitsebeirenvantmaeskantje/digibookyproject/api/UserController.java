@@ -36,6 +36,8 @@ public class UserController {
     @PostMapping(path = "/registerAdmin", consumes = "application/json", produces = "application/json")
     @ResponseStatus(HttpStatus.CREATED)
     public UserDto createAdmin(@RequestBody CreateAdminDto createAdminDto) {
+        // CODEREVIEW Improve URL, remove verb
+        // TODO: (after security) make sure only admins can create new admins
         logger.info("Trying to create admin...");
         return userService.createNewAdmin(createAdminDto);
     }
@@ -43,6 +45,8 @@ public class UserController {
     @PostMapping(path = "/registerLibrarian", consumes = "application/json", produces = "application/json")
     @ResponseStatus(HttpStatus.CREATED)
     public UserDto createLibrarian(@RequestBody CreateLibrarianDto createLibrarianDto) {
+        // CODEREVIEW Improve URL, remove verb
+        // TODO: (after security) make sure only admins can create new librarians
         logger.info("Trying to create librarian...");
         return userService.createNewLibrarian(createLibrarianDto);
     }
@@ -51,6 +55,10 @@ public class UserController {
     @GetMapping(path = "/{id}/members", produces = "application/json")
     @ResponseStatus(HttpStatus.OK)
     public List<UserDto> getAllMembers(@PathVariable String id) {
+        // CODEREVIEW: What is the `id` parameter?
+        // FIXME: Rename to `adminId` (temporary)
+        // FIXME: Remove {id} from path, turn from path variable into header with @RequestHeader (temporary)
+        // TODO: Why temporary?? Until you add 'real' (spring) security
         logger.info("Gathering all members...");
         return userService.getAllMembers(id);
     }

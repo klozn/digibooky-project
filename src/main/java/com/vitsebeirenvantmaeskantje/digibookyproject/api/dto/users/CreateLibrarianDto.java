@@ -1,5 +1,6 @@
 package com.vitsebeirenvantmaeskantje.digibookyproject.api.dto.users;
 
+// CODEREVIEW The CreateAdminDTO and CreateLibrarianDTO are the same (with the exception of their name)
 public class CreateLibrarianDto {
     private final String adminId;
     private final String inss;

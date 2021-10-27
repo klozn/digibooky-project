@@ -1,7 +1,6 @@
 package com.vitsebeirenvantmaeskantje.digibookyproject.api.dto.users;
 
-import com.vitsebeirenvantmaeskantje.digibookyproject.domain.User;
-
+// CODEREVIEW The 3 Create*DTOs are all the same (With the exception of their name)
 public class CreateMemberDto {
     private final String inss;
     private final String firstName;

@@ -5,12 +5,14 @@ import java.util.Objects;
 public class BookDto {
     private final String isbn;
     private final String title;
-    private String authorFirstname;
+    private String authorFirstname; // FIXME The DTO has non-final fields
     private String authorLastname;
     private String summary;
     private boolean deleted;
     private boolean lent;
 
+    
+    // FIXME This constructor is not needed
     public BookDto(String isbn, String title, String authorFirstname, String authorLastname) {
         this.isbn = isbn;
         this.title = title;
@@ -18,6 +20,7 @@ public class BookDto {
         this.authorLastname = authorLastname;
     }
 
+    // FIXME call the this() constructor
     public BookDto(String isbn, String title, String authorFirstname, String authorLastname, String summary) {
         this.isbn = isbn;
         this.title = title;

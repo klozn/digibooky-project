@@ -1,0 +1,2 @@
+Many of your Dto and domain classes are ideal candidates for applying the Builder pattern
+You avoided adding logic to your Controller classes: good job!

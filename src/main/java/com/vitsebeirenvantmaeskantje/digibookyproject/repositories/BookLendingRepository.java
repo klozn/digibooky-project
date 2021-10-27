@@ -24,6 +24,8 @@ public class BookLendingRepository {
         return lentBooks.get(bookLendingId);
     }
 
+    // CODEREVIEW unnecessary manipulation of field value
+    // after setting the field to true, you remove the instance from your repository anyway so it disappears
     public void returnBook(BookLending bookLending) {
         bookLending.setReturned(true);
         lentBooks.remove(bookLending.getId());

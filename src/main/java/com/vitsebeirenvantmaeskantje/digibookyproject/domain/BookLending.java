@@ -7,6 +7,7 @@ public class BookLending {
 
     private static final int DEFAULT_LENDING_PERIOD_IN_DAYS = 21;
 
+    // CODEREVIEW inconsistent final marking
     private String id;
     private final String isbn;
     private final String memberId;
@@ -21,6 +22,7 @@ public class BookLending {
         setReturned(false);
     }
 
+    // CODEREVIEW unused constructor (only in tests: code smell)
     public BookLending(String isbn, String memberId, LocalDate returnDate) {
         this.isbn = isbn;
         this.memberId = memberId;
