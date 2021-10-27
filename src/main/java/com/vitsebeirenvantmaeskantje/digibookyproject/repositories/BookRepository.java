@@ -30,7 +30,9 @@ public class BookRepository {
     }
 
     public List<Book> getBooks() {
-        return new ArrayList<>(books.values());
+        return Collections.unmodifiableList(new ArrayList<>(books.values()));
+        //return new ArrayList<>(books.values());
+        // Optional: return immutable collection
     }
 
     public Book save(Book book) {
@@ -38,23 +40,31 @@ public class BookRepository {
         return book;
     }
 
-    public Book getBookByIsbn(String isbn) throws IllegalArgumentException {
-        Optional<Book> foundByISBN = Optional.ofNullable(books.get(isbn));
-        if (foundByISBN.isEmpty()) {
-            throw new IllegalArgumentException("Book with ISBN " + isbn + " not found");
-        }
-        return foundByISBN.get();
+    public Book getBookByIsbn(String isbn) { //throws IllegalArgumentException {
+        // FIXME remove throws
+        // Optional: Improve Optional :D
+        // Optional<Book> foundByISBN = Optional.ofNullable(books.get(isbn));
+        // if (foundByISBN.isEmpty()) {
+        //     throw new IllegalArgumentException("Book with ISBN " + isbn + " not found");
+        // }
+        // return foundByISBN.get();
+        return Optional
+            .ofNullable(books.get(isbn))
+            .orElseThrow(IllegalArgumentException::new);
     }
 
     public boolean isBookLent(String isbn) {
         return getBookByIsbn(isbn).isLent();
     }
 
-    public boolean assertIsbnExists(String isbn) {
+    public boolean assertIsbnExists(String isbn) { //FIXME rename: This method does not throw an exception
         return books.containsKey(isbn);
     }
 
     public Book setBookLentStatus(String isbn, boolean lendingStatus) {
+        // FIXME improve naming => split up in 2 methods
+        // setBookLent(String)
+        // setBookUnlent(String)
         Book bookToSetLentStatus = getBookByIsbn(isbn);
         bookToSetLentStatus.setLent(lendingStatus);
         return bookToSetLentStatus;

@@ -7,7 +7,9 @@ import java.util.UUID;
 
 public class User {
     private final String id;
-    private String inss;
+    // CODEREVIEW `id` is the only final field
+    // CODEREVIEW Optional: Use UUID for ID (instead of String)
+    private String inss; // CODEREVIEW `inss` feels quite final to me
     private String firstName;
     private String lastName;
     private String mail;
@@ -138,6 +140,7 @@ public class User {
     public int hashCode() {
         return Objects.hash(inss, mail);
     }
+    // CODEREVIEW make equals and hashcode on `id` or make `inss` and `mail` immutable
 
     public enum Role {
         MEMBER, LIBRARIAN, ADMIN

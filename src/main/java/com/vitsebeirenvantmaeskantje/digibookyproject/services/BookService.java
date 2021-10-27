@@ -80,8 +80,10 @@ public class BookService {
 
     public BookDto registerBook(CreateBookDto createBookDto) {
         userService.assertLibrarianId(createBookDto.getLibrarianId());
+        // CODEREVIEW: Why not use the mapper to turn `createBookDto` into a new Book?
         Book created = bookRepository.save(new Book(createBookDto.getIsbn(), createBookDto.getTitle(),
                 createBookDto.getAuthorFirstname(), createBookDto.getAuthorLastname()));
+        // CODEREVIEW: .setSummary() Why in 2 steps? Why not part of the constructor?
         created.setSummary(createBookDto.getSummary());
         return bookDtoMapper.toDto(created);
     }
@@ -99,7 +101,7 @@ public class BookService {
 
     private Book fetchBookByIsbnElseThrowException(String isbn) {
         Book book = bookRepository.getBookByIsbn(isbn);
-        if (book == null) {
+        if (book == null) { // FIXME: Code duplication => Create assertBookExists + reuse
             throw new BookIsNotFoundException("No book found with isbn: " + isbn);
         }
         if (book.isDeleted()) {
@@ -110,13 +112,14 @@ public class BookService {
 
     private Book fetchBookByIsbnForUpdateElseThrowException(String isbn) {
         Book book = bookRepository.getBookByIsbn(isbn);
-        if (book == null) {
+        if (book == null) { // FIXME: Code duplication => Create assertBookExists + reuse
             throw new BookIsNotFoundException("No book found with isbn: " + isbn);
         }
+        // CODEREVIEW: Is it possible to update books that are in state deleted?
         return book;
     }
 
-    public boolean assertIsbnExists(String isbn) {
+    public boolean assertIsbnExists(String isbn) { //FIXME rename: This method does not throw an exception
         return bookRepository.assertIsbnExists(isbn);
     }
 
@@ -132,7 +135,7 @@ public class BookService {
         userService.assertLibrarianId(userId);
         Book book = fetchBookByIsbnElseThrowException(isbn);
         book.setDeleted(true);
-        bookRepository.save(book);
+        bookRepository.save(book); // FIXME you already have a reference to a book in memory, no need to save() it
         return bookDtoMapper.toDto(book);
     }
 
@@ -140,7 +143,7 @@ public class BookService {
         userService.assertLibrarianId(userId);
         Book book = bookRepository.getBookByIsbn(isbn);
         book.setDeleted(false);
-        bookRepository.save(book);
+        bookRepository.save(book);// FIXME you already have a reference to a book in memory, no need to save() it
         return bookDtoMapper.toDto(book);
     }
 }

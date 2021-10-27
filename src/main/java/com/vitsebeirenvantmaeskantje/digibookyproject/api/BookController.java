@@ -74,6 +74,7 @@ public class BookController {
     @DeleteMapping(path = "/{isbn}/{userId}", produces = "application/json")
     @ResponseStatus(HttpStatus.OK)
     public BookDto deleteBook(@PathVariable String isbn, @PathVariable String userId) {
+        // CODEREVIEW Remove {userId} from url, turn into @RequestHeader
         logger.info("Deleting book with ISBN " + isbn + " by userID: " + userId + ".");
         return bookService.deleteByIsbn(isbn, userId);
     }

@@ -14,6 +14,7 @@ import org.springframework.stereotype.Service;
 
 import java.util.Comparator;
 import java.util.List;
+import java.util.Optional;
 import java.util.stream.Collectors;
 
 @Service
@@ -29,6 +30,7 @@ public class UserService {
     }
 
     public UserDto createNewMember(CreateMemberDto createMemberDto) {
+        // CODEREVIEW Why not use mapper?
         User member = new User(createMemberDto.getInss(), createMemberDto.getFirstName(), createMemberDto.getLastName(),
                 createMemberDto.getMail(), createMemberDto.getCity(), createMemberDto.getStreet(),
                 createMemberDto.getStreetNumber(), createMemberDto.getPostalCode());
@@ -39,6 +41,7 @@ public class UserService {
 
     public UserDto createNewAdmin(CreateAdminDto createAdminDto) {
         assertAdminId(createAdminDto.getAdminId());
+        // CODEREVIEW Why not use mapper?
         User admin = new User(createAdminDto.getInss(), createAdminDto.getFirstName(), createAdminDto.getLastName(),
                 createAdminDto.getMail(), createAdminDto.getCity(), createAdminDto.getStreet(),
                 createAdminDto.getStreetNumber(), createAdminDto.getPostalCode(), User.Role.ADMIN);
@@ -48,6 +51,7 @@ public class UserService {
 
     public UserDto createNewLibrarian(CreateLibrarianDto createLibrarianDto) {
         assertAdminId(createLibrarianDto.getAdminId());
+        // CODEREVIEW Why not use mapper?
         User librarian = new User(createLibrarianDto.getInss(), createLibrarianDto.getFirstName(), createLibrarianDto.getLastName(),
                 createLibrarianDto.getMail(), createLibrarianDto.getCity(), createLibrarianDto.getStreet(),
                 createLibrarianDto.getStreetNumber(), createLibrarianDto.getPostalCode(), User.Role.LIBRARIAN);
@@ -59,13 +63,17 @@ public class UserService {
     public List<UserDto> getAllMembers(String userId) {
         assertAdminId(userId);
         return repository.getAll().stream()
+                // CODEREVIEW improve variable name (`u`)
                 .filter(u -> u.getRole() == User.Role.MEMBER)
                 .map(mapper::toDto)
                 .sorted(Comparator.comparing(UserDto::getLastName).thenComparing(UserDto::getFirstName))
-                .collect(Collectors.toList());
+                .collect(Collectors.toUnmodifiableList()); // or simply .toList(); since Java16
+                //.collect(Collectors.toList());
+        // CODEREVIEW Optional: Return UnmodifiableList
     }
 
     private void assertAdminId(String id) {
+        // CODEREVIEW Improve methodname
         User user = fetchUserIfExistElseThrowException(id);
         if (user.getRole() != User.Role.ADMIN) {
             throw new UnauthorizedUserException("No admin rights!");
@@ -73,6 +81,7 @@ public class UserService {
     }
 
     protected void assertLibrarianId(String id) {
+        // CODEREVIEW Improve methodname
         User user = fetchUserIfExistElseThrowException(id);
         if (user.getRole() != User.Role.LIBRARIAN) {
             throw new UnauthorizedUserException("No librarian rights!");
@@ -80,14 +89,22 @@ public class UserService {
     }
 
     public boolean assertUserIdExistsABoolean(String memberId) {
+        // CODEREVIEW: Improve method name, as it does throw an exception
+        // CODEREVIEW: Ubiquitous language is important => UserId vs MemberId => be consistent
+        // CODEREVIEW: Improve method name, as it will not throw an exception
+        // CODEREVIEW: Improve method name, remove *Boolean from name
         return repository.assertUserIdExists(memberId);
     }
 
     protected User fetchUserIfExistElseThrowException(String id) {
-        User user = repository.fetchUser(id);
-        if (user == null) {
-            throw new UserNotFoundException("User with id " + id + " not found.");
-        }
-        return user;
+//        User user = repository.fetchUser(id);
+//        if (user == null) {
+//            throw new UserNotFoundException("User with id " + id + " not found.");
+//        }
+//        return user;
+        // CODEREVIEW Optional; Rewrite using Optional :D
+        return Optional
+                .ofNullable(repository.fetchUser(id))
+                .orElseThrow(UserNotFoundException::new);
     }
 }
