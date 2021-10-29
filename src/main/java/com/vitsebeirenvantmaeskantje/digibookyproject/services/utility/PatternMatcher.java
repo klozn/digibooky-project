@@ -4,6 +4,8 @@ import java.util.regex.Pattern;
 
 public class PatternMatcher {
 
+    //Based on https://www.jacoco.org/jacoco/trunk/coverage/org.jacoco.core/org.jacoco.core.runtime/WildcardMatcher.java.html
+
     /**
      * Matches strings against glob like wildcard expressions where <code>?</code>
      * matches any single character and <code>*</code> matches any number of any
